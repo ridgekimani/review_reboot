@@ -55,7 +55,8 @@
         <form method="post" action="./" class="search-form" id="restaurant-form">
           {% csrf_token %}
             {{ form }}
-          <input type="submit" value="Search" />
+          <input class="btn btn-default" type="submit" value="Search" />
+          <a class="btn btn-default" href="/login/facebook?next=/restaurants/restaurants_lists/" role="button">Login<a/>
         </form>
        </div>
     </div>

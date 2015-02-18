@@ -86,8 +86,8 @@ WSGI_APPLICATION = 'restaurant.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.contrib.gis.db.backends.postgis',
-        'NAME': 'restaurant',
-        'USER': 'mysoftware',
+        'NAME': 'restaurant2',
+        'USER': 'muhammadali',
         'PASSWORD': "postgres",
         'HOST': 'localhost',
         'PORT': 5432
@@ -153,6 +153,9 @@ ACCOUNT_LOGIN_REDIRECT_URL = "home"
 ACCOUNT_LOGOUT_REDIRECT_URL = "home"
 ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS = 2
 
+# users, allowed to moderate customer reports
+ALLOWED_TO_MODERATE = ['rrn', 'mysoft']
+
 LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'UTC'
@@ -180,5 +183,5 @@ STATICFILES_DIRS = (
 #MEDIA_ROOT = '/home/django/django_project/static'
 
 TEMPLATE_DIRS = (
-    os.path.join(BASE_DIR, "/api/templates"),
+    os.path.join(BASE_DIR, "api/templates"),
 )
