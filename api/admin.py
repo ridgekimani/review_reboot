@@ -1,7 +1,11 @@
 from django.contrib.gis import admin
+from simple_history.admin import SimpleHistoryAdmin
 from api import models
 
-class RestaurantAdmin(admin.GeoModelAdmin):
+class MasjidAdmin(SimpleHistoryAdmin):
+    list_display = ('name', 'id', 'phone', 'twitter_url','facebook_url')
+
+class RestaurantAdmin(SimpleHistoryAdmin):
     list_display = ('name', 'id', 'phone', 'yelp_id', 'yelp_url','foursquare_id','foursquare_url', 'avg_rating')
 
 class CommentAdmin(admin.ModelAdmin):
@@ -19,7 +23,7 @@ class CategoryAdmin(admin.ModelAdmin):
 
 # Register your models here.
 admin.site.register(models.Restaurant, RestaurantAdmin)
-admin.site.register(models.Masjid, admin.GeoModelAdmin)
+admin.site.register(models.Masjid, MasjidAdmin)
 admin.site.register(models.Comment, CommentAdmin)
 admin.site.register(models.Category, CategoryAdmin)
 admin.site.register(models.Tip, TipAdmin)

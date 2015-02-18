@@ -6,6 +6,7 @@ from django.contrib.auth.models import User
 from django.core.validators import RegexValidator, URLValidator
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes import generic
+from simple_history.models import HistoricalRecords
 
 import datetime
 
@@ -46,6 +47,7 @@ class Venue(models.Model):
     modified_by = models.ForeignKey(User, null=True, blank=True)
     modified_on = models.DateTimeField(auto_now=True, null=True)
 
+
     # Query Manager
     gis = gis_models.GeoManager()
     objects = models.Manager()
@@ -68,6 +70,8 @@ class Venue(models.Model):
         self.save()
 
 
+# simple_history will add its tables to db only if field added to model class,
+# not a parent class (Venue)
 class Restaurant(Venue):
     cuisine = models.CharField(max_length = 50)
     eatingOptions = models.CharField(max_length = 50)
@@ -75,12 +79,16 @@ class Restaurant(Venue):
     yelp_url = models.CharField(max_length=255, blank=True, validators=[URLValidator()])
     foursquare_id = models.CharField(max_length=100, blank=True)
     foursquare_url = models.CharField(max_length=255, blank=True, validators=[URLValidator()])
+    history_link = HistoricalRecords()
 
 
+# simple_history will add its tables to db only if field added to model class,
+# not a parent class (Venue)
 class Masjid(Venue):
     url = models.CharField(max_length=255, blank=True, validators=[URLValidator()])
     twitter_url = models.CharField(max_length=255, blank=True, validators=[URLValidator()])
     facebook_url = models.CharField(max_length=255, blank=True, validators=[URLValidator()])
+    history_link = HistoricalRecords()
 
 
 class Comment(models.Model):
@@ -105,6 +113,7 @@ class Comment(models.Model):
 
     def short_text(self):
         return self.__unicode__()
+
 
 class Tip(models.Model):
     '''
