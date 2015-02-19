@@ -42,6 +42,8 @@ class Venue(models.Model):
     )
     categories = models.ManyToManyField(Category, null=True)
     avg_rating = models.DecimalField(max_digits=3, decimal_places=2, null=True, blank=True)
+    closed_reports_count = models.IntegerField(default=0)
+    is_closed = models.BooleanField(default=False)
 
     # Potentially User can make changes in this model
     modified_by = models.ForeignKey(User, null=True, blank=True)
@@ -185,10 +187,10 @@ class Report(models.Model):
     
     def __unicode__(self):
         return u' '.join([
-                        Restaurant.objects.get(id=self.venue_id).name, '\n'
-                        'report:', self.get_report_display(), '\n'
-                        'note:', self.note
-                        ])
+            Restaurant.objects.get(id=self.venue_id).name, '\n'
+            'report:', self.get_report_display(), '\n'
+            'note:', self.note
+        ])
     
     @property
     def venue_name(self):
