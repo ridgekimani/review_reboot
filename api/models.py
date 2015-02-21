@@ -91,7 +91,17 @@ class Restaurant(Venue):
     yelp_url = models.CharField(max_length=255, blank=True, validators=[URLValidator()])
     foursquare_id = models.CharField(max_length=100, blank=True)
     foursquare_url = models.CharField(max_length=255, blank=True, validators=[URLValidator()])
+    
+    # django-simple-history code
     history_link = HistoricalRecords()
+
+    @property
+    def _history_user(self):
+        return self.modified_by
+
+    @_history_user.setter
+    def _history_user(self, value):
+        self.modified_by = value
 
 
 # simple_history will add its tables to db only if field added to model class,
@@ -100,7 +110,17 @@ class Masjid(Venue):
     url = models.CharField(max_length=255, blank=True, validators=[URLValidator()])
     twitter_url = models.CharField(max_length=255, blank=True, validators=[URLValidator()])
     facebook_url = models.CharField(max_length=255, blank=True, validators=[URLValidator()])
+    
+    # django-simple-history code
     history_link = HistoricalRecords()
+
+    @property
+    def _history_user(self):
+        return self.modified_by
+
+    @_history_user.setter
+    def _history_user(self, value):
+        self.modified_by = value
 
 
 class Comment(models.Model):
@@ -182,7 +202,7 @@ class Report(models.Model):
         related_name='report_moderator'
     )
     moderator_flag = models.BooleanField(default=False)
-    moderator_note = models.TextField(blank=True)
+    moderator_note = models.TextField(null=True)
     
     
     def __unicode__(self):
