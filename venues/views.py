@@ -1,11 +1,11 @@
 import json
+
 from django.conf import settings
 from django.shortcuts import render, redirect
 from django.core.context_processors import csrf
 from django.shortcuts import render_to_response
 from django.http import HttpResponse, Http404
 from django.core import serializers
-from django.core.exceptions import ObjectDoesNotExist
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.contrib.gis import geos
 from django.contrib.gis import measure
@@ -13,10 +13,12 @@ from geopy.distance import distance as geopy_distance
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login
 from social.apps.django_app.utils import psa
-from api import models, forms
 from django.core.exceptions import MultipleObjectsReturned, ObjectDoesNotExist
 from geopy.geocoders import Nominatim
-from urllib2 import URLError
+
+from venues import models
+from venues import forms
+
 
 # from django.contrib.auth import logout
 def restaurants_lists(request):

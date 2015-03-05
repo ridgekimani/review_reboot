@@ -1,10 +1,9 @@
 from django.conf.urls import patterns, include, url
-from django.conf.urls.static import static
 from django.contrib.gis import admin
-from django.conf import settings
 from django.views.generic import TemplateView
 
-import api.views as views
+import venues.views as views
+
 
 admin.autodiscover()
 
@@ -13,8 +12,7 @@ urlpatterns = patterns('',
     # url(r'^$', 'restaurant.views.home', name='home'),
     # url(r'^blog/', include('blog.urls')),
 
-    url(r'^admin/', include(admin.site.urls)),
-    url(r'^$', views.closest),
+
     url(r'^restaurants/restaurants_lists/$', views.restaurants_lists),
     url(r'^restaurants/(?P<rest_pk>[0-9]+)/comment/$', views.comment),
     url(r'^restaurants/(?P<rest_pk>[0-9]+)/show-all-comments/$', views.show_all_comments),
@@ -33,6 +31,9 @@ urlpatterns = patterns('',
     # pinax accounts urls
     url(r"^owner/$", TemplateView.as_view(template_name="homepage.html"), name="home"),
     url(r"^owner/account/", include("account.urls")),
+
+    url(r'^admin/', include(admin.site.urls)),
+    url(r'^$', views.closest),
 
     # url(r'^logout/$', views.log_out),
 )

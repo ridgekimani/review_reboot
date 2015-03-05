@@ -53,7 +53,7 @@
     <div class="app-header">
       <div class="header-container clearfix">
         <div class="logo" id="logo"> <a href="#">Django</a> </div>
-        <form method="post" action="./" class="search-form form-inline" id="restaurant-form">
+        <form method="post" action="" class="search-form form-inline" id="restaurant-form">
           {% csrf_token %}
             {% bootstrap_form form layout='inline' %}
           <input class="btn btn-default" type="submit" value="Search" />

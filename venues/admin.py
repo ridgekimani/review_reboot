@@ -1,6 +1,6 @@
 from django.contrib.gis import admin
 from simple_history.admin import SimpleHistoryAdmin
-from api import models
+from venues import models
 
 class MasjidAdmin(SimpleHistoryAdmin):
     list_display = ('name', 'id', 'phone', 'twitter_url','facebook_url')

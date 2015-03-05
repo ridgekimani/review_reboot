@@ -55,7 +55,7 @@ INSTALLED_APPS = (
     'social.apps.django_app.default',
     'bootstrap3',
     # pinax-account apps:
-    "ppacc",
+    # "ppacc",
     "bootstrapform",
     "pinax_theme_bootstrap",
     "account",
@@ -85,10 +85,10 @@ WSGI_APPLICATION = 'restaurant.wsgi.application'
 #TODO Change in production
 DATABASES = {
     'default': {
-        'ENGINE': 'django.contrib.gis.db.backends.postgis',
-        'NAME': 'restaurant2',
-        'USER': 'muhammadali',
-        'PASSWORD': "postgres",
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'odesk1',
+        'USER': 'postgres',
+        'PASSWORD': "12345",
         'HOST': 'localhost',
         'PORT': 5432
     }
@@ -172,7 +172,7 @@ USE_TZ = True
 STATIC_PATH = os.path.join(BASE_DIR,'static')
 
 
-STATIC_ROOT = '/home/django/django_project/static'
+STATIC_ROOT = 'static'
 #STATIC_ROOT = ''
 STATIC_URL = '/static/'
 

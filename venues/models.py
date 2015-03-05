@@ -18,26 +18,27 @@ class Category(models.Model):
         return self.name
 
 
+# Create your models here.
 class Venue(models.Model):
     '''
     General model for venues.
     '''
-    name = models.CharField(max_length = 100)
-    address = models.CharField(max_length = 150)
+    name = models.CharField(max_length=100)
+    address = models.CharField(max_length=150)
     phone = models.CharField(
-        max_length = 12, 
-        blank=True, 
+        max_length=12,
+        blank=True,
         validators=[
             RegexValidator(
-                regex=r'^[0-9]+$', 
+                regex=r'^[0-9]+$',
                 message='Only digits allowed'
-                )
-            ]
+            )
+        ]
     )
     location = gis_models.PointField(
-        u'Latitude/Longitude', 
-        geography=True, 
-        blank=True, 
+        u'Latitude/Longitude',
+        geography=True,
+        blank=True,
         null=True
     )
     categories = models.ManyToManyField(Category, null=True)
@@ -61,7 +62,7 @@ class Venue(models.Model):
         return self.name
 
     def update_avg_rating(self):
-        self_comments = Comment.objects.filter(venue_id = self.id)
+        self_comments = Comment.objects.filter(venue_id=self.id)
         num_of_comments = float(len(self_comments))
         if num_of_comments == 0.0:
             return
@@ -85,13 +86,13 @@ class Venue(models.Model):
 # simple_history will add its tables to db only if field added to model class,
 # not a parent class (Venue)
 class Restaurant(Venue):
-    cuisine = models.CharField(max_length = 50)
-    eatingOptions = models.CharField(max_length = 50)
+    cuisine = models.CharField(max_length=50)
+    eatingOptions = models.CharField(max_length=50)
     yelp_id = models.CharField(max_length=255, blank=True)
     yelp_url = models.CharField(max_length=255, blank=True, validators=[URLValidator()])
     foursquare_id = models.CharField(max_length=100, blank=True)
     foursquare_url = models.CharField(max_length=255, blank=True, validators=[URLValidator()])
-    
+
     # django-simple-history code
     history_link = HistoricalRecords()
 
@@ -110,7 +111,7 @@ class Masjid(Venue):
     url = models.CharField(max_length=255, blank=True, validators=[URLValidator()])
     twitter_url = models.CharField(max_length=255, blank=True, validators=[URLValidator()])
     facebook_url = models.CharField(max_length=255, blank=True, validators=[URLValidator()])
-    
+
     # django-simple-history code
     history_link = HistoricalRecords()
 
@@ -125,7 +126,7 @@ class Masjid(Venue):
 
 class Comment(models.Model):
     '''
-    This class uses generic ForeignKey, for details read here 
+    This class uses generic ForeignKey, for details read here
     https://docs.djangoproject.com/en/1.6/ref/contrib/contenttypes/#generic-relations
     '''
     created_on = models.DateTimeField(auto_now_add=True)
@@ -151,7 +152,7 @@ class Comment(models.Model):
 
 class Tip(models.Model):
     '''
-    This class uses generic ForeignKey, for details read here 
+    This class uses generic ForeignKey, for details read here
     https://docs.djangoproject.com/en/1.6/ref/contrib/contenttypes/#generic-relations
     '''
     created_on = models.DateTimeField(auto_now_add=True)
@@ -168,6 +169,7 @@ class Tip(models.Model):
     @property
     def venue_name(self):
         return self.content_object.name
+
 
 class Report(models.Model):
     '''
@@ -203,15 +205,15 @@ class Report(models.Model):
     )
     moderator_flag = models.BooleanField(default=False)
     moderator_note = models.TextField(null=True)
-    
-    
+
+
     def __unicode__(self):
         return u' '.join([
             Restaurant.objects.get(id=self.venue_id).name, '\n'
-            'report:', self.get_report_display(), '\n'
-            'note:', self.note
+                                                           'report:', self.get_report_display(), '\n'
+                                                                                                 'note:', self.note
         ])
-    
+
     @property
     def venue_name(self):
         return self.content_object.name
