@@ -1,6 +1,7 @@
 import json
 
 from django.conf import settings
+from django.contrib.contenttypes.models import ContentType
 from django.shortcuts import render, redirect
 from django.core.context_processors import csrf
 from django.shortcuts import render_to_response
@@ -23,7 +24,7 @@ from venues import forms
 
 
 # from django.contrib.auth import logout
-from venues.models import Restaurant
+from venues.models import Restaurant, Comment, Note, Report, Category
 
 
 def restaurants_lists(request):
@@ -344,25 +345,25 @@ def show_all_tips(request, rest_pk):
 
 @login_required
 def update_restaurant(request, rest_pk):
-    rest = models.Restaurant.objects.get(id=rest_pk)
-
+    _restaurant = Restaurant.objects.get(pk=rest_pk)
     context = {
-        'venue_name': rest.name,
-        'rest_pk': rest_pk
+        'restaurant': _restaurant,
+        'categories': Category.objects.all(),
+        'comments': Comment.list_for_venue(_restaurant),
+        'notes': Note.list_for_venue(_restaurant),
+        'reports': Report.list_for_venue(_restaurant),
     }
 
     if request.method == 'POST':
-        form = forms.RestaurantForm(request.POST, instance=rest) # A form bound to the POST data
+        form = forms.RestaurantForm(request.POST, instance=_restaurant) # A form bound to the POST data
         if form.is_valid():
             form.save()
             context['is_saved'] = True
-        
         context['form'] = form
-    
     else:
-        context['form'] = forms.RestaurantForm(instance=rest)
+        context['form'] = forms.RestaurantForm(instance=_restaurant)
 
-    return render(request, 'update.html', context)
+    return render(request, 'restaurants/update.html', context)
 
 def report_restaurant(request, rest_pk):
     rest = models.Restaurant.objects.get(id=rest_pk)
@@ -439,9 +440,14 @@ def moderate_report(request, pk):
 
 def restaurant(request, rest_pk):
     _restaurant = Restaurant.objects.get(pk=rest_pk)
+
     return render(request, 'restaurants/item.html', {
-        'restaurant': _restaurant
+        'restaurant': _restaurant,
+        'comments': Comment.list_for_venue(_restaurant),
+        'notes': Note.list_for_venue(_restaurant),
+        'reports': Report.list_for_venue(_restaurant),
     })
+
 
 
 @psa('social:complete')

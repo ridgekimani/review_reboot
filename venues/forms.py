@@ -5,7 +5,7 @@ from venues import models
 class RestaurantForm(forms.ModelForm):
     class Meta:
         model = models.Restaurant
-        fields = ['yelp_url', 'foursquare_url', 'phone', 'categories']
+        fields = ['name', 'cuisine', 'eatingOptions', 'address', 'yelp_url', 'foursquare_url', 'phone', 'categories']
 
 
 class AddressForm(forms.Form):

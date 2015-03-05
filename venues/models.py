@@ -138,6 +138,12 @@ class Comment(models.Model):
     rating = models.IntegerField(null=True, blank=True)
     text = models.TextField(blank=True)
 
+    @staticmethod
+    def list_for_venue(venue):
+        related_object_type = ContentType.objects.get_for_model(venue)
+        return  Comment.objects.filter(content_type__pk=related_object_type.id,
+                                       venue_id=venue.id)
+
     @property
     def venue_name(self):
         return self.content_object.name
@@ -162,6 +168,12 @@ class Note(models.Model):
     venue_id = models.PositiveIntegerField()
     content_object = generic.GenericForeignKey('content_type', 'venue_id')
     text = models.TextField(max_length=200, blank=True)
+
+    @staticmethod
+    def list_for_venue(venue):
+        related_object_type = ContentType.objects.get_for_model(venue)
+        return  Comment.objects.filter(content_type__pk=related_object_type.id,
+                                       venue_id=venue.id)
 
     def __unicode__(self):
         return self.text[:25]
@@ -205,6 +217,12 @@ class Report(models.Model):
     )
     moderator_flag = models.BooleanField(default=False)
     moderator_note = models.TextField(null=True)
+
+    @staticmethod
+    def list_for_venue(venue):
+        related_object_type = ContentType.objects.get_for_model(venue)
+        return  Comment.objects.filter(content_type__pk=related_object_type.id,
+                                       venue_id=venue.id)
 
 
     def __unicode__(self):
