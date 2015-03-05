@@ -2,4 +2,3 @@ restaurantenv
 *.pyc
 staticfiles
 .DS_Store
-migrations

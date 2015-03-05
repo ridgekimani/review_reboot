@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% block body %}
+    <div class="row">
+        <div class="col-md-8">
+            <h1>{{ restaurant.name }}</h1>
+
+            <h2>{{ restaurant.cuisine }}</h2>
+            <h4>{{ restaurant.eatingOptions }}</h4>
+
+            <h3>{{ restaurant.address }}</h3>
+
+            <h3><span class="glyphicon glyphicon-earphone"></span> {{ restaurant.phone }}</h3>
+
+            <ul class="r-categories">
+                {% for category in restaurant.categories.all %}
+                    <li>{{ category.name }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="col-md-4"></div>
+    </div>
+    <div class="row">
+        <div class="col-md-4"></div>
+        <div class="col-md-8"></div>
+    </div>
+    {{ restaurant.location }}
+
+
+    {{ restaurant.closed_reports_count }}
+    {{ restaurant.is_closed }}
+    {{ restaurant.modified_by }}
+    {{ restaurant.modified_on }}
+
+
+{#    {{ restaurant.yelp_id }}#}
+{#    {{ restaurant.yelp_url }}#}
+{#    {{ restaurant.foursquare_id }}#}
+{#    {{ restaurant.foursquare_url }}#}
+{% endblock %}

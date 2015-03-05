@@ -62,6 +62,7 @@ INSTALLED_APPS = (
     "eventlog",
     "metron",
     'simple_history',
+    'venues',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -85,8 +86,8 @@ WSGI_APPLICATION = 'restaurant.wsgi.application'
 #TODO Change in production
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'odesk1',
+        'ENGINE': 'django.contrib.gis.db.backends.postgis',
+        'NAME': 'odesk2',
         'USER': 'postgres',
         'PASSWORD': "12345",
         'HOST': 'localhost',
@@ -183,5 +184,5 @@ STATICFILES_DIRS = (
 #MEDIA_ROOT = '/home/django/django_project/static'
 
 TEMPLATE_DIRS = (
-    os.path.join(BASE_DIR, "api/templates"),
+    os.path.join(BASE_DIR, "restaurant/templates"),
 )

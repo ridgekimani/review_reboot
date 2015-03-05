@@ -3,7 +3,7 @@ Import to db venues from sqlite3.
 '''
 import sqlite3
 from django.contrib.gis import geos
-from api.models import Masjid
+from venues.models import Masjid
 
 counter = 0
 

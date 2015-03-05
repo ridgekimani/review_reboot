@@ -4,7 +4,7 @@ which are in list categories_name.txt
 '''
 import sqlite3
 from django.contrib.gis import geos
-from api.models import Category, Restaurant
+from venues.models import Category, Restaurant
 
 f = open('categories_name.txt','r')
 cats = [c.replace("\n", "") for c in f.readlines()]

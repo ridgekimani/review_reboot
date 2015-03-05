@@ -6,9 +6,11 @@ from django.core.context_processors import csrf
 from django.shortcuts import render_to_response
 from django.http import HttpResponse, Http404
 from django.core import serializers
+from django.core.urlresolvers import reverse
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.contrib.gis import geos
 from django.contrib.gis import measure
+from django.views.decorators.http import require_GET
 from geopy.distance import distance as geopy_distance
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login
@@ -21,6 +23,9 @@ from venues import forms
 
 
 # from django.contrib.auth import logout
+from venues.models import Restaurant
+
+
 def restaurants_lists(request):
     form = forms.AddressForm()
     restaurants = []
@@ -63,10 +68,10 @@ def restaurants_lists(request):
                     else:
                         restaurants = models.Restaurant.gis.filter(location__distance_lte=(currentPoint, measure.D(**distance_m))).distance(currentPoint)
         context = {'all_restaurants': restaurants,'form': form,'longitude': longitude, 'latitude' : latitude}
-        return render(request, 'restaurantlist.html', context)
+        return render(request, 'restaurants/restaurantlist.html', context)
     else:
         context = {'all_restaurants': restaurants,'form': form,'longitude': longitude, 'latitude' : latitude}
-        return render(request, 'restaurants.html', context)
+        return render(request, 'restaurants/restaurants.html', context)
 
 
 def get_category(request):
@@ -205,9 +210,9 @@ def get_masjids(longitude, latitude, categories):
 
     return data
 
-
+@require_GET
 def closest(request):
-    if request.method == 'GET' and 'lat' in request.GET and 'lon' in request.GET:
+    if 'lat' in request.GET and 'lon' in request.GET:
         
         lat = float(request.GET['lat'])
         lon = float(request.GET['lon'])
@@ -240,7 +245,7 @@ def closest(request):
             content_type='application/json'
         )
     else:
-        return HttpResponse('Request method not correct')
+        return redirect(reverse('venues.views.restaurants_lists'))
 
 @login_required
 def comment(request, rest_pk):
@@ -431,6 +436,12 @@ def moderate_report(request, pk):
 # def log_out(request):
 #     logout(request)
 #     return render(request, "comment.html")
+
+def restaurant(request, rest_pk):
+    _restaurant = Restaurant.objects.get(pk=rest_pk)
+    return render(request, 'restaurants/item.html', {
+        'restaurant': _restaurant
+    })
 
 
 @psa('social:complete')

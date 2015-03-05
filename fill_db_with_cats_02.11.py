@@ -1,4 +1,4 @@
-from api.models import Category
+from venues.models import Category
 
 f = open('categories_name.txt','r')
 cats = [c.replace("\n", "") for c in f.readlines()]

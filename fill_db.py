@@ -1,10 +1,11 @@
 import psycopg2
 import csv
 
+
 def makeList(filename):
     allRows = []
     opened = open(filename, 'r')
-    read = csv.reader(opened, delimiter = ',')
+    read = csv.reader(opened, delimiter=',')
 
     for row in read:
         temp = [element.replace("'", "''") for element in row]
@@ -12,12 +13,15 @@ def makeList(filename):
 
     return allRows
 
+
 def makeQuery(row):
-    #Now row here should be a list
-    query = "INSERT INTO api_restaurant(name, address, phone, cuisine, " + '"eatingOptions"' + ", location)" + " VALUES('" + row[0] + "', '" + row[1] + "', '" + row[2] + "', '" + row[3] + "', '" + row[4] + "', ST_Point(" + row[6] + ',' + row[5] + '))'
+    # Now row here should be a list
+    query = "INSERT INTO venues_restaurant(name, address, phone, cuisine, closed_reports_count, is_closed, yelp_id, yelp_url, foursquare_id, foursquare_url,\"eatingOptions\", location)" + \
+            " VALUES('" + row[0] + "', '" + row[1] + "', '" + row[2] + "', '" + row[3] + "', 0, false, 0, '', 0, '', '" + row[4] + "', ST_Point(" + row[6] + ',' + row[5] + '))'
     print query
 
     return query
+
 
 def insertData(connection, rowList):
     cursor = connection.cursor()
@@ -29,9 +33,10 @@ def insertData(connection, rowList):
 
 
 if __name__ == '__main__':
-    conn = psycopg2.connect(dbname='restaurant0', host='localhost', user='muhammadali', password="tahity8^d0", port='5432')
+    conn = psycopg2.connect(dbname='odesk2', host='localhost', user='postgres', password="12345",
+                            port='5432')
     allRows = makeList('Restaurants.csv')
-    #Cut header row
+    # Cut header row
     print len(allRows)
     allRows = allRows[1:]
 

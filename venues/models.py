@@ -150,7 +150,7 @@ class Comment(models.Model):
         return self.__unicode__()
 
 
-class Tip(models.Model):
+class Note(models.Model):
     '''
     This class uses generic ForeignKey, for details read here
     https://docs.djangoproject.com/en/1.6/ref/contrib/contenttypes/#generic-relations

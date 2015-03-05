@@ -13,7 +13,7 @@ class CommentAdmin(admin.ModelAdmin):
     fields = (('venue_name', 'user'), 'rating', 'text')
     readonly_fields = ('venue_name',)
 
-class TipAdmin(admin.ModelAdmin):
+class NoteAdmin(admin.ModelAdmin):
     list_display = ('venue_name', 'text', 'user')
     fields = (('venue_name', 'user'), 'text')
     readonly_fields = ('venue_name',)
@@ -26,5 +26,5 @@ admin.site.register(models.Restaurant, RestaurantAdmin)
 admin.site.register(models.Masjid, MasjidAdmin)
 admin.site.register(models.Comment, CommentAdmin)
 admin.site.register(models.Category, CategoryAdmin)
-admin.site.register(models.Tip, TipAdmin)
+admin.site.register(models.Note, NoteAdmin)
 admin.site.register(models.Report, admin.ModelAdmin)

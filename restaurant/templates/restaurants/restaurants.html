@@ -1,6 +1,6 @@
-<!DOCTYPE HTML>
 {% load static %}
 {% load bootstrap3 %}
+<!DOCTYPE html>
 <head>
   <title>Django</title>
   <link rel="stylesheet" href="{% static "css/style.css" %}" />
@@ -66,10 +66,9 @@
   <span id="page-content" class="offscreen">&nbsp;</span>
   <div id="super-container">
     <div class="container indexed-biz-archive">
-    {% include "restaurantlist.html" %}
+    {% include "restaurants/restaurantlist.html" %}
     </div>
   </div>
-</div>
 </div>
 </body>
 </html>
