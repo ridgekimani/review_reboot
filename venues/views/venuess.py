@@ -119,7 +119,7 @@ def restaurants_lists(request):
                         restaurants = models.Restaurant.gis.filter(
                             location__distance_lte=(currentPoint, measure.D(**distance_m))).distance(currentPoint)
         context = {'all_restaurants': restaurants, 'form': form, 'longitude': longitude, 'latitude': latitude}
-        return render(request, 'restaurants/restaurantlist.html', context)
+        return render(request, 'restaurants/restaurants.html', context)
     else:
         context = {'all_restaurants': restaurants, 'form': form, 'longitude': longitude, 'latitude': latitude}
         return render(request, 'restaurants/restaurants.html', context)

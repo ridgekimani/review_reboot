@@ -17,36 +17,39 @@
 
 {#</head>#}
 {% block body %}
-    <div id="wrap" class="lang-en">
-        <div>
-            <ul class="offscreen">
-                <li><a href="#" rel="nofollow"> Skip to Search Form </a></li>
-                <li><a href="#" rel="nofollow"> Skip to Navigation </a></li>
-                <li><a href="#" rel="nofollow"> Skip to Page Content </a></li>
-            </ul>
-            <div class="app-header">
-                <div class="header-container clearfix">
-                    <div class="logo" id="logo"><a href="#">Django</a></div>
-                    <form method="post" action="" class="search-form form-inline" id="restaurant-form">
-                        {% csrf_token %}
-                        {% bootstrap_form form layout='inline' %}
-                        <input class="btn btn-default" type="submit" value="Search"/>
-                        <a class="btn btn-default" href="/login/facebook?next=/restaurants/restaurants_lists/"
-                           role="button">Login<a/>
-                    </form>
-                </div>
-            </div>
-        </div>
-        <div id="print-masthead"><img
-                src="http://s3-media2.fl.Djangocdn.com/assets/2/www/img/b7e9d647188d/gfx/header_print.gif"
-                class="print-bkg-img" alt="Django"></div>
-        <span id="page-content" class="offscreen">&nbsp;</span>
-
-        <div id="super-container">
-            <div class="container indexed-biz-archive">
-                {% include "restaurants/restaurantlist.html" %}
-            </div>
-        </div>
+    {#    <div id="wrap" class="lang-en">#}
+    {#        <div>#}
+    {#            <ul class="offscreen">#}
+    {#                <li><a href="#" rel="nofollow"> Skip to Search Form </a></li>#}
+    {#                <li><a href="#" rel="nofollow"> Skip to Navigation </a></li>#}
+    {#                <li><a href="#" rel="nofollow"> Skip to Page Content </a></li>#}
+    {#            </ul>#}
+    {#            <div class="app-header">#}
+    {#                <div class="header-container clearfix">#}
+    {#                    <div class="logo" id="logo"><a href="#">Django</a></div>#}
+    {#                    <form method="post" action="" class="search-form form-inline" id="restaurant-form">#}
+    {#                        {% csrf_token %}#}
+    {#                        {% bootstrap_form form layout='inline' %}#}
+    {#                        <input class="btn btn-default" type="submit" value="Search"/>#}
+    {#                        <a class="btn btn-default" href="/login/facebook?next=/restaurants/restaurants_lists/"#}
+    {#                           role="button">Login<a/>#}
+    {#                    </form>#}
+    {#                </div>#}
+    {#            </div>#}
+    {#        </div>#}
+    {#        <div id="print-masthead"><img#}
+    {#                src="http://s3-media2.fl.Djangocdn.com/assets/2/www/img/b7e9d647188d/gfx/header_print.gif"#}
+    {#                class="print-bkg-img" alt="Django"></div>#}
+    {#        <span id="page-content" class="offscreen">&nbsp;</span>#}
+    {##}
+    {#        <div id="super-container">#}
+    {#            <div class="container indexed-biz-archive">#}
+    {#                {% include "restaurants/restaurantlist.html" %}#}
+    {#            </div>#}
+    {#        </div>#}
+    {#    </div>#}
+    <div>
+        {% include "restaurants/restaurantlist.html" %}
     </div>
 {% endblock %}
 {% block scripts %}
