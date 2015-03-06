@@ -1,44 +1,23 @@
-import psycopg2
+from django.contrib.gis import geos
 import csv
+from venues.models import Restaurant
 
+f = open('Restaurants.csv', 'r')
+read = csv.reader(f, delimiter=',')
+next(read, None)
 
-def makeList(filename):
-    allRows = []
-    opened = open(filename, 'r')
-    read = csv.reader(opened, delimiter=',')
+for row in read:
+    temp = [element.replace("'", "''") for element in row]
+    print row
+    r = Restaurant(
+        name=temp[0],
+        address=temp[1],
+        phone=temp[2],
+        cuisine=temp[3],
+        eatingOptions=temp[4],
+        location=geos.Point(float(temp[6]), float(temp[5]))
+    )
+    r.save()
 
-    for row in read:
-        temp = [element.replace("'", "''") for element in row]
-        allRows.append(temp)
-
-    return allRows
-
-
-def makeQuery(row):
-    # Now row here should be a list
-    query = "INSERT INTO venues_restaurant(name, address, phone, cuisine, closed_reports_count, is_closed, yelp_id, yelp_url, foursquare_id, foursquare_url,\"eatingOptions\", location)" + \
-            " VALUES('" + row[0] + "', '" + row[1] + "', '" + row[2] + "', '" + row[3] + "', 0, false, 0, '', 0, '', '" + row[4] + "', ST_Point(" + row[6] + ',' + row[5] + '))'
-    print query
-
-    return query
-
-
-def insertData(connection, rowList):
-    cursor = connection.cursor()
-
-    for row in rowList:
-        print row
-        query = makeQuery(row)
-        cursor.execute(query)
-
-
-if __name__ == '__main__':
-    conn = psycopg2.connect(dbname='odesk2', host='localhost', user='postgres', password="12345",
-                            port='5432')
-    allRows = makeList('Restaurants.csv')
-    # Cut header row
-    print len(allRows)
-    allRows = allRows[1:]
-
-    insertData(conn, allRows)
-    conn.commit()
+f.close()
+exit()

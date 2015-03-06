@@ -29,7 +29,7 @@ $(document).ready(function() {
       <div class="content">
           {% for restaurant in all_restaurants %}
               <ul class="restaurant-data">
-                <li style="color:red"><b><a href="{% url 'venues.views.restaurant' restaurant.pk %}">{{restaurant.name}}</a></b></li>
+                <li style="color:red"><b><a href="{% url 'venues.views.venuess.restaurant' restaurant.pk %}">{{restaurant.name}}</a></b></li>
                 <li>
                   {% for category in restaurant.categories.all %}
                     {{category}}
@@ -40,7 +40,7 @@ $(document).ready(function() {
                 <li> {{restaurant.distance}} </li>
               </ul>
               {% if user.is_authenticated %}
-                <a class="btn btn-small" onClick="window.open('{% url 'venues.views.update_restaurant' restaurant.pk %}', '_blank' )" role="button">Edit<a/>
+                <a class="btn btn-small" onClick="window.open('{% url 'venues.views.venuess.update_restaurant' restaurant.pk %}', '_blank' )" role="button">Edit<a/>
               {% endif %}
             {% endfor %}
        </div>

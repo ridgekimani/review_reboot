@@ -1,0 +1,6 @@
+pip install -r requirements
+echo 'CREATE EXTENSION postgis; CREATE EXTENSION postgis_topology;' | python manage.py dbshell
+python manage.py syncdb
+python manage.py migrate
+python manage.py shell < fill_db.py
+python manage.py shell < fill_db_with_cats_02.11.py
