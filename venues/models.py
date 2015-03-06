@@ -30,7 +30,7 @@ class Venue(models.Model):
         blank=True,
         validators=[
             RegexValidator(
-                regex=r'^[0-9]+$',
+                regex=r'^[0-9 -]+$',
                 message='Only digits allowed'
             )
         ]

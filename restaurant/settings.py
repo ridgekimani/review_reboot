@@ -63,6 +63,7 @@ INSTALLED_APPS = (
     "metron",
     'simple_history',
     'venues',
+    "widget_tweaks", # for form add class
 )
 
 MIDDLEWARE_CLASSES = (
@@ -125,6 +126,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     "pinax_theme_bootstrap.context_processors.theme",
 )
 
+
 SOCIAL_AUTH_ADMIN_USER_SEARCH_FIELDS = ['username', 'first_name']
 
 LOGIN_URL = '/login/facebook/'
@@ -170,13 +172,18 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
-STATIC_PATH = os.path.join(BASE_DIR,'static')
+# STATIC_PATH = os.path.join(BASE_DIR,'static')
 
-#STATIC_ROOT = ''
+STATIC_ROOT = os.path.join(BASE_DIR,'static')
 STATIC_URL = '/static/'
 
 STATICFILES_DIRS = (
-    STATIC_PATH,
+    os.path.join(BASE_DIR,'restaurant/static'),
+)
+
+STATICFILES_FINDERS = (
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
 )
 #STATICFILES_DIRS = ( os.path.join('static'),)
 #MEDIA_ROOT = '/home/django/django_project/static'

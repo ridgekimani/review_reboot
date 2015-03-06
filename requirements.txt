@@ -41,3 +41,5 @@ eventlog==0.8.0
 django-jsonfield==0.9.12
 django-simple-history>=1.5.4
 django-bootstrap3>=5.1.0
+django-sekizai
+django-widget-tweaks

@@ -14,7 +14,7 @@ $(document).ready(function() {
       map = new google.maps.Map($('.map')[0], mapOptions);
 
       {% for restaurant in all_restaurants %}
-          latlng = new google.maps.LatLng("{{ restaurant.location.y }}", "{{ restaurant.location.x }}");
+          latlng = new google.maps.LatLng({{ restaurant.location.y }}, {{ restaurant.location.x }});
           new google.maps.Marker({
               position: latlng,
               map: map,
@@ -40,7 +40,7 @@ $(document).ready(function() {
                 <li> {{restaurant.distance}} </li>
               </ul>
               {% if user.is_authenticated %}
-                <a class="btn btn-small" onClick="window.open( '/restaurants/{{restaurant.id}}/update', '_blank' )" role="button">Edit<a/>
+                <a class="btn btn-small" onClick="window.open('{% url 'venues.views.update_restaurant' restaurant.pk %}', '_blank' )" role="button">Edit<a/>
               {% endif %}
             {% endfor %}
        </div>

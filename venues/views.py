@@ -69,7 +69,7 @@ def restaurants_lists(request):
                     else:
                         restaurants = models.Restaurant.gis.filter(location__distance_lte=(currentPoint, measure.D(**distance_m))).distance(currentPoint)
         context = {'all_restaurants': restaurants,'form': form,'longitude': longitude, 'latitude' : latitude}
-        return render(request, 'restaurants/restaurantlist.html', context)
+        return render(request, 'restaurants/list.html', context)
     else:
         context = {'all_restaurants': restaurants,'form': form,'longitude': longitude, 'latitude' : latitude}
         return render(request, 'restaurants/restaurants.html', context)
@@ -348,7 +348,6 @@ def update_restaurant(request, rest_pk):
     _restaurant = Restaurant.objects.get(pk=rest_pk)
     context = {
         'restaurant': _restaurant,
-        'categories': Category.objects.all(),
         'comments': Comment.list_for_venue(_restaurant),
         'notes': Note.list_for_venue(_restaurant),
         'reports': Report.list_for_venue(_restaurant),
@@ -358,7 +357,8 @@ def update_restaurant(request, rest_pk):
         form = forms.RestaurantForm(request.POST, instance=_restaurant) # A form bound to the POST data
         if form.is_valid():
             form.save()
-            context['is_saved'] = True
+            # context['is_saved'] = True
+            return redirect(reverse('venues.views.restaurant', args=[rest_pk]))
         context['form'] = form
     else:
         context['form'] = forms.RestaurantForm(instance=_restaurant)

@@ -29,12 +29,13 @@
                 </div>
             </div>
 
-
-            <ul class="r-categories">
-                {% for category in restaurant.categories.all %}
-                    <li>{{ category.name }}</li>
-                {% endfor %}
-            </ul>
+            <div class="r-categories">
+                <ul>
+                    {% for category in restaurant.categories.all %}
+                        <li>{{ category.name }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
         </div>
         <!-- GOOGLE MAP -->
         <div class="col-md-4">
