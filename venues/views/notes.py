@@ -1,7 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib.contenttypes.models import ContentType
 from django.core import serializers
-from django.core.serializers import json
+import json
 from django.core.urlresolvers import reverse
 from django.http import HttpResponse
 from django.shortcuts import redirect, get_object_or_404, render
