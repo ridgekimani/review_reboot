@@ -4,7 +4,7 @@ from django.conf import settings
 # from django.http.response import Http404
 from venues.forms import CommentForm, NoteForm
 from django.contrib.contenttypes.models import ContentType
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.core.context_processors import csrf
 from django.shortcuts import render_to_response
 from django.http import HttpResponse, Http404
@@ -307,48 +307,6 @@ def show_all_comments(request, rest_pk):
                         content_type='application/json')
 
 
-@login_required
-def update_note(request, note_pk):
-    '''
-    rest_pk must be valid one for existing restaurant or 
-    ValueError will be raised on save() attempt in POST part. 
-    '''
-    note = Note.objects.get(pk=note_pk)
-    rest_pk = note.venue_id
-
-    try:
-        rest = models.Restaurant.objects.get(id=rest_pk)
-    except ObjectDoesNotExist:
-        raise Http404
-
-    context = {
-        'restaurant': rest,
-        'note': note,
-    }
-
-    if request.method == 'GET':
-        context['form'] = NoteForm(instance=note)
-    elif request.method == 'POST':
-        related_object_type = ContentType.objects.get_for_model(rest)
-        comment_data = {
-            'text': request.POST.get('text', ''),
-            'user': request.user.pk,
-            'venue_id': rest.pk,
-            'content_type': related_object_type.id
-        }
-        form = NoteForm(comment_data, instance=note)
-        if form.is_valid():
-            form.save()
-            if rest.slug:
-                return redirect(reverse('venues.views.restaurant_by_slug', args=[rest.slug]))
-            else:
-                return redirect(reverse('venues.views.restaurant', args=[rest_pk]))
-        else:
-            context['form'] = form
-
-    return render(request, 'notes/update.html', context)
-
-
 #
 # @login_required
 # def update_note(request, note_pk):
@@ -395,8 +353,8 @@ def update_restaurant(request, rest_pk):
 # @login_required
 # def update_restaurant_by_slug(request, slug):
 # r = Restaurant.objects.filter(slug=slug).first()
-#     if not r:
-#         raise Http404()
+# if not r:
+# raise Http404()
 #     return update_restaurant(request, r.pk)
 
 
@@ -500,6 +458,13 @@ def restaurant_by_slug(request, slug):
 
 
 @login_required
+@require_GET
+def remove_comment(request, comment_pk):
+    Comment.objects.get(pk=comment_pk).delete()
+    return redirect(request.META['HTTP_REFERER'])
+
+
+@login_required
 @require_POST
 def add_comment(request, rest_pk):
     _restaurant = Restaurant.objects.get(pk=rest_pk)
@@ -518,6 +483,43 @@ def add_comment(request, rest_pk):
         form.save()
 
     return redirect(request.META['HTTP_REFERER'])
+
+
+@login_required
+def update_comment(request, comment_pk):
+    comment = Comment.objects.get(pk=comment_pk)
+    rest_pk = comment.venue_id
+
+    rest = get_object_or_404(Restaurant, id=rest_pk)
+
+    context = {
+        'restaurant': rest,
+        'comment': comment,
+        'ratings': xrange(1,6),
+    }
+
+    if request.method == 'GET':
+        context['form'] = CommentForm(instance=comment)
+    elif request.method == 'POST':
+        related_object_type = ContentType.objects.get_for_model(rest)
+        comment_data = {
+            'text': request.POST.get('text', ''),
+            'rating': request.POST.get('rating', 0),
+            'user': request.user.pk,
+            'venue_id': rest.pk,
+            'content_type': related_object_type.id
+        }
+        form = CommentForm(comment_data, instance=comment)
+        if form.is_valid():
+            form.save()
+            if rest.slug:
+                return redirect(reverse('venues.views.restaurant_by_slug', args=[rest.slug]))
+            else:
+                return redirect(reverse('venues.views.restaurant', args=[rest_pk]))
+        else:
+            context['form'] = form
+
+    return render(request, 'comments/update.html', context)
 
 
 @login_required
@@ -545,6 +547,41 @@ def add_note(request, rest_pk):
         form.save()
 
     return redirect(request.META['HTTP_REFERER'])
+
+
+@login_required
+def update_note(request, note_pk):
+    note = Note.objects.get(pk=note_pk)
+    rest_pk = note.venue_id
+
+    rest = get_object_or_404(Restaurant, id=rest_pk)
+
+    context = {
+        'restaurant': rest,
+        'note': note,
+    }
+
+    if request.method == 'GET':
+        context['form'] = NoteForm(instance=note)
+    elif request.method == 'POST':
+        related_object_type = ContentType.objects.get_for_model(rest)
+        comment_data = {
+            'text': request.POST.get('text', ''),
+            'user': request.user.pk,
+            'venue_id': rest.pk,
+            'content_type': related_object_type.id
+        }
+        form = NoteForm(comment_data, instance=note)
+        if form.is_valid():
+            form.save()
+            if rest.slug:
+                return redirect(reverse('venues.views.restaurant_by_slug', args=[rest.slug]))
+            else:
+                return redirect(reverse('venues.views.restaurant', args=[rest_pk]))
+        else:
+            context['form'] = form
+
+    return render(request, 'notes/update.html', context)
 
 
 @psa('social:complete')

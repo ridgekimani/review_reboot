@@ -2,7 +2,25 @@
     <div class="panel-heading">
         <h4>Review by <strong>{{ comment.user }}</strong>
 
-            <div class="pull-right">{{ comment.rating }} / 5</div>
+            <div class="pull-right">
+                {{ comment.rating }} / 5
+                {% if user.is_authenticated %}
+                    <div class="pull-right">
+                        <div class="btn-group btn-group-sm">
+                            <a class="btn btn-success" href="{% url "venues.views.update_comment" comment.pk %}">
+                                <span class="glyphicon glyphicon-edit"></span>
+                            </a>
+                            {% if user.is_superuser %}
+                                <a class="btn btn-danger note-remove"
+                                   href="{% url "venues.views.remove_comment" comment.pk %}">
+                                    <span class="glyphicon glyphicon-remove"></span>
+                                </a>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+
         </h4>
     </div>
     <div class="panel-body">

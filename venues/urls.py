@@ -4,8 +4,11 @@ from django.conf.urls.i18n import i18n_patterns
 __author__ = 'm'
 
 urlpatterns = patterns('venues.views',
-    url(r'notes/(?P<note_pk>[0-9]+)/remove/', 'remove_note'),
-    url(r'notes/(?P<note_pk>[0-9]+)/update/', 'update_note'),
+    url(r'notes/(?P<note_pk>[0-9]+)/remove/$', 'remove_note'),
+    url(r'notes/(?P<note_pk>[0-9]+)/update/$', 'update_note'),
+
+    url(r'comments/(?P<comment_pk>[0-9]+)/remove/$', 'remove_comment'),
+    url(r'comments/(?P<comment_pk>[0-9]+)/update/$', 'update_comment'),
     # url(r'notes/(?P<note_pk>[0-9]+)/', 'note'),
 
     url(r'(?P<rest_pk>[0-9]+)/show-all-comments/$', 'show_all_comments'),
