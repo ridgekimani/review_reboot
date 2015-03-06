@@ -60,15 +60,17 @@
             {% endfor %}
         </div>
         <div class="col-md-4">
-            <div class="panel panel-default">
-                <div class="panel-body">
-                    <form autocomplete="off" action="{% url "venues.views.add_note" restaurant.id %}" method="post">
-                        {% if user.is_authenticated %}
-                            {% include 'notes/note-form.html' %}
-                        {% endif %}
-                    </form>
+            {% if user.is_authenticated %}
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <form autocomplete="off" action="{% url "venues.views.add_note" restaurant.id %}" method="post">
+                            {% if user.is_authenticated %}
+                                {% include 'notes/note-form.html' %}
+                            {% endif %}
+                        </form>
+                    </div>
                 </div>
-            </div>
+            {% endif %}
             {% for note in notes %}
                 {% include "notes/note.html" %}
             {% endfor %}

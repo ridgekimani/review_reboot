@@ -29,7 +29,7 @@ $(document).ready(function() {
       <div class="content">
           {% for restaurant in all_restaurants %}
               <ul class="restaurant-data">
-                <li style="color:red"><b>{{restaurant.name}}</b></li>
+                <li style="color:red"><b><a href="{% url 'venues.views.restaurant' restaurant.pk %}">{{restaurant.name}}</a></b></li>
                 <li>
                   {% for category in restaurant.categories.all %}
                     {{category}}

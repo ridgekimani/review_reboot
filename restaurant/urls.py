@@ -23,6 +23,8 @@ urlpatterns = patterns('',
     url(r"^owner/$", TemplateView.as_view(template_name="homepage.html"), name="home"),
     url(r"^owner/account/", include("account.urls")),
 
+    url(r'^logout/$', 'restaurant.views.logout_view'),
+
     url(r'^admin/', include(admin.site.urls)),
     url(r'^$', views.closest),
 
