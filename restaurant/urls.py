@@ -2,33 +2,18 @@ from django.conf import settings
 from django.conf.urls import patterns, include, url
 from django.contrib.gis import admin
 from django.views.generic import TemplateView
-
+import venues.urls
 import venues.views as views
 
 
 admin.autodiscover()
 
 urlpatterns = patterns('',
-    # Examples:
-    # url(r'^$', 'restaurant.views.home', name='home'),
-    # url(r'^blog/', include('blog.urls')),
 
-
-    url(r'^restaurants/restaurants_lists/$', views.restaurants_lists),
-    url(r'^restaurants/(?P<rest_pk>[0-9]+)/comment/$', views.comment),
-    url(r'^restaurants/(?P<rest_pk>[0-9]+)/show-all-comments/$', views.show_all_comments),
-    url(r'^restaurants/(?P<rest_pk>[0-9]+)/tip/$', views.tip),
-    url(r'^restaurants/(?P<rest_pk>[0-9]+)/show-all-tips/$', views.show_all_tips),
-    url(r'^restaurants/(?P<rest_pk>[0-9]+)/report/$', views.report_restaurant),
-
-    url(r'^restaurants/(?P<slug>[\w-]+)/$', views.restaurant_by_slug),
-    url(r'^restaurants/(?P<rest_pk>[0-9]+)/update/$', views.update_restaurant),
-    url(r'^restaurants/(?P<rest_pk>[0-9]+)/profile$', views.restaurant),
-    url(r'^restaurants/(?P<rest_pk>[0-9]+)/comment/new/', views.add_comment),
+    url(r'^restaurants/', include(venues.urls)),
 
     url(r'^moderate-reports/$', views.moderate_reports),
     url(r'^reports/(?P<pk>[0-9]+)/moderate/$', views.moderate_report),
-    url(r'^restaurants/get_category/', views.get_category, name='get_drugs'),
 
     #python-social-login urls
     url(r'', include('social.apps.django_app.urls', namespace='social')),

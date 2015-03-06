@@ -40,7 +40,7 @@ $(document).ready(function() {
                 <li> {{restaurant.distance}} </li>
               </ul>
               {% if user.is_authenticated %}
-                <a class="btn btn-small" onClick="window.open({% url 'venues.views.update_restaurant' restaurant.pk %}, '_blank' )" role="button">Edit<a/>
+                <a class="btn btn-small" onClick="window.open('{% url 'venues.views.update_restaurant' restaurant.pk %}', '_blank' )" role="button">Edit<a/>
               {% endif %}
             {% endfor %}
        </div>

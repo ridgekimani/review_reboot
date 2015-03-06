@@ -181,7 +181,7 @@ class Note(models.Model):
     @staticmethod
     def list_for_venue(venue):
         related_object_type = ContentType.objects.get_for_model(venue)
-        return Comment.objects.filter(content_type__pk=related_object_type.id,
+        return Note.objects.filter(content_type__pk=related_object_type.id,
                                       venue_id=venue.id)
 
     def __unicode__(self):
@@ -230,7 +230,7 @@ class Report(models.Model):
     @staticmethod
     def list_for_venue(venue):
         related_object_type = ContentType.objects.get_for_model(venue)
-        return Comment.objects.filter(content_type__pk=related_object_type.id,
+        return Report.objects.filter(content_type__pk=related_object_type.id,
                                       venue_id=venue.id)
 
 

@@ -2,7 +2,7 @@ import json
 
 from django.conf import settings
 # from django.http.response import Http404
-from venues.forms import CommentForm
+from venues.forms import CommentForm, NoteForm
 from django.contrib.contenttypes.models import ContentType
 from django.shortcuts import render, redirect
 from django.core.context_processors import csrf
@@ -308,42 +308,53 @@ def show_all_comments(request, rest_pk):
 
 
 @login_required
-def tip(request, rest_pk):
+def update_note(request, note_pk):
     '''
     rest_pk must be valid one for existing restaurant or 
     ValueError will be raised on save() attempt in POST part. 
     '''
+    note = Note.objects.get(pk=note_pk)
+    rest_pk = note.venue_id
+
     try:
         rest = models.Restaurant.objects.get(id=rest_pk)
     except ObjectDoesNotExist:
         raise Http404
 
     context = {
-        'venue_name': rest.name
+        'restaurant': rest,
+        'note': note,
     }
 
-    if request.method == u'GET':
-        try:
-            filterargs = {'venue_id': rest_pk, 'user': request.user}
-            tip = models.Tip.objects.get(**filterargs)
-            context['tip_text'] = tip.text
-        except ObjectDoesNotExist:
-            pass
+    if request.method == 'GET':
+        context['form'] = NoteForm(instance=note)
+    elif request.method == 'POST':
+        related_object_type = ContentType.objects.get_for_model(rest)
+        comment_data = {
+            'text': request.POST.get('text', ''),
+            'user': request.user.pk,
+            'venue_id': rest.pk,
+            'content_type': related_object_type.id
+        }
+        form = NoteForm(comment_data, instance=note)
+        if form.is_valid():
+            form.save()
+            if rest.slug:
+                return redirect(reverse('venues.views.restaurant_by_slug', args=[rest.slug]))
+            else:
+                return redirect(reverse('venues.views.restaurant', args=[rest_pk]))
+        else:
+            context['form'] = form
 
-    if request.method == u'POST':
-        filterargs = {'venue_id': rest_pk, 'user': request.user}
-        try:
-            tip = models.Tip.objects.get(**filterargs)
-        except ObjectDoesNotExist:
-            tip = models.Tip(user=request.user, content_object=rest)
+    return render(request, 'notes/update.html', context)
 
-        tip.text = request.POST[u'tip']
-        tip.save()
-        context['tip_text'] = tip.text
-        context['is_saved'] = True
 
-    context.update(csrf(request))
-    return render_to_response('tip.html', context)
+#
+# @login_required
+# def update_note(request, note_pk):
+# note = Note.objects.get(pk=note_pk)
+# if request.method == 'GET':
+#
 
 
 def show_all_tips(request, rest_pk):
@@ -377,11 +388,13 @@ def update_restaurant(request, rest_pk):
         context['form'] = forms.RestaurantForm(instance=_restaurant)
 
     return render(request, 'restaurants/update.html', context)
+
+
 #
 #
 # @login_required
 # def update_restaurant_by_slug(request, slug):
-#     r = Restaurant.objects.filter(slug=slug).first()
+# r = Restaurant.objects.filter(slug=slug).first()
 #     if not r:
 #         raise Http404()
 #     return update_restaurant(request, r.pk)
@@ -463,7 +476,6 @@ def moderate_report(request, pk):
 
 def restaurant(request, rest_pk):
     _restaurant = Restaurant.objects.get(pk=rest_pk)
-
     return render(request, 'restaurants/item.html', {
         'restaurant': _restaurant,
         'comments': Comment.list_for_venue(_restaurant).order_by('-modified_on'),
@@ -506,6 +518,34 @@ def add_comment(request, rest_pk):
         form.save()
 
     return redirect(request.META['HTTP_REFERER'])
+
+
+@login_required
+@require_GET
+def remove_note(request, note_pk):
+    Note.objects.get(pk=note_pk).delete()
+    return redirect(request.META['HTTP_REFERER'])
+
+
+@login_required
+@require_POST
+def add_note(request, rest_pk):
+    _restaurant = Restaurant.objects.get(pk=rest_pk)
+    related_object_type = ContentType.objects.get_for_model(_restaurant)
+
+    comment_data = {
+        'text': request.POST.get('text', ''),
+        'user': request.user.pk,
+        'venue_id': _restaurant.pk,
+        'content_type': related_object_type.id
+    }
+
+    form = NoteForm(comment_data)
+    if form.is_valid():
+        form.save()
+
+    return redirect(request.META['HTTP_REFERER'])
+
 
 @psa('social:complete')
 def register_by_access_token(request, backend):

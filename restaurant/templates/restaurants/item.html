@@ -21,11 +21,11 @@
             <h3>{{ restaurant.address }}</h3>
 
             <div class="row">
-                    {% if  restaurant.phone %}
-                <div class="col-md-8">
+                {% if  restaurant.phone %}
+                    <div class="col-md-8">
                         <h3><span class="glyphicon glyphicon-earphone"></span> {{ restaurant.phone }}</h3>
-                </div>
-                    {% endif %}
+                    </div>
+                {% endif %}
                 <div class="col-md-4">
                     <h3>served: {{ restaurant.closed_reports_count }}</h3>
                 </div>
@@ -60,7 +60,18 @@
             {% endfor %}
         </div>
         <div class="col-md-4">
-            {% include 'notes/note-form.html' %}
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <form autocomplete="off" action="{% url "venues.views.add_note" restaurant.id %}" method="post">
+                        {% if user.is_authenticated %}
+                            {% include 'notes/note-form.html' %}
+                        {% endif %}
+                    </form>
+                </div>
+            </div>
+            {% for note in notes %}
+                {% include "notes/note.html" %}
+            {% endfor %}
         </div>
     </div>
 
@@ -70,7 +81,16 @@
     {#            {% include 'report.html' %}#}
     {#        </div>#}
     {#    </div>#}
-
+    <script>
+        $(function () {
+            console.log($(".note-remove"));
+            $(".note-remove").click(function (event) {
+                if (!confirm("Are you sure?")) {
+                    return false;
+                }
+            })
+        });
+    </script>
 
 
     {#    {{ restaurant.yelp_id }}#}
