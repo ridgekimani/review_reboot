@@ -1,7 +1,6 @@
 import json
 
 from django.conf import settings
-# from django.http.response import Http404
 from restaurant.utils import get_client_ip
 from venues.forms import CommentForm, NoteForm
 from django.contrib.contenttypes.models import ContentType
@@ -262,10 +261,7 @@ def comment(request, rest_pk):
     rest_pk must be valid one for existing restaurant or 
     ValueError will be raised on save() attempt in POST part. 
     '''
-    try:
-        rest = models.Restaurant.objects.get(id=rest_pk)
-    except ObjectDoesNotExist:
-        raise Http404
+    rest = get_object_or_404(Restaurant, id=rest_pk)
 
     context = {
         'venue_name': rest.name
@@ -317,7 +313,7 @@ def show_all_comments(request, rest_pk):
 
 
 def show_all_tips(request, rest_pk):
-    tips = models.Tip.objects.filter(venue_id=rest_pk)
+    tips = models.Note.objects.filter(venue_id=rest_pk)
     data = serializers.serialize('json', tips)
     data = json.loads(data)
     return HttpResponse(json.dumps({"response": {"total": len(data), "tips": data}}), content_type='application/json')
@@ -334,7 +330,9 @@ def update_restaurant(request, rest_pk):
     }
 
     if request.method == 'POST':
-        form = forms.RestaurantForm(request.POST, instance=_restaurant)  # A form bound to the POST data
+        rest_data = request.POST.copy()
+        rest_data['modified_ip'] = get_client_ip(request)
+        form = forms.RestaurantForm(rest_data, instance=_restaurant)  # A form bound to the POST data
         if form.is_valid():
             form.save()
             # context['is_saved'] = True
@@ -349,43 +347,43 @@ def update_restaurant(request, rest_pk):
     return render(request, 'restaurants/update.html', context)
 
 
-#
-#
-# @login_required
-# def update_restaurant_by_slug(request, slug):
-# r = Restaurant.objects.filter(slug=slug).first()
-# if not r:
-# raise Http404()
-#     return update_restaurant(request, r.pk)
-
-
 def report_restaurant(request, rest_pk):
     rest = models.Restaurant.objects.get(id=rest_pk)
+    related_object_type = ContentType.objects.get_for_model(rest)
+
     context = {
         'venue_name': rest.name
     }
+
     if request.method == 'GET':
         context['form'] = forms.ReportForm()
-        return render(request, 'report.html', context)
-
+        return render(request, 'reports/report.html', context)
     elif request.method == 'POST':
-        form = forms.ReportForm(request.POST)
-        if form.is_valid():
+        data = request.POST.copy()
 
-            user = None
-            if request.user.is_authenticated():
-                user = request.user
-            report = models.Report(
-                user=user,
-                content_object=rest,
-                report=form.cleaned_data['report'],
-                note=form.cleaned_data['note']
-            )
-            report.save()
+        report = Report(
+            user=request.user if request.user.is_authenticated() else None,
+            content_type=related_object_type,
+            modified_ip=get_client_ip(request),
+            venue_id=rest_pk,
+        )
+
+        form = forms.ReportForm(request.POST, instance=report)
+
+        context['form'] = form
+
+        if form.is_valid():
+            form.save()
+
             if form.cleaned_data['report'] == u'closed':
                 rest.update_close_state()
-            context['is_saved'] = True
-        return render(request, 'report.html', context)
+
+            if rest.slug:
+                return redirect(reverse('venues.views.restaurant_by_slug', args=[rest.slug]))
+            else:
+                return redirect(reverse('venues.views.restaurant', args=[rest_pk]))
+
+        return render(request, 'reports/report.html', context)
 
 
 @login_required
@@ -409,7 +407,7 @@ def moderate_reports(request):
         context = {'reports': paginator.page(paginator.num_pages)}
 
     context.update(csrf(request))
-    return render(request, 'moderate_reports.html', context)
+    return render(request, 'reports/moderate_reports.html', context)
 
 
 def moderate_report(request, pk):
@@ -471,16 +469,14 @@ def add_comment(request, rest_pk):
     _restaurant = Restaurant.objects.get(pk=rest_pk)
     related_object_type = ContentType.objects.get_for_model(_restaurant)
 
-    comment_data = {
-        'text': request.POST.get('text', ''),
-        'rating': request.POST.get('rating', 0),
-        'user': request.user.pk,
-        'venue_id': _restaurant.pk,
-        'content_type': related_object_type.id,
-        'modified_ip':  get_client_ip(request),
-    }
+    comment = Comment(
+        user=request.user,
+        venue_id=_restaurant.pk,
+        content_type=related_object_type,
+        modified_ip=get_client_ip(request),
+    )
 
-    form = CommentForm(comment_data)
+    form = CommentForm(request.POST, instance=comment)
     if form.is_valid():
         form.save()
 
@@ -497,23 +493,14 @@ def update_comment(request, comment_pk):
     context = {
         'restaurant': rest,
         'comment': comment,
-        'ratings': xrange(1,6),
+        'ratings': xrange(1, 6),
     }
 
     if request.method == 'GET':
         context['form'] = CommentForm(instance=comment)
     elif request.method == 'POST':
-        related_object_type = ContentType.objects.get_for_model(rest)
-
-        comment_data = {
-            'text': request.POST.get('text', ''),
-            'rating': request.POST.get('rating', 0),
-            'user': request.user.pk,
-            'venue_id': rest.pk,
-            'content_type': related_object_type.id,
-            'modified_ip':  get_client_ip(request),
-        }
-        form = CommentForm(comment_data, instance=comment)
+        comment.modified_ip = get_client_ip(request)
+        form = CommentForm(request.POST, instance=comment)
         if form.is_valid():
             form.save()
             if rest.slug:
@@ -539,15 +526,14 @@ def add_note(request, rest_pk):
     _restaurant = Restaurant.objects.get(pk=rest_pk)
     related_object_type = ContentType.objects.get_for_model(_restaurant)
 
-    comment_data = {
-        'text': request.POST.get('text', ''),
-        'user': request.user.pk,
-        'venue_id': _restaurant.pk,
-        'content_type': related_object_type.id,
-        'modified_ip':  get_client_ip(request),
-    }
+    note = Note(
+        user=request.user,
+        venue_id=_restaurant.pk,
+        content_type=related_object_type,
+        modified_ip=get_client_ip(request)
+    )
 
-    form = NoteForm(comment_data)
+    form = NoteForm(request.POST,instance=note)
     if form.is_valid():
         form.save()
 
@@ -569,16 +555,10 @@ def update_note(request, note_pk):
     if request.method == 'GET':
         context['form'] = NoteForm(instance=note)
     elif request.method == 'POST':
-        related_object_type = ContentType.objects.get_for_model(rest)
-        comment_data = {
-            'text': request.POST.get('text', ''),
-            'user': request.user.pk,
-            'venue_id': rest.pk,
-            'content_type': related_object_type.id,
-            'modified_ip':  get_client_ip(request),
-        }
-        form = NoteForm(comment_data, instance=note)
+        form = NoteForm(request.POST, instance=note)
+
         if form.is_valid():
+            note.modified_ip = get_client_ip(request)
             form.save()
             if rest.slug:
                 return redirect(reverse('venues.views.restaurant_by_slug', args=[rest.slug]))

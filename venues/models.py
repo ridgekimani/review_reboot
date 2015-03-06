@@ -55,7 +55,7 @@ class Venue(models.Model):
     modified_by = models.ForeignKey(User, null=True, blank=True)
     modified_on = models.DateTimeField(auto_now=True, null=True)
 
-    modified_ip = models.CharField(default='', max_length=39)
+    modified_ip = models.CharField(default='', max_length=39, editable=False)
 
 
     # Query Manager
@@ -143,13 +143,13 @@ class Comment(models.Model):
     created_on = models.DateTimeField(auto_now_add=True)
     modified_on = models.DateTimeField(auto_now=True)
     user = models.ForeignKey(User)
-    content_type = models.ForeignKey(ContentType)
-    venue_id = models.PositiveIntegerField()
+    content_type = models.ForeignKey(ContentType, editable=False)
+    venue_id = models.PositiveIntegerField(editable=False)
     content_object = generic.GenericForeignKey('content_type', 'venue_id')
     rating = models.IntegerField(null=True, blank=True)
     text = models.TextField(blank=True)
 
-    modified_ip = models.CharField(default='', max_length=39)
+    modified_ip = models.CharField(default='', max_length=39, editable=False)
 
     @staticmethod
     def list_for_venue(venue):
@@ -177,12 +177,12 @@ class Note(models.Model):
     created_on = models.DateTimeField(auto_now_add=True)
     modified_on = models.DateTimeField(auto_now=True)
     user = models.ForeignKey(User)
-    content_type = models.ForeignKey(ContentType)
-    venue_id = models.PositiveIntegerField()
+    content_type = models.ForeignKey(ContentType,editable=False)
+    venue_id = models.PositiveIntegerField(editable=False)
     content_object = generic.GenericForeignKey('content_type', 'venue_id')
     text = models.TextField(max_length=200, blank=True)
 
-    modified_ip = models.CharField(default='', max_length=39)
+    modified_ip = models.CharField(default='', max_length=39, editable=False)
 
     @staticmethod
     def list_for_venue(venue):
@@ -219,8 +219,8 @@ class Report(models.Model):
         default=None,
         related_name='report_user'
     )
-    content_type = models.ForeignKey(ContentType)
-    venue_id = models.PositiveIntegerField()
+    content_type = models.ForeignKey(ContentType,editable=False)
+    venue_id = models.PositiveIntegerField(editable=False)
     content_object = generic.GenericForeignKey('content_type', 'venue_id')
     report = models.CharField(choices=REPORTS, max_length=30)
     note = models.TextField(blank=True)
@@ -233,7 +233,7 @@ class Report(models.Model):
     moderator_flag = models.BooleanField(default=False)
     moderator_note = models.TextField(null=True)
 
-    modified_ip = models.CharField(default='', max_length=39)
+    modified_ip = models.CharField(default='', max_length=39, editable=False)
 
     @staticmethod
     def list_for_venue(venue):
