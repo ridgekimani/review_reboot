@@ -3,3 +3,4 @@ restaurantenv
 staticfiles
 .DS_Store
 .idea
+credentials.json

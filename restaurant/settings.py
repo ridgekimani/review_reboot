@@ -7,17 +7,42 @@ https://docs.djangoproject.com/en/1.6/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.6/ref/settings/
 """
+import json
 
 SITE_ID = 1
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
-import dj_database_url
+# import dj_database_url
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
-DATABASES = {'default' :dj_database_url.config()}
-DATABASES['default']['ENGINE'] = 'django.contrib.gis.db.backends.postgis'
+
+# DATABASES = {'default' :dj_database_url.config()}
+# DATABASES['default']['ENGINE'] = 'django.contrib.gis.db.backends.postgis'
+
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-ALLOWED_HOSTS = ['*']
+
+try:
+    credentials_path = ""
+    credentials_path = os.path.join(BASE_DIR, "credentials.json")
+    credentials = json.load(open(credentials_path))
+except IOError as e:
+    print("check existance of %s" % credentials_path)
+    raise e
+
+SOCIAL_AUTH_FACEBOOK_KEY = credentials['SOCIAL_AUTH_FACEBOOK_KEY']
+SOCIAL_AUTH_FACEBOOK_SECRET = credentials['SOCIAL_AUTH_FACEBOOK_SECRET']
+
+SECRET_KEY = credentials['SECRET_KEY']
+ALLOWED_HOSTS = credentials['ALLOWED_HOSTS']
+DEBUG = int(credentials['DEBUG']) == 1
+TEMPLATE_DEBUG = DEBUG
+
+
+DATABASES = {
+    'default': credentials['database']
+}
+
+
 
 #GEOS_LIBRARY_PATH = os.environ.get('GEOS_LIBRARY_PATH')
 #GDAL_LIBRARY_PATH = os.environ.get('GDAL_LIBRARY_PATH')
@@ -30,14 +55,10 @@ ALLOWED_HOSTS = ['*']
 
 #TODO Change in production
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '6+)idbqp^jvtw3q!*((=b)u9ba70)2p19#yoa4bc6zrvowl12r'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
 
-TEMPLATE_DEBUG = True
 
-ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -50,7 +71,6 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.gis',
-    'api',
     'south',
     'social.apps.django_app.default',
     'bootstrap3',
@@ -84,18 +104,6 @@ WSGI_APPLICATION = 'restaurant.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.6/ref/settings/#databases
 
-#TODO Change in production
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.contrib.gis.db.backends.postgis',
-        'NAME': 'odesk2',
-        'USER': 'postgres',
-        'PASSWORD': "12345",
-        'HOST': 'localhost',
-        'PORT': 5432
-    }
-}
-
 POSTGIS_VERSION = (2, 1, 2)
 
 # Python-social-auth section
@@ -103,12 +111,10 @@ AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
     'social.backends.facebook.FacebookOAuth2',
     'account.auth_backends.UsernameAuthenticationBackend',
-
 )
 
 #TODO Change in production
-SOCIAL_AUTH_FACEBOOK_KEY = '338877252958705'
-SOCIAL_AUTH_FACEBOOK_SECRET = '104976a391991584da7dbd3fa192315f'
+
 
 
 TEMPLATE_CONTEXT_PROCESSORS = (

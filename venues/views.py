@@ -507,8 +507,6 @@ def add_comment(request, rest_pk):
 
     return redirect(request.META['HTTP_REFERER'])
 
-@login_required()
-
 @psa('social:complete')
 def register_by_access_token(request, backend):
     # This view expects an access_token GET parameter, if it's needed,
