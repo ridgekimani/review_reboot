@@ -5,7 +5,7 @@
         <div class="panel-body">
             <h3>{{ venue_name }}</h3>
 
-            <form autocomplete="off" action="{% url "venues.views.update_comment" comment.pk %}"
+            <form autocomplete="off" action="{% url "venues.views.comments.update_comment" comment.pk %}"
                   method="post">{% csrf_token %}
                 <label>Rating: </label>
 

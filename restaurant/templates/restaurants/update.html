@@ -2,7 +2,7 @@
 {% load widget_tweaks %}
 {% block body %}
     <!-- COMMON INFO -->
-    <form action="{% url "venues.views.update_restaurant" restaurant.pk %}" method="POST">
+    <form action="{% url "venues.views.venuess.update_restaurant" restaurant.pk %}" method="POST">
         {% csrf_token %}
         <div class="row">
             <div class="col-md-8">
@@ -114,7 +114,7 @@
         <div class="col-md-4">
             <div class="panel panel-default">
                 <div class="panel-body">
-                    <form autocomplete="off" action="{% url "venues.views.add_note" restaurant.id %}" method="post">
+                    <form autocomplete="off" action="{% url "venues.views.notes.add_note" restaurant.id %}" method="post">
                         {% if user.is_authenticated %}
                             {% include 'notes/note-form.html' %}
                         {% endif %}

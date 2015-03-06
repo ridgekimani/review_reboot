@@ -10,12 +10,12 @@
             <h1>{{ restaurant.name }}
                 {% if user.is_authenticated %}
                     {% if user.is_superuser %}
-                        <a class="btn btn-success" href="{% url "venues.views.update_restaurant" restaurant.pk %}">
+                        <a class="btn btn-success" href="{% url "venues.views.venuess.update_restaurant" restaurant.pk %}">
                             <span class="glyphicon glyphicon-edit"></span>
                         </a>
                     {% endif %}
                 {% endif %}
-                <a class="btn btn-warning" href="{% url "venues.views.report_restaurant" restaurant.pk %}">
+                <a class="btn btn-warning" href="{% url "venues.views.reports.report_restaurant" restaurant.pk %}">
                     <span class="glyphicon glyphicon-warning-sign"></span>
                 </a>
             </h1>
@@ -68,7 +68,7 @@
             {% if user.is_authenticated %}
                 <div class="panel panel-default">
                     <div class="panel-body">
-                        <form autocomplete="off" action="{% url "venues.views.add_note" restaurant.id %}" method="post">
+                        <form autocomplete="off" action="{% url "venues.views.notes.add_note" restaurant.id %}" method="post">
                             {% if user.is_authenticated %}
                                 {% include 'notes/note-form.html' %}
                             {% endif %}

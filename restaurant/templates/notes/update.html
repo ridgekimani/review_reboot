@@ -5,7 +5,7 @@
             <h3 class="panel-title">{{ restaurant.name }}</h3>
         </div>
         <div class="panel-body">
-            <form autocomplete="off" action="{% url "venues.views.update_note" note.id %}" method="post">
+            <form autocomplete="off" action="{% url "venues.views.notes.update_note" note.id %}" method="post">
                 {% csrf_token %}
 
                 <div class="form-group">
