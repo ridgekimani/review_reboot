@@ -16,6 +16,12 @@ class AddressForm(forms.Form):
     category = forms.CharField(required=False)
 
 
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = models.Comment
+        fields = ['rating', 'text', 'user', 'content_type', 'venue_id']
+
+
 class ReportForm(forms.ModelForm):
     class Meta:
         model = models.Report

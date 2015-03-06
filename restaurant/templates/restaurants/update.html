@@ -9,19 +9,17 @@
                 {% if restaurant.is_closed %}
                     <div class="alert alert-danger" role="alert">CLOSED</div>
                 {% endif %}
-                <h1>
-                    <div class="input-group input-group-lg">
-                        <div class="input-group-addon">
-                            Name
-                        </div>
-                        {{ form.name|add_class:'form-control' }}
-                        <div class="input-group-btn">
-                            <button class="btn btn-success" type="submit">
-                                <span class="glyphicon glyphicon-save"></span>
-                            </button>
-                        </div>
+                <div class="input-group input-group-lg">
+                    <div class="input-group-addon">
+                        Name
                     </div>
-                </h1>
+                    {{ form.name|add_class:'form-control' }}
+                    <div class="input-group-btn">
+                        <button class="btn btn-success" type="submit">
+                            <span class="glyphicon glyphicon-save"></span>
+                        </button>
+                    </div>
+                </div>
 
                 <h4>
                     <div class="input-group">
@@ -85,42 +83,24 @@
     </form>
     <!-- ENDCOMMON INFO -->
 
+    <hr/>
 
     <div class="row">
-        <div class="col-md-12">
+        <div class="col-md-8">
+            {% if user.is_authenticated %}
+                {% include 'comments/comment-form.html' %}
+                <hr/>
+            {% endif %}
             {% for comment in comments %}
-                <li>{{ comment.text }}</li>
+                {% include "comments/comment.html" %}
             {% endfor %}
+        </div>
+        <div class="col-md-4">
+            {% include 'notes/note-form.html' %}
         </div>
     </div>
 
-    <div class="row">
-        <div class="col-md-12">
-            {% for note in notes %}
-                <li>{{ note.text }}</li>
-            {% endfor %}
-        </div>
-    </div>
-
-    {#    <div class="row">#}
-    {#        <div class="col-md-12">#}
-    {#            {% for report in reports %}#}
-    {#                <li>{{ report.text }}</li>#}
-    {#            {% endfor %}#}
-    {#        </div>#}
-    {#    </div>#}
-
-    <!-- google-maps scripts -->
-    <script src="https://maps.googleapis.com/maps/api/js"></script>
-    <script>
-        var mapCanvas = document.getElementById('r-map');
-        var mapOptions = {
-            center: new google.maps.LatLng({{restaurant.location.y}}, {{restaurant.location.x}}),
-            zoom: 18,
-            mapTypeId: google.maps.MapTypeId.ROADMAP
-        };
-        var map = new google.maps.Map(mapCanvas, mapOptions);
-    </script>
+    {% include "restaurants/google-map.html" %}
 
     {#    {{ restaurant.yelp_id }}#}
     {#    {{ restaurant.yelp_url }}#}

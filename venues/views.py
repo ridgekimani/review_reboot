@@ -1,6 +1,8 @@
 import json
 
 from django.conf import settings
+# from django.http.response import Http404
+from venues.forms import CommentForm
 from django.contrib.contenttypes.models import ContentType
 from django.shortcuts import render, redirect
 from django.core.context_processors import csrf
@@ -11,7 +13,7 @@ from django.core.urlresolvers import reverse
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.contrib.gis import geos
 from django.contrib.gis import measure
-from django.views.decorators.http import require_GET
+from django.views.decorators.http import require_GET, require_POST
 from geopy.distance import distance as geopy_distance
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login
@@ -30,8 +32,8 @@ from venues.models import Restaurant, Comment, Note, Report, Category
 def restaurants_lists(request):
     form = forms.AddressForm()
     restaurants = []
-    latitude=""
-    longitude=""
+    latitude = ""
+    longitude = ""
     if request.POST:
         form = forms.AddressForm(request.POST)
         if form.is_valid():
@@ -57,28 +59,29 @@ def restaurants_lists(request):
                 geocoder = Nominatim()
                 location = geocoder.geocode(address)
                 if location:
-                    latitude= location.latitude
-                    longitude=location.longitude
-                    currentPoint = geos.GEOSGeometry('POINT(%s %s)' %(longitude, latitude))
+                    latitude = location.latitude
+                    longitude = location.longitude
+                    currentPoint = geos.GEOSGeometry('POINT(%s %s)' % (longitude, latitude))
                     distance_m = {'km': 15}
                     if list_of_cats:
                         restaurants = models.Restaurant.gis.filter(
-                            location__distance_lte=(currentPoint, measure.D(**distance_m)), 
+                            location__distance_lte=(currentPoint, measure.D(**distance_m)),
                             categories__in=list_of_cats
-                            ).distance(currentPoint)
+                        ).distance(currentPoint)
                     else:
-                        restaurants = models.Restaurant.gis.filter(location__distance_lte=(currentPoint, measure.D(**distance_m))).distance(currentPoint)
-        context = {'all_restaurants': restaurants,'form': form,'longitude': longitude, 'latitude' : latitude}
+                        restaurants = models.Restaurant.gis.filter(
+                            location__distance_lte=(currentPoint, measure.D(**distance_m))).distance(currentPoint)
+        context = {'all_restaurants': restaurants, 'form': form, 'longitude': longitude, 'latitude': latitude}
         return render(request, 'restaurants/list.html', context)
     else:
-        context = {'all_restaurants': restaurants,'form': form,'longitude': longitude, 'latitude' : latitude}
+        context = {'all_restaurants': restaurants, 'form': form, 'longitude': longitude, 'latitude': latitude}
         return render(request, 'restaurants/restaurants.html', context)
 
 
 def get_category(request):
     if request.is_ajax():
         cat = request.GET['term']
-        categories = models.Category.objects.filter(name__icontains = cat )[:20]
+        categories = models.Category.objects.filter(name__icontains=cat)[:20]
         results = []
         for category in categories:
             cat_json = {}
@@ -91,6 +94,7 @@ def get_category(request):
     mimetype = 'application/json'
     return HttpResponse(data, mimetype)
 
+
 def get_restaurants(longitude, latitude, categories):
     '''
     Returns objects at given point that satisfy set of categories, 
@@ -102,23 +106,23 @@ def get_restaurants(longitude, latitude, categories):
     output:
         list of dicts
     '''
-    currentPoint = geos.GEOSGeometry('POINT(%s %s)' %(longitude, latitude))
+    currentPoint = geos.GEOSGeometry('POINT(%s %s)' % (longitude, latitude))
     distance_m = 15000
     list_of_cats = []
     for c in categories:
         list_of_cats.append(models.Category.objects.get(name=c))
     if list_of_cats:
         restaurants = models.Restaurant.gis.filter(
-            location__distance_lte=(currentPoint, distance_m), 
+            location__distance_lte=(currentPoint, distance_m),
             categories__in=list_of_cats,
             is_closed=False
-            )
+        )
     else:
         restaurants = models.Restaurant.gis.filter(
             location__distance_lte=(currentPoint, distance_m),
             is_closed=False
         )
-    
+
     # seems that this thing doesn't actually order objects by distance
     # btw at this step there is no distance property in objects or rows in table
     # restaurants = restaurants.distance(currentPoint).order_by('distance')
@@ -132,7 +136,7 @@ def get_restaurants(longitude, latitude, categories):
     # are in list_of_cats than venue will appear in data that some times
     # so we will uniqify venues in data
     if len(list_of_cats) > 1:
-        data = {v['pk']:v for v in data}.values()
+        data = {v['pk']: v for v in data}.values()
 
     for restaurant in data:
         d = geopy_distance(currentPoint, restaurant['fields']['location']).kilometers
@@ -155,6 +159,7 @@ def get_restaurants(longitude, latitude, categories):
 
     return data
 
+
 def get_masjids(longitude, latitude, categories):
     '''
     Returns objects at given point that satisfy set of categories, 
@@ -166,16 +171,16 @@ def get_masjids(longitude, latitude, categories):
     output:
         list of dicts
     '''
-    currentPoint = geos.GEOSGeometry('POINT(%s %s)' %(longitude, latitude))
+    currentPoint = geos.GEOSGeometry('POINT(%s %s)' % (longitude, latitude))
     distance_m = 15000
     list_of_cats = []
     for c in categories:
         list_of_cats.append(models.Category.objects.get(name=c))
     if list_of_cats:
         masjids = models.Masjid.gis.filter(
-            location__distance_lte=(currentPoint, distance_m), 
+            location__distance_lte=(currentPoint, distance_m),
             categories__in=list_of_cats
-            )
+        )
     else:
         masjids = models.Masjid.gis.filter(location__distance_lte=(currentPoint, distance_m))
 
@@ -188,7 +193,7 @@ def get_masjids(longitude, latitude, categories):
     # are in list_of_cats than venue will appear in data that some times
     # so we will uniqify venues in data
     if len(list_of_cats) > 1:
-        data = {v['pk']:v for v in data}.values()
+        data = {v['pk']: v for v in data}.values()
 
     for masjid in data:
         d = geopy_distance(currentPoint, masjid['fields']['location']).kilometers
@@ -211,10 +216,11 @@ def get_masjids(longitude, latitude, categories):
 
     return data
 
+
 @require_GET
 def closest(request):
     if 'lat' in request.GET and 'lon' in request.GET:
-        
+
         lat = float(request.GET['lat'])
         lon = float(request.GET['lon'])
         if 'category' in request.GET:
@@ -223,7 +229,7 @@ def closest(request):
             categories = []
 
         response_message = ''
-        
+
         if request.GET.has_key('masjids'):
             venues = get_masjids(lon, lat, categories)
             if not venues:
@@ -237,16 +243,17 @@ def closest(request):
 
         return HttpResponse(
             json.dumps({
-                "response":{
+                "response": {
                     "total": len(venues),
-                    "venues": sorted(venues, key = lambda venue: venue['fields']['distance']),
+                    "venues": sorted(venues, key=lambda venue: venue['fields']['distance']),
                     "message": response_message
                 }
-            }),  
+            }),
             content_type='application/json'
         )
     else:
         return redirect(reverse('venues.views.restaurants_lists'))
+
 
 @login_required
 def comment(request, rest_pk):
@@ -255,17 +262,17 @@ def comment(request, rest_pk):
     ValueError will be raised on save() attempt in POST part. 
     '''
     try:
-      rest = models.Restaurant.objects.get(id=rest_pk)
+        rest = models.Restaurant.objects.get(id=rest_pk)
     except ObjectDoesNotExist:
         raise Http404
-    
+
     context = {
         'venue_name': rest.name
     }
 
     if request.method == u'GET':
         try:
-            filterargs = { 'venue_id': rest_pk, 'user': request.user }
+            filterargs = {'venue_id': rest_pk, 'user': request.user}
             comment = models.Comment.objects.get(**filterargs)
             context['text'] = comment.text
             context['rating'] = comment.rating
@@ -273,14 +280,13 @@ def comment(request, rest_pk):
         except ObjectDoesNotExist:
             pass
 
-
     if request.method == u'POST':
 
-        filterargs = { 'venue_id': rest_pk, 'user': request.user }
+        filterargs = {'venue_id': rest_pk, 'user': request.user}
         try:
             comment = models.Comment.objects.get(**filterargs)
         except ObjectDoesNotExist:
-            comment = models.Comment(user = request.user, content_object = rest)
+            comment = models.Comment(user=request.user, content_object=rest)
         comment.text = request.POST[u'comment']
         comment.rating = int(request.POST[u'rating'])
         comment.save()
@@ -290,13 +296,16 @@ def comment(request, rest_pk):
         rest.update_avg_rating()
 
     context.update(csrf(request))
-    return render_to_response('comment.html', context)
+    return render_to_response('restaurants/../restaurant/templates/comments/comment-form.html', context)
+
 
 def show_all_comments(request, rest_pk):
     comments = models.Comment.objects.filter(venue_id=rest_pk)
     data = serializers.serialize('json', comments)
     data = json.loads(data)
-    return HttpResponse(json.dumps({"response":{"total": len(data), "comments": data}}),  content_type='application/json')
+    return HttpResponse(json.dumps({"response": {"total": len(data), "comments": data}}),
+                        content_type='application/json')
+
 
 @login_required
 def tip(request, rest_pk):
@@ -308,27 +317,26 @@ def tip(request, rest_pk):
         rest = models.Restaurant.objects.get(id=rest_pk)
     except ObjectDoesNotExist:
         raise Http404
-    
+
     context = {
-      'venue_name': rest.name
+        'venue_name': rest.name
     }
 
     if request.method == u'GET':
         try:
-            filterargs = { 'venue_id': rest_pk, 'user': request.user }
+            filterargs = {'venue_id': rest_pk, 'user': request.user}
             tip = models.Tip.objects.get(**filterargs)
             context['tip_text'] = tip.text
         except ObjectDoesNotExist:
             pass
 
-
     if request.method == u'POST':
-        filterargs = { 'venue_id': rest_pk, 'user': request.user }
+        filterargs = {'venue_id': rest_pk, 'user': request.user}
         try:
             tip = models.Tip.objects.get(**filterargs)
         except ObjectDoesNotExist:
             tip = models.Tip(user=request.user, content_object=rest)
-        
+
         tip.text = request.POST[u'tip']
         tip.save()
         context['tip_text'] = tip.text
@@ -337,11 +345,13 @@ def tip(request, rest_pk):
     context.update(csrf(request))
     return render_to_response('tip.html', context)
 
+
 def show_all_tips(request, rest_pk):
     tips = models.Tip.objects.filter(venue_id=rest_pk)
     data = serializers.serialize('json', tips)
     data = json.loads(data)
-    return HttpResponse(json.dumps({"response":{"total": len(data), "tips": data}}),  content_type='application/json')
+    return HttpResponse(json.dumps({"response": {"total": len(data), "tips": data}}), content_type='application/json')
+
 
 @login_required
 def update_restaurant(request, rest_pk):
@@ -354,7 +364,7 @@ def update_restaurant(request, rest_pk):
     }
 
     if request.method == 'POST':
-        form = forms.RestaurantForm(request.POST, instance=_restaurant) # A form bound to the POST data
+        form = forms.RestaurantForm(request.POST, instance=_restaurant)  # A form bound to the POST data
         if form.is_valid():
             form.save()
             # context['is_saved'] = True
@@ -364,6 +374,7 @@ def update_restaurant(request, rest_pk):
         context['form'] = forms.RestaurantForm(instance=_restaurant)
 
     return render(request, 'restaurants/update.html', context)
+
 
 def report_restaurant(request, rest_pk):
     rest = models.Restaurant.objects.get(id=rest_pk)
@@ -401,7 +412,7 @@ def moderate_reports(request):
 
     reports = models.Report.objects.all()
     paginator = Paginator(
-        sorted(reports, key = lambda r: r.created_on, reverse=True),
+        sorted(reports, key=lambda r: r.created_on, reverse=True),
         10
     )
     page = request.GET.get('page')
@@ -417,8 +428,9 @@ def moderate_reports(request):
     context.update(csrf(request))
     return render(request, 'moderate_reports.html', context)
 
+
 def moderate_report(request, pk):
-    if request.method=='POST':
+    if request.method == 'POST':
         report = models.Report.objects.get(id=pk)
         if 'moderator_flag' in request.POST:
             report.moderator_flag = True
@@ -435,19 +447,58 @@ def moderate_report(request, pk):
 
 # @login_required
 # def log_out(request):
-#     logout(request)
+# logout(request)
 #     return render(request, "comment.html")
 
-def restaurant(request, rest_pk):
+def __restaurant(request, rest_pk):
     _restaurant = Restaurant.objects.get(pk=rest_pk)
 
     return render(request, 'restaurants/item.html', {
         'restaurant': _restaurant,
-        'comments': Comment.list_for_venue(_restaurant),
-        'notes': Note.list_for_venue(_restaurant),
+        'comments': Comment.list_for_venue(_restaurant).order_by('-modified_on'),
+        'notes': Note.list_for_venue(_restaurant).order_by('-modified_on'),
         'reports': Report.list_for_venue(_restaurant),
     })
 
+
+def restaurant(request, rest_pk):
+    return __restaurant(request, rest_pk)
+
+
+def restaurant_by_slug(request, slug):
+    '''
+    find restaurant instance by slug and return it profile page
+    or raise 404 if nothing finds
+    :param request:
+    :param slug:
+    :return:
+    '''
+    r = Restaurant.objects.filter(slug=slug).first()
+    if not r:
+        raise Http404()
+    else:
+        return __restaurant(request, r.pk)
+
+
+@login_required
+@require_POST
+def add_comment(request, rest_pk):
+    _restaurant = Restaurant.objects.get(pk=rest_pk)
+    related_object_type = ContentType.objects.get_for_model(_restaurant)
+
+    comment_data = {
+        'text': request.POST.get('text', ''),
+        'rating': request.POST.get('rating', 0),
+        'user': request.user.pk,
+        'venue_id': _restaurant.pk,
+        'content_type': related_object_type.id
+    }
+
+    form = CommentForm(comment_data)
+    if form.is_valid():
+        form.save()
+
+    return redirect(request.META['HTTP_REFERER'])
 
 
 @psa('social:complete')
@@ -459,7 +510,7 @@ def register_by_access_token(request, backend):
     user = request.backend.do_auth(request.GET.get('access_token'))
     if user:
         login(request, user)
-        return HttpResponse(json.dumps({"success":True}), content_type='application/json')
+        return HttpResponse(json.dumps({"success": True}), content_type='application/json')
     else:
-        return HttpResponse(json.dumps({"success":False}), content_type='application/json')
+        return HttpResponse(json.dumps({"success": False}), content_type='application/json')
 

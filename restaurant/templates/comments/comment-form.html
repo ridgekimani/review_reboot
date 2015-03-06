@@ -1,0 +1,36 @@
+{% load staticfiles %}
+<div class="panel panel-default">
+    <div class="panel-body">
+        <h3>{{ venue_name }}</h3>
+
+        <form autocomplete="off" action="{% url "venues.views.add_comment" restaurant.pk %}" method="post">{% csrf_token %}
+            <label>Rating: </label>
+
+            {% for i in 12345|make_list %}
+                <div class="radio-inline">
+                    <label>
+                        <input type="radio"  name="rating" value="{{ i }}" required {% if rating == i %}
+                               checked {% endif %} >{{ i }}
+                    </label>
+                </div>
+            {% endfor %}
+
+            <div class="form-group">
+                <textarea class="form-control" id="commentArea" name="text"
+                          placeholder="Type your comment here" required>{{ text }}</textarea>
+                <br>
+                <button type="submit" class="btn btn-default">Submit</button>
+{#                {% if is_saved %}#}
+{#                    <span class="label label-success">Saved</span>#}
+{#                {% endif %}#}
+            </div>
+        </form>
+    </div>
+</div>
+<!-- Form validation for safari-->
+<script src="{% static "js/jquery.h5validate.js" %}"></script>
+<script>
+    $(document).ready(function () {
+        $('form').h5Validate();
+    });
+</script>

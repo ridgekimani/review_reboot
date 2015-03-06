@@ -6,6 +6,7 @@ from django.contrib.auth.models import User
 from django.core.validators import RegexValidator, URLValidator
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes import generic
+from django.template.defaultfilters import slugify
 from simple_history.models import HistoricalRecords
 
 import datetime
@@ -24,6 +25,7 @@ class Venue(models.Model):
     General model for venues.
     '''
     name = models.CharField(max_length=100)
+    slug = models.SlugField()
     address = models.CharField(max_length=150)
     phone = models.CharField(
         max_length=12,
@@ -81,6 +83,10 @@ class Venue(models.Model):
         if len(close_reports) > 3:
             self.is_closed = True
         self.save()
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.name)
+        super(Venue, self).save(args, kwargs)
 
 
 # simple_history will add its tables to db only if field added to model class,
@@ -141,8 +147,8 @@ class Comment(models.Model):
     @staticmethod
     def list_for_venue(venue):
         related_object_type = ContentType.objects.get_for_model(venue)
-        return  Comment.objects.filter(content_type__pk=related_object_type.id,
-                                       venue_id=venue.id)
+        return Comment.objects.filter(content_type__pk=related_object_type.id,
+                                      venue_id=venue.id)
 
     @property
     def venue_name(self):
@@ -172,8 +178,8 @@ class Note(models.Model):
     @staticmethod
     def list_for_venue(venue):
         related_object_type = ContentType.objects.get_for_model(venue)
-        return  Comment.objects.filter(content_type__pk=related_object_type.id,
-                                       venue_id=venue.id)
+        return Comment.objects.filter(content_type__pk=related_object_type.id,
+                                      venue_id=venue.id)
 
     def __unicode__(self):
         return self.text[:25]
@@ -221,8 +227,8 @@ class Report(models.Model):
     @staticmethod
     def list_for_venue(venue):
         related_object_type = ContentType.objects.get_for_model(venue)
-        return  Comment.objects.filter(content_type__pk=related_object_type.id,
-                                       venue_id=venue.id)
+        return Comment.objects.filter(content_type__pk=related_object_type.id,
+                                      venue_id=venue.id)
 
 
     def __unicode__(self):
