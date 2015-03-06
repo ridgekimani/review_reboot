@@ -2,6 +2,7 @@ import json
 
 from django.conf import settings
 # from django.http.response import Http404
+from restaurant.utils import get_client_ip
 from venues.forms import CommentForm, NoteForm
 from django.contrib.contenttypes.models import ContentType
 from django.shortcuts import render, redirect, get_object_or_404
@@ -475,7 +476,8 @@ def add_comment(request, rest_pk):
         'rating': request.POST.get('rating', 0),
         'user': request.user.pk,
         'venue_id': _restaurant.pk,
-        'content_type': related_object_type.id
+        'content_type': related_object_type.id,
+        'modified_ip':  get_client_ip(request),
     }
 
     form = CommentForm(comment_data)
@@ -502,12 +504,14 @@ def update_comment(request, comment_pk):
         context['form'] = CommentForm(instance=comment)
     elif request.method == 'POST':
         related_object_type = ContentType.objects.get_for_model(rest)
+
         comment_data = {
             'text': request.POST.get('text', ''),
             'rating': request.POST.get('rating', 0),
             'user': request.user.pk,
             'venue_id': rest.pk,
-            'content_type': related_object_type.id
+            'content_type': related_object_type.id,
+            'modified_ip':  get_client_ip(request),
         }
         form = CommentForm(comment_data, instance=comment)
         if form.is_valid():
@@ -539,7 +543,8 @@ def add_note(request, rest_pk):
         'text': request.POST.get('text', ''),
         'user': request.user.pk,
         'venue_id': _restaurant.pk,
-        'content_type': related_object_type.id
+        'content_type': related_object_type.id,
+        'modified_ip':  get_client_ip(request),
     }
 
     form = NoteForm(comment_data)
@@ -569,7 +574,8 @@ def update_note(request, note_pk):
             'text': request.POST.get('text', ''),
             'user': request.user.pk,
             'venue_id': rest.pk,
-            'content_type': related_object_type.id
+            'content_type': related_object_type.id,
+            'modified_ip':  get_client_ip(request),
         }
         form = NoteForm(comment_data, instance=note)
         if form.is_valid():

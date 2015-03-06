@@ -55,6 +55,8 @@ class Venue(models.Model):
     modified_by = models.ForeignKey(User, null=True, blank=True)
     modified_on = models.DateTimeField(auto_now=True, null=True)
 
+    modified_ip = models.CharField(default='', max_length=39)
+
 
     # Query Manager
     gis = gis_models.GeoManager()
@@ -147,6 +149,8 @@ class Comment(models.Model):
     rating = models.IntegerField(null=True, blank=True)
     text = models.TextField(blank=True)
 
+    modified_ip = models.CharField(default='', max_length=39)
+
     @staticmethod
     def list_for_venue(venue):
         related_object_type = ContentType.objects.get_for_model(venue)
@@ -177,6 +181,8 @@ class Note(models.Model):
     venue_id = models.PositiveIntegerField()
     content_object = generic.GenericForeignKey('content_type', 'venue_id')
     text = models.TextField(max_length=200, blank=True)
+
+    modified_ip = models.CharField(default='', max_length=39)
 
     @staticmethod
     def list_for_venue(venue):
@@ -226,6 +232,8 @@ class Report(models.Model):
     )
     moderator_flag = models.BooleanField(default=False)
     moderator_note = models.TextField(null=True)
+
+    modified_ip = models.CharField(default='', max_length=39)
 
     @staticmethod
     def list_for_venue(venue):
