@@ -9,7 +9,7 @@
                 {% if restaurant.is_closed %}
                     <div class="alert alert-danger" role="alert">CLOSED</div>
                 {% endif %}
-                <div class="input-group input-group-lg">
+                <div class="input-group input-group-lg {% if form.name.errors %} has-error{% endif %}">
                     <div class="input-group-addon">
                         Name
                     </div>
@@ -22,7 +22,7 @@
                 </div>
 
                 <h4>
-                    <div class="input-group">
+                    <div class="input-group{% if form.cuisine.errors %} has-error{% endif %}">
                         <div class="input-group-addon">
                             cuisine
                         </div>
@@ -31,7 +31,7 @@
                 </h4>
 
                 <h4>
-                    <div class="input-group">
+                    <div class="input-group {% if form.eatingOptions.errors %} has-error{% endif %}">
                         <div class="input-group-addon">
                             eating options
                         </div>
@@ -40,7 +40,7 @@
                 </h4>
 
                 <h4>
-                    <div class="input-group">
+                    <div class="input-group {% if form.address.errors %} has-error{% endif %}">
                         <div class="input-group-addon">
                             address
                         </div>
@@ -50,7 +50,9 @@
 
                 <div class="row">
                     <div class="col-md-8">
-                        <div class="input-group">
+                        {{ form.phone.errors }}
+
+                        <div class="input-group{% if form.phone.errors %} has-error{% endif %}">
                             <div class="input-group-addon">
                                 <span class="glyphicon glyphicon-earphone"></span>
                             </div>
@@ -58,15 +60,29 @@
                         </div>
                     </div>
                     <div class="col-md-4">
-                        <div class="input-group">
+                        <div class="input-group {% if form.closed_reports_count.errors %} has-error{% endif %}">
                             <div class="input-group-addon">served</div>
                             {{ form.closed_reports_count|add_class:'form-control' }}
                         </div>
                     </div>
                 </div>
-                <div class="r-categories">
-                    {{ form.categories }}
+
+                <div class="panel panel-default" style="margin-top: 0.75em">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Categories</h3>
+                    </div>
+                    <div class="panel-body">
+                        {% if form.categories.errors %}
+                            <div class="alert alert-danger">{{ form.categories.errors }}</div>
+                        {% endif %}
+
+                        <div class="r-categories">
+                            {{ form.categories }}
+                        </div>
+                    </div>
                 </div>
+
+
                 {#                <select multiple name="categories">#}
                 {#                    {% for category in categories %}#}
                 {#                        <option value="{{ category.pk }}">{{ category.name }}</option>#}

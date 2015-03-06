@@ -72,7 +72,7 @@ def restaurants_lists(request):
                         restaurants = models.Restaurant.gis.filter(
                             location__distance_lte=(currentPoint, measure.D(**distance_m))).distance(currentPoint)
         context = {'all_restaurants': restaurants, 'form': form, 'longitude': longitude, 'latitude': latitude}
-        return render(request, 'restaurants/list.html', context)
+        return render(request, 'restaurants/restaurantlist.html', context)
     else:
         context = {'all_restaurants': restaurants, 'form': form, 'longitude': longitude, 'latitude': latitude}
         return render(request, 'restaurants/restaurants.html', context)
@@ -368,12 +368,23 @@ def update_restaurant(request, rest_pk):
         if form.is_valid():
             form.save()
             # context['is_saved'] = True
-            return redirect(reverse('venues.views.restaurant', args=[rest_pk]))
+            if _restaurant.slug:
+                return redirect(reverse('venues.views.restaurant_by_slug', args=[_restaurant.slug]))
+            else:
+                return redirect(reverse('venues.views.restaurant', args=[rest_pk]))
         context['form'] = form
     else:
         context['form'] = forms.RestaurantForm(instance=_restaurant)
 
     return render(request, 'restaurants/update.html', context)
+#
+#
+# @login_required
+# def update_restaurant_by_slug(request, slug):
+#     r = Restaurant.objects.filter(slug=slug).first()
+#     if not r:
+#         raise Http404()
+#     return update_restaurant(request, r.pk)
 
 
 def report_restaurant(request, rest_pk):
@@ -448,9 +459,9 @@ def moderate_report(request, pk):
 # @login_required
 # def log_out(request):
 # logout(request)
-#     return render(request, "comment.html")
+# return render(request, "comment.html")
 
-def __restaurant(request, rest_pk):
+def restaurant(request, rest_pk):
     _restaurant = Restaurant.objects.get(pk=rest_pk)
 
     return render(request, 'restaurants/item.html', {
@@ -459,10 +470,6 @@ def __restaurant(request, rest_pk):
         'notes': Note.list_for_venue(_restaurant).order_by('-modified_on'),
         'reports': Report.list_for_venue(_restaurant),
     })
-
-
-def restaurant(request, rest_pk):
-    return __restaurant(request, rest_pk)
 
 
 def restaurant_by_slug(request, slug):
@@ -477,7 +484,7 @@ def restaurant_by_slug(request, slug):
     if not r:
         raise Http404()
     else:
-        return __restaurant(request, r.pk)
+        return restaurant(request, r.pk)
 
 
 @login_required
@@ -500,6 +507,7 @@ def add_comment(request, rest_pk):
 
     return redirect(request.META['HTTP_REFERER'])
 
+@login_required()
 
 @psa('social:complete')
 def register_by_access_token(request, backend):

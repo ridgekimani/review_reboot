@@ -21,9 +21,11 @@
             <h3>{{ restaurant.address }}</h3>
 
             <div class="row">
+                    {% if  restaurant.phone %}
                 <div class="col-md-8">
-                    <h3><span class="glyphicon glyphicon-earphone"></span> {{ restaurant.phone }}</h3>
+                        <h3><span class="glyphicon glyphicon-earphone"></span> {{ restaurant.phone }}</h3>
                 </div>
+                    {% endif %}
                 <div class="col-md-4">
                     <h3>served: {{ restaurant.closed_reports_count }}</h3>
                 </div>

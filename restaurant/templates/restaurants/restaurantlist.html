@@ -30,9 +30,9 @@ $(document).ready(function() {
           {% for restaurant in all_restaurants %}
               <ul class="restaurant-data">
                 <li style="color:red"><b>{{restaurant.name}}</b></li>
-                <li> 
+                <li>
                   {% for category in restaurant.categories.all %}
-                    {{category}} 
+                    {{category}}
                   {% endfor %}
                 </li>
                 <li> {{restaurant.address}} </li>
@@ -40,7 +40,7 @@ $(document).ready(function() {
                 <li> {{restaurant.distance}} </li>
               </ul>
               {% if user.is_authenticated %}
-                <a class="btn btn-small" onClick="window.open('{% url 'venues.views.update_restaurant' restaurant.pk %}', '_blank' )" role="button">Edit<a/>
+                <a class="btn btn-small" onClick="window.open({% url 'venues.views.update_restaurant' restaurant.pk %}, '_blank' )" role="button">Edit<a/>
               {% endif %}
             {% endfor %}
        </div>
@@ -49,7 +49,7 @@ $(document).ready(function() {
   <div class="column column-beta ">
     <div class="map-wrapper">
       <div class="search-map">
-        <div class="map-header clearfix"> 
+        <div class="map-header clearfix">
         </div>
         <div id="map-container" class="django-map-container">
           <div class="map" style="width: 350px; height: 400px;"></div>
