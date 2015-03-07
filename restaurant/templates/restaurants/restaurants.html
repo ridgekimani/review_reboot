@@ -52,33 +52,4 @@
         {% include "restaurants/restaurantlist.html" %}
     </div>
 {% endblock %}
-{% block scripts %}
-    <script>
-        $(document).ready(function () {
-            var frm = $('#restaurant-form');
-            frm.submit(function () {
-                $.ajax({
-                    type: frm.attr('method'),
-                    url: frm.attr('action'),
-                    data: frm.serialize(),
-                    success: function (data) {
-                        $(".container").html(data);
-                    },
-                    error: function (data) {
-                        $("#MESSAGE-DIV").html("Something went wrong!");
-                    }
-                });
-                return false;
-            });
-
-        });
-        $(function () {
-            $("#id_category").autocomplete({
-                source: "/restaurants/get_category/",
-                minLength: 2,
-            });
-        });
-
-    </script>
-{% endblock %}
 </html>

@@ -5,10 +5,11 @@
 
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.3/themes/smoothness/jquery-ui.css">
 <link rel="stylesheet" href="{% static "css/common_style.css" %}"/>
 
 <script src="http://code.jquery.com/jquery-1.11.2.min.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js" type="text/javascript"></script>
+<script src="https://code.jquery.com/ui/1.11.2/jquery-ui.min.js" type="text/javascript"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
 
 <head>
@@ -22,18 +23,23 @@
         <a class="navbar-brand" href="/">Restaurants</a>
         <ul class="nav navbar-nav">
         </ul>
-        <form method="post" action="{% url "venues.views.venuess.restaurants_lists" %}" class="navbar-form search-form pull-left" id="restaurant-form">
+        <form method="post" action="{% url "venues.views.venuess.restaurants_lists" %}"
+              class="navbar-form search-form pull-left" id="restaurant-form">
             {% csrf_token %}
-            <input type="text" name="query" class="form-control"/>
+            <input type="text" name="address" class="form-control" placeholder="address"/>
+            <input type="text" name="category" class="form-control" placeholder="category" id="id_category"
+                   style="position:relative;"/>
             <input class="btn btn-default" type="submit" value="Search"/>
             <a class="btn btn-default" href="/login/facebook?next=/restaurants/restaurants_lists/"
                role="button">Login</a>
         </form>
         <form class="navbar-form pull-right">
             {% if user.is_authenticated %}
-                <a class="btn btn-default" href="{% url "django.contrib.auth.views.logout" %}?next={{ request.path }}">Log out</a>
+                <a class="btn btn-default" href="{% url "django.contrib.auth.views.logout" %}?next={{ request.path }}">Log
+                    out</a>
             {% else %}
-                <a class="btn btn-default" href="{% url "django.contrib.auth.views.login" %}?next={{ request.path }}">Log in</a>
+                <a class="btn btn-default" href="{% url "django.contrib.auth.views.login" %}?next={{ request.path }}">Log
+                    in</a>
             {% endif %}
         </form>
     </nav>
@@ -41,6 +47,33 @@
 </div>
 </body>
 {% block scripts %}
+    <script>
+        $(document).ready(function () {
+            var frm = $('#restaurant-form');
+            frm.submit(function () {
+                $.ajax({
+                    type: frm.attr('method'),
+                    url: frm.attr('action'),
+                    data: frm.serialize(),
+                    success: function (data) {
+                        $(".container").html(data);
+                    },
+                    error: function (data) {
+                        $("#MESSAGE-DIV").html("Something went wrong!");
+                    }
+                });
+                return false;
+            });
 
+        });
+        $(function () {
+
+            $("#id_category").autocomplete({
+                source: "{% url "venues.views.get_category" %}",
+                minLength: 2,
+            });
+        });
+
+    </script>
 {% endblock %}
 </html>

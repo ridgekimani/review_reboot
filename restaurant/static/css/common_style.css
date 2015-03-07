@@ -8,3 +8,6 @@
     margin: 0.25em;
     background-color: #eeeeee;
     border-radius: 4px; }
+
+.ui-autocomplete {
+  z-index: 1001; }
