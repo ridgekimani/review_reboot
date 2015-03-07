@@ -22,33 +22,31 @@
     });
 </script>
 <div class="clearfix layout-block layout-a scroll-map-container search-results-block">
-    <div class="column column-alpha ">
+    <div class="col-md-8 ">
         <div class="results-wrapper">
             <div class="content">
                 {% for restaurant in all_restaurants %}
-                    <ul class="restaurant-data">
-                        <li style="color:red"><b><a
-                                href="{% url 'venues.views.venuess.restaurant' restaurant.pk %}">{{ restaurant.name }}</a></b>
-                        </li>
-                        <li>
-                            {% for category in restaurant.categories.all %}
-                                {{ category }}
-                            {% endfor %}
-                        </li>
-                        <li> {{ restaurant.address }} </li>
-                        <li> {{ restaurant.phone }} </li>
-                        <li> {{ restaurant.distance }} </li>
-                    </ul>
-                    {% if user.is_authenticated %}
-                        <a class="btn btn-small"
-                           onClick="window.open('{% url 'venues.views.venuess.update_restaurant' restaurant.pk %}', '_blank' )"
-                           role="button">Edit</a>
-                    {% endif %}
+                    <h3><a href="{% url 'venues.views.venuess.restaurant' restaurant.pk %}">
+                        {{ restaurant.name }}
+                    </a>
+                        {% if user.is_authenticated %}
+                            <a class="btn btn-small btn-success"
+                               onClick="window.open('{% url 'venues.views.venuess.update_restaurant' restaurant.pk %}', '_blank' )"
+                               role="button">Edit</a>
+                        {% endif %}
+                    </h3>
+                    {% for category in restaurant.categories.all %}
+                        {{ category }}
+                    {% endfor %}
+                    {{ restaurant.address }} <br/>
+                    {{ restaurant.phone }} <br/>
+                    {{ restaurant.distance }} <br/>
+
                 {% endfor %}
             </div>
         </div>
     </div>
-    <div class="column column-beta ">
+    <div class="col-md-4 ">
         <div class="map-wrapper">
             <div class="search-map">
                 <div class="map-header clearfix">

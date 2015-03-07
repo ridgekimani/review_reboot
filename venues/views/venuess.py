@@ -79,8 +79,8 @@ def get_masjids(longitude, latitude, categories):
 def restaurants_lists(request):
     form = forms.AddressForm()
     restaurants = []
-    latitude = ""
-    longitude = ""
+    latitude=""
+    longitude=""
     if request.POST:
         form = forms.AddressForm(request.POST)
         if form.is_valid():
@@ -101,28 +101,37 @@ def restaurants_lists(request):
                 if list_of_cats:
                     restaurants = models.Restaurant.objects.filter(categories__in=list_of_cats)
                 else:
-                    restaurants = models.Restaurant.objects.all
+                    restaurants = models.Restaurant.objects.all()
+                try:
+                    longitude, latitude = restaurants[0].location
+                except IndexError:
+                    pass
             else:
                 geocoder = Nominatim()
-                location = geocoder.geocode(address)
+                try:
+                    location = geocoder.geocode(address)
+                except Exception as e:
+                    print e
+                    location = ""
+
                 if location:
-                    latitude = location.latitude
-                    longitude = location.longitude
-                    currentPoint = geos.GEOSGeometry('POINT(%s %s)' % (longitude, latitude))
+                    latitude= location.latitude
+                    longitude=location.longitude
+                    currentPoint = geos.GEOSGeometry('POINT(%s %s)' %(longitude, latitude))
                     distance_m = {'km': 15}
                     if list_of_cats:
                         restaurants = models.Restaurant.gis.filter(
                             location__distance_lte=(currentPoint, measure.D(**distance_m)),
                             categories__in=list_of_cats
-                        ).distance(currentPoint)
+                            ).distance(currentPoint)
                     else:
-                        restaurants = models.Restaurant.gis.filter(
-                            location__distance_lte=(currentPoint, measure.D(**distance_m))).distance(currentPoint)
-        context = {'all_restaurants': restaurants, 'form': form, 'longitude': longitude, 'latitude': latitude}
+                        restaurants = models.Restaurant.gis.filter(location__distance_lte=(currentPoint, measure.D(**distance_m))).distance(currentPoint)
+        context = {'all_restaurants': restaurants,'form': form,'longitude': longitude, 'latitude' : latitude}
         return render(request, 'restaurants/restaurants.html', context)
     else:
-        context = {'all_restaurants': restaurants, 'form': form, 'longitude': longitude, 'latitude': latitude}
+        context = {'all_restaurants': restaurants,'form': form,'longitude': longitude, 'latitude' : latitude}
         return render(request, 'restaurants/restaurants.html', context)
+
 
 
 def get_restaurants(longitude, latitude, categories):
