@@ -1,26 +1,4 @@
-<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
-<script>
-    $(document).ready(function () {
-        var latlng = new google.maps.LatLng("{{ latitude }}", "{{ longitude }}");
-        var mapOptions = {
-            zoom: 12,
-            center: latlng,
-            mapTypeControl: false,
-            navigationControlOptions: {style: google.maps.NavigationControlStyle.SMALL},
-            mapTypeId: google.maps.MapTypeId.ROADMAP
-        };
-        map = new google.maps.Map($('.map')[0], mapOptions);
 
-        {% for restaurant in all_restaurants %}
-            latlng = new google.maps.LatLng({{ restaurant.location.y }}, {{ restaurant.location.x }});
-            new google.maps.Marker({
-                position: latlng,
-                map: map,
-                title: "{{ restaurant.name }}"
-            });
-        {% endfor %}
-    });
-</script>
 <div class="clearfix layout-block layout-a scroll-map-container search-results-block">
     <div class="col-md-8 ">
         <div class="results-wrapper">
