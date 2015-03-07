@@ -45,35 +45,35 @@
     </nav>
     {% block body %}{% endblock %}
 </div>
-</body>
 {% block scripts %}
     <script>
+{#        $(document).ready(function () {#}
+{#            var frm = $('#restaurant-form');#}
+{#            frm.submit(function () {#}
+{#                $.ajax({#}
+{#                    type: frm.attr('method'),#}
+{#                    url: frm.attr('action'),#}
+{#                    data: frm.serialize(),#}
+{#                    success: function (data) {#}
+{#                        $(".container").html(data);#}
+{#                    },#}
+{#                    error: function (data) {#}
+{#                        $("#MESSAGE-DIV").html("Something went wrong!");#}
+{#                    }#}
+{#                });#}
+{#                return false;#}
+{#            });#}
+{##}
+{#        });#}
+
         $(document).ready(function () {
-            var frm = $('#restaurant-form');
-            frm.submit(function () {
-                $.ajax({
-                    type: frm.attr('method'),
-                    url: frm.attr('action'),
-                    data: frm.serialize(),
-                    success: function (data) {
-                        $(".container").html(data);
-                    },
-                    error: function (data) {
-                        $("#MESSAGE-DIV").html("Something went wrong!");
-                    }
-                });
-                return false;
-            });
-
-        });
-        $(function () {
-
             $("#id_category").autocomplete({
                 source: "{% url "venues.views.get_category" %}",
-                minLength: 2,
+                minLength: 2
             });
         });
 
     </script>
 {% endblock %}
+</body>
 </html>
