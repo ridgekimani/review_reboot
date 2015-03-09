@@ -133,6 +133,7 @@ def restaurants_lists(request):
         context = {'all_restaurants': restaurants, 'form': form, 'longitude': longitude, 'latitude': latitude}
         return render(request, 'restaurants/restaurants.html', context)
     else:
+        restaurants = Restaurant.objects.all()[:5]
         context = {'all_restaurants': restaurants, 'form': form, 'longitude': longitude, 'latitude': latitude}
         return render(request, 'restaurants/restaurants.html', context)
 

@@ -7,30 +7,36 @@
 
     {% addtoblock "js" %}
         <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
-        <script>
-            $(document).ready(function () {
-                var latlng = new google.maps.LatLng("{{ latitude }}", "{{ longitude }}");
-                var mapOptions = {
-                    zoom: 12,
-                    center: latlng,
-                    mapTypeControl: false,
-                    navigationControlOptions: {style: google.maps.NavigationControlStyle.SMALL},
-                    mapTypeId: google.maps.MapTypeId.ROADMAP
-                };
-                map = new google.maps.Map($('.map')[0], mapOptions);
-
-                {% for restaurant in all_restaurants %}
-                    {% if restaurant.location %}
-                        latlng = new google.maps.LatLng({{ restaurant.location.y }}, {{ restaurant.location.x }});
-                        new google.maps.Marker({
-                            position: latlng,
-                            map: map,
-                            title: "{{ restaurant.name }}"
-                        });
+        {% if all_restaurants %}
+            <script>
+                $(document).ready(function () {
+                    {% if latitude and longitude %}
+                        var latlng = new google.maps.LatLng("{{ latitude }}", "{{ longitude }}");
+                    {% else %}
+                        var latlng = new google.maps.LatLng("{{ all_restaurants.0.location.y }}", "{{ all_restaurants.0.location.x }}");
                     {% endif %}
-                {% endfor %}
-            });
-        </script>
+                    var mapOptions = {
+                        zoom: 12,
+                        center: latlng,
+                        mapTypeControl: false,
+                        navigationControlOptions: {style: google.maps.NavigationControlStyle.SMALL},
+                        mapTypeId: google.maps.MapTypeId.ROADMAP
+                    };
+                    map = new google.maps.Map($('.map')[0], mapOptions);
+
+                    {% for restaurant in all_restaurants %}
+                        {% if restaurant.location %}
+                            latlng = new google.maps.LatLng({{ restaurant.location.y }}, {{ restaurant.location.x }});
+                            new google.maps.Marker({
+                                position: latlng,
+                                map: map,
+                                title: "{{ restaurant.name }}"
+                            });
+                        {% endif %}
+                    {% endfor %}
+                });
+            </script>
+        {% endif %}
     {% endaddtoblock %}
 
 {% endblock %}
