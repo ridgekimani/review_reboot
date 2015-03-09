@@ -1,13 +1,18 @@
-.r-categories ul {
+.r-categories div, .r-categories > ul {
   padding-left: 0;
   list-style: none; }
-  .r-categories ul li {
+  .r-categories div div.checkbox, .r-categories div > li, .r-categories > ul div.checkbox, .r-categories > ul > li {
     float: left;
     padding: 0.25em;
     padding-right: 0.5em;
     margin: 0.25em;
     background-color: #eeeeee;
     border-radius: 4px; }
+  .r-categories div .help-block, .r-categories > ul .help-block {
+    padding-top: 0.5em;
+    display: block;
+    clear: both;
+    overflow: hidden; }
 
 .ui-autocomplete {
   z-index: 1001; }

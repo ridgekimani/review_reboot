@@ -5,7 +5,8 @@ from venues import models
 class RestaurantForm(forms.ModelForm):
     class Meta:
         model = models.Restaurant
-        fields = ['name', 'cuisine', 'address', 'phone', 'categories']
+        fields = ['name', 'cuisine', 'address', 'phone', 'categories', 'catering', 'delivery', 'alcoholFree',
+                  'porkFree', 'muslimOwner']
         widgets = {
             'categories': forms.CheckboxSelectMultiple()
         }
@@ -27,6 +28,7 @@ class NoteForm(forms.ModelForm):
         model = models.Note
         fields = ['text']
         exclude = ('modified_ip',)
+
 
 class ReportForm(forms.ModelForm):
     class Meta:

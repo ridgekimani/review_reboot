@@ -1,4 +1,5 @@
 import json
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.http.response import HttpResponseBadRequest
 from django.shortcuts import render, redirect, get_object_or_404
 
@@ -85,6 +86,7 @@ def restaurants_lists(request):
     latitude = ""
     longitude = ""
     if request.POST:
+        page = request.POST.get('page')
         form = forms.AddressForm(request.POST)
         if form.is_valid():
             address = form.cleaned_data['address']
@@ -130,12 +132,24 @@ def restaurants_lists(request):
                     else:
                         restaurants = models.Restaurant.gis.filter(
                             location__distance_lte=(currentPoint, measure.D(**distance_m))).distance(currentPoint)
-        context = {'all_restaurants': restaurants, 'form': form, 'longitude': longitude, 'latitude': latitude}
-        return render(request, 'restaurants/restaurants.html', context)
     else:
-        restaurants = Restaurant.objects.all()[:5]
-        context = {'all_restaurants': restaurants, 'form': form, 'longitude': longitude, 'latitude': latitude}
-        return render(request, 'restaurants/restaurants.html', context)
+        page = request.GET.get('page')
+        restaurants = Restaurant.objects.all()
+
+    paginator = Paginator(restaurants, 5)
+    page = request.GET.get("page")
+    try:
+        restaurants = paginator.page(page)
+    except PageNotAnInteger:
+        restaurants = paginator.page(1)
+    except EmptyPage:
+        restaurants = paginator.page(paginator.num_pages)
+
+    context = {'all_restaurants': restaurants, 'form': form, 'longitude': longitude, 'latitude': latitude}
+    return render(request, 'restaurants/restaurants.html', context)
+    # else:
+    #     context = {'all_restaurants': restaurants, 'form': form, 'longitude': longitude, 'latitude': latitude}
+    #     return render(request, 'restaurants/restaurants.html', context)
 
 
 def get_restaurants(longitude, latitude, categories):

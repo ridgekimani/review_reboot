@@ -10,7 +10,7 @@
             {% endif %}
             <h1>{{ restaurant.name }}
                 {% if user.is_authenticated %}
-                    {% if user.is_superuser %}
+                    {% if user.is_venue_moderator %}
                         <a class="btn btn-success"
                            href="{% url "venues.views.venuess.update_restaurant" restaurant.pk %}">
                             <span class="glyphicon glyphicon-edit"></span>

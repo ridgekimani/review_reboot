@@ -6,7 +6,7 @@
                     <h3><a href="{% url 'venues.views.venuess.restaurant' restaurant.pk %}">
                         {{ restaurant.name }}
                     </a>
-                        {% if user.is_authenticated %}
+                        {% if user.is_venue_moderator %}
                             <a class="btn btn-small btn-success"
                                onClick="window.open('{% url 'venues.views.venuess.update_restaurant' restaurant.pk %}', '_blank' )"
                                role="button">Edit</a>

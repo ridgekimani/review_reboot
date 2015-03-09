@@ -1,7 +1,8 @@
-{% load widget_tweaks %}
+{% load widget_tweaks bootstrap3 %}
 {% if restaurant.is_closed %}
     <div class="alert alert-danger" role="alert">CLOSED</div>
 {% endif %}
+{% bootstrap_form_errors form %}
 <div class="input-group input-group-lg {% if form.name.errors %} has-error{% endif %}">
     <div class="input-group-addon">
         Name
@@ -45,17 +46,31 @@
     </div>
 </div>
 
-<div class="panel panel-default" style="margin-top: 0.75em">
-    <div class="panel-heading">
-        <h3 class="panel-title">Categories</h3>
-    </div>
-    <div class="panel-body">
-        {% if form.categories.errors %}
-            <div class="alert alert-danger">{{ form.categories.errors }}</div>
-        {% endif %}
+<div class="panel panel-success" style="margin-top: 0.75em">
 
+    <div class="panel-body">
         <div class="r-categories">
-            {{ form.categories }}
+             {% bootstrap_field form.categories %}
+        </div>
+    </div>
+</div>
+
+<div class="panel panel-info" style="margin-top: 0.75em">
+    <div class="panel-body">
+        <div class="col-md-3">
+            {% bootstrap_field form.catering %}
+        </div>
+        <div class="col-md-3">
+            {% bootstrap_field form.delivery %}
+        </div>
+        <div class="col-md-3">
+            {% bootstrap_field form.alcoholFree %}
+        </div>
+        <div class="col-md-3">
+            {% bootstrap_field form.porkFree %}
+        </div>
+        <div class="col-md-3">
+            {% bootstrap_field form.muslimOwner %}
         </div>
     </div>
 </div>
