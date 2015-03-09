@@ -7,9 +7,16 @@
 <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
     {% if user.is_staff %}
         <li>
-        <a role="menuitem" tabindex="-1" href="/admin">
-            Administrate
-        </a>
+            <a role="menuitem" tabindex="-1" href="/admin">
+                Administrate
+            </a>
+        </li>
+    {% endif %}
+    {% if user.is_venue_moderator %}
+        <li>
+            <a role="menuitem" tabindex="-1" href="{% url "venues.views.moderate.index" %}">
+                Moderate
+            </a>
         </li>
     {% endif %}
     <li>

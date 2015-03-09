@@ -113,11 +113,11 @@ class Restaurant(Venue):
     link = models.URLField(default="")
     google_reviews_url = models.URLField(default="")
 
-    catering = models.BooleanField(default=False)
-    delivery = models.BooleanField(default=False)
-    alcoholFree = models.BooleanField(default=False)
-    porkFree = models.BooleanField(default=False)
-    muslimOwner = models.BooleanField(default=False)
+    catering    = models.NullBooleanField(null=True, blank=True)
+    delivery    = models.NullBooleanField(null=True, blank=True)
+    alcoholFree = models.NullBooleanField(null=True, blank=True)
+    porkFree    = models.NullBooleanField(null=True, blank=True)
+    muslimOwner = models.NullBooleanField(null=True, blank=True)
 
     @property
     def _history_user(self):
