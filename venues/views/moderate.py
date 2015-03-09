@@ -6,20 +6,41 @@ from django.shortcuts import render, render_to_response, get_object_or_404
 from restaurant.utils import require_in_POST
 from venues.models import Restaurant, Comment
 
-
+@user_passes_test(lambda u: u.is_venue_moderator)
 def index(request):
+
+    # approved items paginator
     list = Restaurant.objects.order_by("approved", "name")
-    paginator = Paginator(list, 10)
+    paginatorApproved = Paginator(list, 10)
     page = request.GET.get("page")
     try:
-        restaurants = paginator.page(page)
+        restaurants = paginatorApproved.page(page)
     except PageNotAnInteger:
-        restaurants = paginator.page(1)
+        restaurants = paginatorApproved.page(1)
     except EmptyPage:
-        restaurants = paginator.page(paginator.num_pages)
+        restaurants = paginatorApproved.page(paginatorApproved.num_pages)
 
-    recently_update_restaurants = Restaurant.objects.order_by("-modified_on")[:10]
-    recently_added_reviews = Comment.objects.order_by("-modified_on")[:10]
+    # updated restaurants
+    list = Restaurant.objects.order_by("-modified_on")
+    paginatorApproved = Paginator(list, 10)
+    page = request.GET.get("pageUpdated")
+    try:
+        recently_update_restaurants = paginatorApproved.page(page)
+    except PageNotAnInteger:
+        recently_update_restaurants = paginatorApproved.page(1)
+    except EmptyPage:
+        recently_update_restaurants = paginatorApproved.page(paginatorApproved.num_pages)
+
+    # added reviews
+    list = Comment.objects.order_by("-modified_on")
+    paginatorApproved = Paginator(list, 10)
+    page = request.GET.get("pageReview")
+    try:
+        recently_added_reviews = paginatorApproved.page(page)
+    except PageNotAnInteger:
+        recently_added_reviews = paginatorApproved.page(1)
+    except EmptyPage:
+        recently_added_reviews = paginatorApproved.page(paginatorApproved.num_pages)
 
     context = {
         'restaurants': restaurants,
@@ -29,7 +50,6 @@ def index(request):
     return render(request, "moderate/index.html", context)
 
 
-@login_required
 @user_passes_test(lambda u: u.is_venue_moderator)
 def approve_restaurant(request, rest_pk):
     if request.method == "POST":

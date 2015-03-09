@@ -3,37 +3,49 @@
 {% block title %}Restaurants moderation{% endblock %}
 {% block body %}
     <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-4">
             <div class="list-group">
+                <div class="list-group-item list-group-item-danger">
+                    Restaurants under need to approve:
+                </div>
                 {% for r in restaurants %}
                     <div class="list-group-item">
                         <div class="row">
-                            <div class="col-md-8">
-                                <a href="{% url "venues.views.venuess.restaurant_by_slug" r.slug %}">{{ r.name }}</a>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="btn-group btn-group-sm pull-right">
-                                    <a class="btn btn-success"
-                                       href="{% url "venues.views.venuess.update_restaurant" r.pk %}">
-                                        <span class="glyphicon glyphicon-edit"></span>
-                                    </a>
-                                    <button class="btn btn-approve {{ r.approved|yesno:"btn-info,btn-default" }}"
-                                            data-approved="{{ r.approved|yesno:"true,false" }}"
-                                            data-href="{% url "venues.views.moderate.approve_restaurant" r.pk %}">
-                                        <span class="glyphicon glyphicon-ok"></span>
+                            <div class="col-md-12">
+
+                                <div class="pull-right" style="padding-left: 1em">
+                                    <button class="btn btn-sm btn-danger btn-remove pull-right" style="margin-left: 1em"
+                                            data-href="{% url "venues.views.venuess.remove_restaurant" r.pk %}">
+                                        <span class=" glyphicon glyphicon-remove"></span>
                                     </button>
+
+                                    <div class="btn-group btn-group-sm pull-right">
+                                        <a class="btn btn-success"
+                                           href="{% url "venues.views.venuess.update_restaurant" r.pk %}">
+                                            <span class="glyphicon glyphicon-edit"></span>
+                                        </a>
+
+                                        <button class="btn btn-approve {{ r.approved|yesno:"btn-info,btn-default" }}"
+                                                data-approved="{{ r.approved|yesno:"true,false" }}"
+                                                data-href="{% url "venues.views.moderate.approve_restaurant" r.pk %}">
+                                            <span class="glyphicon glyphicon-ok"></span>
+                                        </button>
+                                    </div>
+
                                 </div>
+                                <a href="{% url "venues.views.venuess.restaurant_by_slug" r.slug %}">{{ r.name }}</a>
+
                             </div>
                         </div>
                     </div>
                 {% endfor %}
                 <div class="text-center">
-                    {% bootstrap_pagination restaurants %}
+                    {% bootstrap_pagination restaurants parameter_name="page" %}
                 </div>
             </div>
         </div>
-        <div class="col-md-6">
-            <div class="col-md-6">
+        <div class="col-md-8">
+            <div class="col-md-7">
                 <div class="list-group">
                     <div class="list-group-item list-group-item-success">
                         Recently updated restaurants:
@@ -43,9 +55,12 @@
                             <a href="{% url "venues.views.venuess.restaurant_by_slug" item.slug %}">{{ item.name }}</a><br/>
                         </div>
                     {% endfor %}
+                    <div class="text-center">
+                        {% bootstrap_pagination recently_update_restaurants parameter_name="pageUpdated" %}
+                    </div>
                 </div>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-5">
                 <div class="list-group">
                     <div class="list-group-item list-group-item-info">
                         Recently added reviews:
@@ -61,6 +76,9 @@
                             {{ item.text|truncatewords:'5' }}
                         </div>
                     {% endfor %}
+                    <div class="text-center">
+                        {% bootstrap_pagination recently_added_reviews parameter_name="pageReview" %}
+                    </div>
                 </div>
             </div>
         </div>
@@ -70,10 +88,18 @@
             $(".btn-approve").click(function (e) {
                 var target = $(e.currentTarget);
                 var href = target.data("href");
-                console.log(target);
                 $.post(href, {
                     csrfmiddlewaretoken: '{{csrf_token}}',
                     approved: !target.data("approved")
+                }).done(function () {
+                    location.reload();
+                });
+            });
+            $(".btn-remove").click(function (e) {
+                var target = $(e.currentTarget);
+                var href = target.data("href");
+                $.post(href, {
+                    csrfmiddlewaretoken: '{{csrf_token}}'
                 }).done(function () {
                     location.reload();
                 });

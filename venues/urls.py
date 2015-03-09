@@ -16,6 +16,7 @@ urlpatterns = patterns('venues.views',
     url(r'(?P<rest_pk>[0-9]+)/show-all-tips/$', 'notes.show_all_notes'),
     url(r'(?P<rest_pk>[0-9]+)/report/$', 'reports.report_restaurant'),
 
+    url(r'(?P<rest_pk>[0-9]+)/remove', 'venuess.remove_restaurant'),
     url(r'(?P<rest_pk>[0-9]+)/update/$', 'venuess.update_restaurant'),
     url(r'(?P<rest_pk>[0-9]+)/approve/$', 'moderate.approve_restaurant'),
     url(r'(?P<rest_pk>[0-9]+)/profile$', 'venuess.restaurant'),

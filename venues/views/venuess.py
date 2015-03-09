@@ -1,4 +1,5 @@
 import json
+from django.http.response import HttpResponseBadRequest
 from django.shortcuts import render, redirect, get_object_or_404
 
 from django.http import HttpResponse, Http404
@@ -254,6 +255,15 @@ def restaurant(request, rest_pk):
     })
 
 
+@user_passes_test(lambda u: u.is_venue_moderator)
+def remove_restaurant(request, rest_pk):
+    if request.method == "POST":
+        rest = get_object_or_404(Restaurant, pk=rest_pk)
+        rest.delete()
+        return HttpResponse()
+    return HttpResponseBadRequest()
+
+
 @login_required
 def add_restaurant(request):
     if request.method == "GET":
@@ -274,7 +284,6 @@ def add_restaurant(request):
             })
         return HttpBadRequest(form.errors())
     return HttpBadRequest()
-
 
 
 @login_required
