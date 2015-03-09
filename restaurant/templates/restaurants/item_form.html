@@ -8,8 +8,8 @@
     </div>
     {{ form.name|add_class:'form-control' }}
     <div class="input-group-btn">
-        <button class="btn btn-primary" type="submit">
-            <span class="glyphicon glyphicon-plus"></span>
+        <button class="btn {{ is_add|yesno:"btn-primary,btn-success" }}" type="submit">
+            <span class="glyphicon {{ is_add|yesno:"glyphicon-plus,glyphicon-save" }}"></span>
         </button>
     </div>
 </div>

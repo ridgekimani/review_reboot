@@ -9,7 +9,8 @@ urlpatterns = patterns('venues.views',
 
     url(r'comments/(?P<comment_pk>[0-9]+)/remove/$', 'comments.remove_comment'),
     url(r'comments/(?P<comment_pk>[0-9]+)/update/$', 'comments.update_comment'),
-    # url(r'notes/(?P<note_pk>[0-9]+)/', 'note'),
+
+    url(r'moderate/$', 'moderate.index'),
 
     url(r'(?P<rest_pk>[0-9]+)/show-all-comments/$', 'comments.show_all_comments'),
     url(r'(?P<rest_pk>[0-9]+)/show-all-tips/$', 'notes.show_all_notes'),
