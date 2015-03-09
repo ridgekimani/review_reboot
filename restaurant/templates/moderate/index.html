@@ -4,16 +4,15 @@
 {% block body %}
     <div class="row">
         <div class="col-md-6">
-            {% bootstrap_pagination restaurants %}
             <div class="list-group">
                 {% for r in restaurants %}
                     <div class="list-group-item">
                         <div class="row">
-                            <div class="col-md-4">
+                            <div class="col-md-8">
                                 <a href="{% url "venues.views.venuess.restaurant_by_slug" r.slug %}">{{ r.name }}</a>
                             </div>
                             <div class="col-md-4">
-                                <div class="btn-group btn-group-sm">
+                                <div class="btn-group btn-group-sm pull-right">
                                     <a class="btn btn-success"
                                        href="{% url "venues.views.venuess.update_restaurant" r.pk %}">
                                         <span class="glyphicon glyphicon-edit"></span>
@@ -25,16 +24,45 @@
                                     </button>
                                 </div>
                             </div>
-                            <div class="col-md-4">
-                                {% if r.modified_by %}
-                                    edited by {{ r.modified_by }}
-                                {% endif %}
-                            </div>
                         </div>
                     </div>
                 {% endfor %}
+                <div class="text-center">
+                    {% bootstrap_pagination restaurants %}
+                </div>
             </div>
-            {% bootstrap_pagination restaurants %}
+        </div>
+        <div class="col-md-6">
+            <div class="col-md-6">
+                <div class="list-group">
+                    <div class="list-group-item list-group-item-success">
+                        Recently updated restaurants:
+                    </div>
+                    {% for item in recently_update_restaurants %}
+                        <div class="list-group-item">
+                            <a href="{% url "venues.views.venuess.restaurant_by_slug" item.slug %}">{{ item.name }}</a><br/>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="list-group">
+                    <div class="list-group-item list-group-item-info">
+                        Recently added reviews:
+                    </div>
+                    {% for item in recently_added_reviews %}
+                        <div class="list-group-item">
+                            <div>
+                                <a href="{% url "venues.views.venuess.restaurant" item.venue_id %}">{{ item.venue_name }}</a>
+
+                                <div class="badge pull-right">{{ item.rating }} / 5</div>
+                            </div>
+
+                            {{ item.text|truncatewords:'5' }}
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
         </div>
     </div>
     {% addtoblock "js" %}

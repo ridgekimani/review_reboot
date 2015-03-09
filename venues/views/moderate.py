@@ -4,7 +4,7 @@ from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.http.response import HttpResponse, HttpResponseBadRequest
 from django.shortcuts import render, render_to_response, get_object_or_404
 from restaurant.utils import require_in_POST
-from venues.models import Restaurant
+from venues.models import Restaurant, Comment
 
 
 def index(request):
@@ -18,8 +18,13 @@ def index(request):
     except EmptyPage:
         restaurants = paginator.page(paginator.num_pages)
 
+    recently_update_restaurants = Restaurant.objects.order_by("-modified_on")[:10]
+    recently_added_reviews = Comment.objects.order_by("-modified_on")[:10]
+
     context = {
         'restaurants': restaurants,
+        'recently_update_restaurants': recently_update_restaurants,
+        'recently_added_reviews': recently_added_reviews,
     }
     return render(request, "moderate/index.html", context)
 
