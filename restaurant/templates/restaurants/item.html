@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load sekizai_tags static %}
 {% block body %}
     <!-- COMMON INFO -->
     <div class="row">
@@ -10,7 +11,8 @@
             <h1>{{ restaurant.name }}
                 {% if user.is_authenticated %}
                     {% if user.is_superuser %}
-                        <a class="btn btn-success" href="{% url "venues.views.venuess.update_restaurant" restaurant.pk %}">
+                        <a class="btn btn-success"
+                           href="{% url "venues.views.venuess.update_restaurant" restaurant.pk %}">
                             <span class="glyphicon glyphicon-edit"></span>
                         </a>
                     {% endif %}
@@ -68,7 +70,8 @@
             {% if user.is_authenticated %}
                 <div class="panel panel-default">
                     <div class="panel-body">
-                        <form autocomplete="off" action="{% url "venues.views.notes.add_note" restaurant.id %}" method="post">
+                        <form autocomplete="off" action="{% url "venues.views.notes.add_note" restaurant.id %}"
+                              method="post">
                             {% if user.is_authenticated %}
                                 {% include 'notes/note-form.html' %}
                             {% endif %}
@@ -81,23 +84,24 @@
             {% endfor %}
         </div>
     </div>
-
-    {% include "restaurants/google-map.html" %}
+    {% addtoblock "js" %}
+        {% include "restaurants/google-map.html" %}
+        <script>
+            $(function () {
+                console.log($(".note-remove"));
+                $(".note-remove").click(function (event) {
+                    if (!confirm("Are you sure?")) {
+                        return false;
+                    }
+                })
+            });
+        </script>
+    {% endaddtoblock %}
     {#    <div class="row">#}
     {#        <div class="col-md-12">#}
     {#            {% include 'report.html' %}#}
     {#        </div>#}
     {#    </div>#}
-    <script>
-        $(function () {
-            console.log($(".note-remove"));
-            $(".note-remove").click(function (event) {
-                if (!confirm("Are you sure?")) {
-                    return false;
-                }
-            })
-        });
-    </script>
 
 
     {#    {{ restaurant.yelp_id }}#}

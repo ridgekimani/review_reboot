@@ -1,6 +1,5 @@
 {% extends "base.html" %}
-{% load bootstrap3 %}
-{% load static %}
+{% load bootstrap3 static sekizai_tags %}
 {% block title %}Report {{ venue_name }}{% endblock %}
 {% block body %}
     <div class="panel panel-default">
@@ -20,7 +19,7 @@
         </div>
     </div>
 {% endblock %}
-{% block scripts %}
+{% addtoblock "js" %}
     <!-- Form validation for mobile safari-->
     <script src="{% static "js/jquery.h5validate.js" %}"></script>
     <script>
@@ -28,4 +27,4 @@
             $('form').h5Validate();
         });
     </script>
-{% endblock %}
+{% endaddtoblock %}

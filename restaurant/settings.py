@@ -73,6 +73,7 @@ INSTALLED_APPS = (
     'django.contrib.gis',
     # 'south',
     'social.apps.django_app.default',
+    'sekizai',
     'bootstrap3',
     # pinax-account apps:
     # "ppacc",
@@ -129,7 +130,8 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     "django.core.context_processors.static",
     "django.core.context_processors.tz",
     "django.core.context_processors.request",
-    "pinax_theme_bootstrap.context_processors.theme",
+    "sekizai.context_processors.sekizai",
+    # "pinax_theme_bootstrap.context_processors.theme",
 )
 
 
