@@ -6,7 +6,7 @@ class MasjidAdmin(SimpleHistoryAdmin):
     list_display = ('name', 'id', 'phone', 'twitter_url','facebook_url')
 
 class RestaurantAdmin(SimpleHistoryAdmin):
-    list_display = ('name', 'id', 'phone', 'yelp_id', 'yelp_url','foursquare_id','foursquare_url', 'avg_rating')
+    list_display = ('name', 'id', 'phone', 'avg_rating')
 
 class CommentAdmin(admin.ModelAdmin):
     list_display = ('venue_name', 'rating', 'short_text', 'user')

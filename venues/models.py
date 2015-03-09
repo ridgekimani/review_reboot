@@ -49,12 +49,14 @@ class Venue(models.Model):
     categories = models.ManyToManyField(Category, null=True)
     avg_rating = models.DecimalField(max_digits=3, decimal_places=2, null=True, blank=True)
     closed_reports_count = models.IntegerField(default=0)
+
     is_closed = models.BooleanField(default=False)
+    approved = models.BooleanField(default=False, help_text=u"Is this venue approved by moderator")
+
 
     # Potentially User can make changes in this model
     modified_by = models.ForeignKey(User, null=True, blank=True)
     modified_on = models.DateTimeField(auto_now=True, null=True)
-
     modified_ip = models.CharField(default='', max_length=39, editable=False)
 
 
@@ -97,15 +99,21 @@ class Venue(models.Model):
 # simple_history will add its tables to db only if field added to model class,
 # not a parent class (Venue)
 class Restaurant(Venue):
-    cuisine = models.CharField(max_length=50)
-    eatingOptions = models.CharField(max_length=50)
-    yelp_id = models.CharField(max_length=255, blank=True)
-    yelp_url = models.CharField(max_length=255, blank=True, validators=[URLValidator()])
-    foursquare_id = models.CharField(max_length=100, blank=True)
-    foursquare_url = models.CharField(max_length=255, blank=True, validators=[URLValidator()])
+    MENU_TYPES = (
+        (1, "Partially Halal"),
+        (2, "Full Halal"),
+    )
 
-    # django-simple-history code
     history_link = HistoricalRecords()
+
+    cuisine = models.CharField(max_length=50)
+    menu = models.IntegerField(default=1, choices=MENU_TYPES)
+
+    catering = models.BooleanField(default=False)
+    delivery = models.BooleanField(default=False)
+    alcoholFree = models.BooleanField(default=False)
+    porkFree = models.BooleanField(default=False)
+    muslimOwner = models.BooleanField(default=False)
 
     @property
     def _history_user(self):
