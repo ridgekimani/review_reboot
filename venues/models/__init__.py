@@ -22,6 +22,19 @@ class Category(models.Model):
         ordering = ['name']
 
 
+class VenueUser(models.Model):
+    user = models.OneToOneField(User)
+    venue_moderator = models.BooleanField(default=False,
+                                          help_text="Is user can approve, remove, and see not approved venues")
+
+    @property
+    def is_venue_moderator(self):
+        """
+        :return: True if user can moderate
+        """
+        return self.venue_moderator or self.user.is_superuser
+
+
 # Create your models here.
 class Venue(models.Model):
     '''
@@ -188,7 +201,7 @@ class Note(models.Model):
     created_on = models.DateTimeField(auto_now_add=True)
     modified_on = models.DateTimeField(auto_now=True)
     user = models.ForeignKey(User)
-    content_type = models.ForeignKey(ContentType,editable=False)
+    content_type = models.ForeignKey(ContentType, editable=False)
     venue_id = models.PositiveIntegerField(editable=False)
     content_object = generic.GenericForeignKey('content_type', 'venue_id')
     text = models.TextField(max_length=200, blank=True)
@@ -199,7 +212,7 @@ class Note(models.Model):
     def list_for_venue(venue):
         related_object_type = ContentType.objects.get_for_model(venue)
         return Note.objects.filter(content_type__pk=related_object_type.id,
-                                      venue_id=venue.id)
+                                   venue_id=venue.id)
 
     def __unicode__(self):
         return self.text[:25]
@@ -230,7 +243,7 @@ class Report(models.Model):
         default=None,
         related_name='report_user'
     )
-    content_type = models.ForeignKey(ContentType,editable=False)
+    content_type = models.ForeignKey(ContentType, editable=False)
     venue_id = models.PositiveIntegerField(editable=False)
     content_object = generic.GenericForeignKey('content_type', 'venue_id')
     report = models.CharField(choices=REPORTS, max_length=30)
@@ -250,7 +263,7 @@ class Report(models.Model):
     def list_for_venue(venue):
         related_object_type = ContentType.objects.get_for_model(venue)
         return Report.objects.filter(content_type__pk=related_object_type.id,
-                                      venue_id=venue.id)
+                                     venue_id=venue.id)
 
 
     def __unicode__(self):

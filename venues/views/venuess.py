@@ -1,5 +1,5 @@
 import json
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 
 from django.http import HttpResponse, Http404
 from django.core import serializers
@@ -8,7 +8,7 @@ from django.contrib.gis import geos
 from django.contrib.gis import measure
 from django.views.decorators.http import require_GET
 from geopy.distance import distance as geopy_distance
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.core.exceptions import MultipleObjectsReturned, ObjectDoesNotExist
 from geopy.geocoders import Nominatim
 from tastypie.http import HttpBadRequest
@@ -273,6 +273,18 @@ def add_restaurant(request):
                 "categories": Category.objects.all()
             })
         return HttpBadRequest(form.errors())
+    return HttpBadRequest()
+
+
+@login_required
+@user_passes_test(lambda u: u.venueuser and u.venueuser.is_venue_moderator)
+def approve_restaurant(request, rest_pk, approve):
+    if request.method == "POST":
+        restaurant = get_object_or_404(Restaurant, pk=rest_pk)
+        restaurant.approved = approve
+        restaurant.save()
+
+        return HttpResponse()
     return HttpBadRequest()
 
 

@@ -1,4 +1,5 @@
 import os
+import sys
 
 
 PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir))
@@ -8,12 +9,21 @@ BASE_DIR = PACKAGE_ROOT
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": "dev.db",
+if 'test' in sys.argv:
+    print("using test database\n")
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': os.path.join(BASE_DIR, os.path.join('db', 'test_db.sqlite3')),
+        }
     }
-}
+else:
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": "dev.db",
+        }
+    }
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name

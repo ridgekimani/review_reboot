@@ -20,12 +20,14 @@
                 map = new google.maps.Map($('.map')[0], mapOptions);
 
                 {% for restaurant in all_restaurants %}
-                    latlng = new google.maps.LatLng({{ restaurant.location.y }}, {{ restaurant.location.x }});
-                    new google.maps.Marker({
-                        position: latlng,
-                        map: map,
-                        title: "{{ restaurant.name }}"
-                    });
+                    {% if restaurant.location %}
+                        latlng = new google.maps.LatLng({{ restaurant.location.y }}, {{ restaurant.location.x }});
+                        new google.maps.Marker({
+                            position: latlng,
+                            map: map,
+                            title: "{{ restaurant.name }}"
+                        });
+                    {% endif %}
                 {% endfor %}
             });
         </script>

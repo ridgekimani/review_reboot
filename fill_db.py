@@ -14,7 +14,6 @@ for row in read:
         address=temp[1],
         phone=temp[2],
         cuisine=temp[3],
-        eatingOptions=temp[4],
         location=geos.Point(float(temp[6]), float(temp[5]))
     )
     r.save()
