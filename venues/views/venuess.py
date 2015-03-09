@@ -276,17 +276,6 @@ def add_restaurant(request):
     return HttpBadRequest()
 
 
-@login_required
-@user_passes_test(lambda u: u.venueuser and u.venueuser.is_venue_moderator)
-def approve_restaurant(request, rest_pk, approve):
-    if request.method == "POST":
-        restaurant = get_object_or_404(Restaurant, pk=rest_pk)
-        restaurant.approved = approve
-        restaurant.save()
-
-        return HttpResponse()
-    return HttpBadRequest()
-
 
 @login_required
 def update_restaurant(request, rest_pk):

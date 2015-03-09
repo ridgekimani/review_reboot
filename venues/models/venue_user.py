@@ -3,7 +3,13 @@ from django.db import models
 from django.db.models.signals import post_save
 
 
-User.add_to_class("is_venue_moderator", lambda self: self.venue_moderator if hasattr(self, "venue_moderator") and self.venue_moderator else self.is_superuser)
+def is_venue_moderator(user):
+    if hasattr(user, "venueuser"):
+        return user.is_superuser or user.venueuser.venue_moderator
+    else:
+        return user.is_superuser
+
+User.add_to_class("is_venue_moderator", is_venue_moderator)
 
 class VenueUser(models.Model):
     user = models.OneToOneField(User)

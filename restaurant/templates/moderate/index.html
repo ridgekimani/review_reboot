@@ -1,5 +1,55 @@
 {% extends "base.html" %}
+{% load bootstrap3 sekizai_tags %}
 {% block title %}Restaurants moderation{% endblock %}
 {% block body %}
-    moderate
+    <div class="row">
+        <div class="col-md-6">
+            {% bootstrap_pagination restaurants %}
+            <div class="list-group">
+                {% for r in restaurants %}
+                    <div class="list-group-item">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <a href="{% url "venues.views.venuess.restaurant_by_slug" r.slug %}">{{ r.name }}</a>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="btn-group btn-group-sm">
+                                    <a class="btn btn-success"
+                                       href="{% url "venues.views.venuess.update_restaurant" r.pk %}">
+                                        <span class="glyphicon glyphicon-edit"></span>
+                                    </a>
+                                    <button class="btn btn-approve {{ r.approved|yesno:"btn-info,btn-default" }}"
+                                            data-approved="{{ r.approved|yesno:"true,false" }}"
+                                            data-href="{% url "venues.views.moderate.approve_restaurant" r.pk %}">
+                                        <span class="glyphicon glyphicon-ok"></span>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                {% if r.modified_by %}
+                                    edited by {{ r.modified_by }}
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+            {% bootstrap_pagination restaurants %}
+        </div>
+    </div>
+    {% addtoblock "js" %}
+        <script>
+            $(".btn-approve").click(function (e) {
+                var target = $(e.currentTarget);
+                var href = target.data("href");
+                console.log(target);
+                $.post(href, {
+                    csrfmiddlewaretoken: '{{csrf_token}}',
+                    approved: !target.data("approved")
+                }).done(function () {
+                    location.reload();
+                });
+            })
+        </script>
+    {% endaddtoblock %}
 {% endblock %}

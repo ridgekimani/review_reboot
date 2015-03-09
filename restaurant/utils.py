@@ -30,6 +30,38 @@ def get_client_ip(request):
     return ip
 
 
+def require_in_POST(*items):
+    def decorator(func):
+        def wrapper(request):
+            err = ""
+            for item in items:
+                if item not in request.POST:
+                    err += "'%s' is not defined\n" % item
+            if err:
+                return HttpResponseBadRequest(err)
+            return func(request)
+
+        return wrapper
+
+    return decorator
+
+
+def require_in_GET(*items):
+    def decorator(func):
+        def wrapper(request):
+            err = ""
+            for item in items:
+                if item not in request.GET:
+                    err += "'%s' is not defined\n" % item
+            if err:
+                return HttpResponseBadRequest(err)
+            return func(request)
+
+        return wrapper
+
+    return decorator
+
+
 class TestCaseEx(TestCase):
     """
     Extended TestCase class with ability to login, logout and some helpers methods

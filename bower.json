@@ -16,6 +16,7 @@
   "dependencies": {
     "jquery": "~1.11",
     "jquery-ui": "~1.11",
-    "bootstrap": "~3"
+    "bootstrap": "~3",
+    "jquery-cookie": "~1.4.1"
   }
 }
