@@ -36,7 +36,6 @@
 <div class="row">
     <div class="col-md-12">
         {{ form.phone.errors }}
-
         <div class="input-group{% if form.phone.errors %} has-error{% endif %}">
             <div class="input-group-addon">
                 <span class="glyphicon glyphicon-earphone"></span>
@@ -46,11 +45,14 @@
     </div>
 </div>
 
-<div class="panel panel-success" style="margin-top: 0.75em">
+<textarea hidden id="id_location" class="vSerializedField required" cols="150" rows="10" name="location">
+    {{ form.location.value }}
+</textarea>
 
+<div class="panel panel-success" style="margin-top: 0.75em">
     <div class="panel-body">
         <div class="r-categories">
-             {% bootstrap_field form.categories %}
+            {% bootstrap_field form.categories %}
         </div>
     </div>
 </div>

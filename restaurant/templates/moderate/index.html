@@ -55,9 +55,11 @@
                             <a href="{% url "venues.views.venuess.restaurant_by_slug" item.slug %}">{{ item.name }}</a><br/>
                         </div>
                     {% endfor %}
-                    <div class="text-center">
-                        {% bootstrap_pagination recently_update_restaurants parameter_name="pageUpdated" %}
-                    </div>
+                    {% if recently_update_restaurants.paginator.num_pages > 1 %}
+                        <div class="text-center">
+                            {% bootstrap_pagination recently_update_restaurants parameter_name="pageUpdated" %}
+                        </div>
+                    {% endif %}
                 </div>
             </div>
             <div class="col-md-5">
@@ -76,9 +78,11 @@
                             {{ item.text|truncatewords:'5' }}
                         </div>
                     {% endfor %}
-                    <div class="text-center">
-                        {% bootstrap_pagination recently_added_reviews parameter_name="pageReview" %}
-                    </div>
+                    {% if recently_added_reviews.paginator.num_pages > 1 %}
+                        <div class="text-center">
+                            {% bootstrap_pagination recently_added_reviews parameter_name="pageReview" %}
+                        </div>
+                    {% endif %}
                 </div>
             </div>
         </div>

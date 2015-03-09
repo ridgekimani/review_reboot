@@ -6,7 +6,7 @@ class RestaurantForm(forms.ModelForm):
     class Meta:
         model = models.Restaurant
         fields = ['name', 'cuisine', 'address', 'phone', 'categories', 'catering', 'delivery', 'alcoholFree',
-                  'porkFree', 'muslimOwner']
+                  'porkFree', 'muslimOwner', 'location']
         widgets = {
             'categories': forms.CheckboxSelectMultiple()
         }
