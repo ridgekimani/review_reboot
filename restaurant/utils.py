@@ -50,9 +50,12 @@ class TestCaseEx(TestCase):
         return _wrapper
 
     @staticmethod
-    def login(fn):
+    def login(fn, user=None):
         def _wrapper(self=None):
-            self.client.login(username=self.user.username, password=self.password)
+            if user:
+                self.client.login(username=user.username, password=user.password)
+            else:
+                self.client.login(username=self.user.username, password=self.password)
             fn(self)
             self.client.logout()
 

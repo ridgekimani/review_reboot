@@ -22,18 +22,6 @@ class Category(models.Model):
         ordering = ['name']
 
 
-class VenueUser(models.Model):
-    user = models.OneToOneField(User)
-    venue_moderator = models.BooleanField(default=False,
-                                          help_text="Is user can approve, remove, and see not approved venues")
-
-    @property
-    def is_venue_moderator(self):
-        """
-        :return: True if user can moderate
-        """
-        return self.venue_moderator or self.user.is_superuser
-
 
 # Create your models here.
 class Venue(models.Model):

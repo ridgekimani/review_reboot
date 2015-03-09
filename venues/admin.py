@@ -3,7 +3,7 @@ from django.contrib.gis import admin
 from simple_history.admin import SimpleHistoryAdmin
 from django.contrib.auth.admin import UserAdmin
 from venues import models
-from venues.models import VenueUser
+from venues.models.venue_user import VenueUser
 
 
 class VenueUserInline(admin.StackedInline):
