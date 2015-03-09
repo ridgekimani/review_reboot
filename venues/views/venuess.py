@@ -11,6 +11,7 @@ from geopy.distance import distance as geopy_distance
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import MultipleObjectsReturned, ObjectDoesNotExist
 from geopy.geocoders import Nominatim
+from tastypie.http import HttpBadRequest
 
 from restaurant.utils import get_client_ip
 
@@ -261,6 +262,18 @@ def add_restaurant(request):
             "form": form,
             "categories": Category.objects.all()
         })
+    elif request.method == "POST":
+        form = RestaurantForm(request.POST)
+        if form.is_valid():
+            new_restaurant = form.save()
+            return redirect(reverse('venues.views.venuess.restaurant_by_slug', args=[new_restaurant.slug]))
+        elif not request.is_ajax():
+            return render(request, "restaurants/new.html", {
+                "form": form,
+                "categories": Category.objects.all()
+            })
+        return HttpBadRequest(form.errors())
+    return HttpBadRequest()
 
 
 @login_required

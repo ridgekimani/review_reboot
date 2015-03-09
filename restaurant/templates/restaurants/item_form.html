@@ -1,0 +1,61 @@
+{% load widget_tweaks %}
+{% if restaurant.is_closed %}
+    <div class="alert alert-danger" role="alert">CLOSED</div>
+{% endif %}
+<div class="input-group input-group-lg {% if form.name.errors %} has-error{% endif %}">
+    <div class="input-group-addon">
+        Name
+    </div>
+    {{ form.name|add_class:'form-control' }}
+    <div class="input-group-btn">
+        <button class="btn btn-primary" type="submit">
+            <span class="glyphicon glyphicon-plus"></span>
+        </button>
+    </div>
+</div>
+
+<h4>
+    <div class="input-group{% if form.cuisine.errors %} has-error{% endif %}">
+        <div class="input-group-addon">
+            cuisine
+        </div>
+        {{ form.cuisine|add_class:'form-control' }}
+    </div>
+</h4>
+
+<h4>
+    <div class="input-group {% if form.address.errors %} has-error{% endif %}">
+        <div class="input-group-addon">
+            address
+        </div>
+        {{ form.address|add_class:'form-control' }}
+    </div>
+</h4>
+
+<div class="row">
+    <div class="col-md-12">
+        {{ form.phone.errors }}
+
+        <div class="input-group{% if form.phone.errors %} has-error{% endif %}">
+            <div class="input-group-addon">
+                <span class="glyphicon glyphicon-earphone"></span>
+            </div>
+            {{ form.phone|add_class:'form-control' }}
+        </div>
+    </div>
+</div>
+
+<div class="panel panel-default" style="margin-top: 0.75em">
+    <div class="panel-heading">
+        <h3 class="panel-title">Categories</h3>
+    </div>
+    <div class="panel-body">
+        {% if form.categories.errors %}
+            <div class="alert alert-danger">{{ form.categories.errors }}</div>
+        {% endif %}
+
+        <div class="r-categories">
+            {{ form.categories }}
+        </div>
+    </div>
+</div>
