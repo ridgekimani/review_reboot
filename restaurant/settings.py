@@ -71,7 +71,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.gis',
-    'south',
+    # 'south',
     'social.apps.django_app.default',
     'bootstrap3',
     # pinax-account apps:
