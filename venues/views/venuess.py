@@ -16,7 +16,8 @@ from restaurant.utils import get_client_ip
 
 from venues import models
 from venues import forms
-from venues.models import Restaurant, Comment, Note, Report
+from venues.forms import RestaurantForm
+from venues.models import Restaurant, Comment, Note, Report, Category
 
 
 def get_masjids(longitude, latitude, categories):
@@ -79,8 +80,8 @@ def get_masjids(longitude, latitude, categories):
 def restaurants_lists(request):
     form = forms.AddressForm()
     restaurants = []
-    latitude=""
-    longitude=""
+    latitude = ""
+    longitude = ""
     if request.POST:
         form = forms.AddressForm(request.POST)
         if form.is_valid():
@@ -115,23 +116,23 @@ def restaurants_lists(request):
                     location = ""
 
                 if location:
-                    latitude= location.latitude
-                    longitude=location.longitude
-                    currentPoint = geos.GEOSGeometry('POINT(%s %s)' %(longitude, latitude))
+                    latitude = location.latitude
+                    longitude = location.longitude
+                    currentPoint = geos.GEOSGeometry('POINT(%s %s)' % (longitude, latitude))
                     distance_m = {'km': 15}
                     if list_of_cats:
                         restaurants = models.Restaurant.gis.filter(
                             location__distance_lte=(currentPoint, measure.D(**distance_m)),
                             categories__in=list_of_cats
-                            ).distance(currentPoint)
+                        ).distance(currentPoint)
                     else:
-                        restaurants = models.Restaurant.gis.filter(location__distance_lte=(currentPoint, measure.D(**distance_m))).distance(currentPoint)
-        context = {'all_restaurants': restaurants,'form': form,'longitude': longitude, 'latitude' : latitude}
+                        restaurants = models.Restaurant.gis.filter(
+                            location__distance_lte=(currentPoint, measure.D(**distance_m))).distance(currentPoint)
+        context = {'all_restaurants': restaurants, 'form': form, 'longitude': longitude, 'latitude': latitude}
         return render(request, 'restaurants/restaurants.html', context)
     else:
-        context = {'all_restaurants': restaurants,'form': form,'longitude': longitude, 'latitude' : latitude}
+        context = {'all_restaurants': restaurants, 'form': form, 'longitude': longitude, 'latitude': latitude}
         return render(request, 'restaurants/restaurants.html', context)
-
 
 
 def get_restaurants(longitude, latitude, categories):
@@ -250,6 +251,16 @@ def restaurant(request, rest_pk):
         'notes': Note.list_for_venue(_restaurant).order_by('-modified_on'),
         'reports': Report.list_for_venue(_restaurant),
     })
+
+
+@login_required
+def add_restaurant(request):
+    if request.method == "GET":
+        form = RestaurantForm()
+        return render(request, "restaurants/new.html", {
+            "form": form,
+            "categories": Category.objects.all()
+        })
 
 
 @login_required

@@ -26,6 +26,7 @@
             <input class="btn btn-default" type="submit" value="Search"/>
             <a class="btn btn-default" href="/login/facebook?next=/restaurants/restaurants_lists/"
                role="button">Login</a>
+            <a href="{% url "venues.views.venuess.add_restaurant" %}" class="btn btn-primary">Add restaurant</a>
         </form>
         <form class="navbar-form pull-right">
             {% if user.is_authenticated %}
