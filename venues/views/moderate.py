@@ -32,6 +32,10 @@ def index(request):
     except EmptyPage:
         recently_update_restaurants = paginatorApproved.page(paginatorApproved.num_pages)
 
+    for rest in recently_update_restaurants.object_list:
+        history = rest.history_link.last()
+        rest = rest
+
     # added reviews
     list = Comment.objects.order_by("-modified_on")
     paginatorApproved = Paginator(list, 10)

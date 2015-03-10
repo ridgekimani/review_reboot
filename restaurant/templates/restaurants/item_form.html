@@ -46,7 +46,7 @@
 </div>
 
 <textarea hidden id="id_location" class="vSerializedField required" cols="150" rows="10" name="location">
-    {{ form.location.value }}
+    {% spaceless %}{{ form.location.value }}{% endspaceless %}
 </textarea>
 
 <div class="panel panel-success" style="margin-top: 0.75em">

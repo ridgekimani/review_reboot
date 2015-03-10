@@ -11,6 +11,9 @@
             position = new google.maps.LatLng(-33.8902, 151.1759);
         {% endif %}
 
+        var value = 'POINT (' + position.lng() + ' ' + position.lat() + ')';
+        $("#id_location").html(value);
+
         map = new google.maps.Map(document.getElementById('map-canvas'), {
             mapTypeId: google.maps.MapTypeId.ROADMAP,
             center: position,
