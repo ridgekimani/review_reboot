@@ -53,6 +53,9 @@
                     {% for item in recently_update_restaurants %}
                         <div class="list-group-item">
                             <a href="{% url "venues.views.venuess.restaurant_by_slug" item.slug %}">{{ item.name }}</a><br/>
+                            changes: <i>{% for f in  item.changed_fields %}
+                            {{ f }}
+                        {% endfor %}</i>
                         </div>
                     {% endfor %}
                     {% if recently_update_restaurants.paginator.num_pages > 1 %}

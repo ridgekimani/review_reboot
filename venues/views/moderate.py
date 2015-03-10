@@ -32,9 +32,20 @@ def index(request):
     except EmptyPage:
         recently_update_restaurants = paginatorApproved.page(paginatorApproved.num_pages)
 
+    # checking for restaurant changed fields
+    # which can be accessed via changed_fields property
     for rest in recently_update_restaurants.object_list:
-        history = rest.history_link.last()
-        rest = rest
+        items = rest.history_link.filter(id=rest.id).order_by("-history_date")
+        changed_fields = []
+        if items.count() > 1:
+            previous = items[1]
+            if previous:
+                for field in rest._meta.get_all_field_names():
+                    if field not in ['categories', 'modified_by', 'modified_on', 'slug'] and getattr(rest, field) != getattr(previous, field):
+                        changed_fields.append(field)
+        else:
+            changed_fields.append("created")
+        rest.changed_fields = changed_fields
 
     # added reviews
     list = Comment.objects.order_by("-modified_on")
