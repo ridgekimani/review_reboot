@@ -7,7 +7,7 @@ from venues.models import Restaurant
 from venues.models.comment import Comment
 
 
-@user_passes_test(lambda u: u.is_venue_moderator)
+@user_passes_test(lambda u: u.is_venue_moderator())
 def index(request):
 
     # approved items paginator
@@ -51,7 +51,8 @@ def index(request):
     return render(request, "moderate/index.html", context)
 
 
-@user_passes_test(lambda u: u.is_venue_moderator)
+@login_required
+@user_passes_test(lambda u: u.is_venue_moderator())
 def approve_restaurant(request, rest_pk):
     if request.method == "POST":
         restaurant = get_object_or_404(Restaurant, pk=rest_pk)

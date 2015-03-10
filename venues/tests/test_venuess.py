@@ -13,8 +13,8 @@ class TestVenuess(TestCaseEx):
         )
         rest.save()
 
-        response = self.post("venues.views.venuess.approve_restaurant", pargs=[
-            rest.pk, 1
+        response = self.post("venues.views.moderate.approve_restaurant", params={'approved': True}, pargs=[
+            rest.pk
         ])
         self.assertEqual(response.status_code, 302)
 
@@ -28,8 +28,8 @@ class TestVenuess(TestCaseEx):
         )
         rest.save()
 
-        response = self.post("venues.views.venuess.approve_restaurant", pargs=[
-            rest.pk, 1
+        response = self.post("venues.views.moderate.approve_restaurant", params={'approved': True}, pargs=[
+            rest.pk
         ])
         self.assertEqual(response.status_code, 302)
 
@@ -47,8 +47,8 @@ class TestVenuess(TestCaseEx):
         )
         rest.save()
 
-        self.can_post("venues.views.venuess.approve_restaurant", pargs=[
-            rest.pk, 1
+        self.can_post("venues.views.moderate.approve_restaurant", params={'approved': True}, pargs=[
+            rest.pk
         ])
         self.client.logout()
 
@@ -62,6 +62,6 @@ class TestVenuess(TestCaseEx):
         )
         rest.save()
 
-        self.can_post("venues.views.venuess.approve_restaurant", pargs=[
-            rest.pk, 1
+        self.can_post("venues.views.moderate.approve_restaurant", params={'approved': True}, pargs=[
+            rest.pk
         ])
