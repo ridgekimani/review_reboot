@@ -41,8 +41,12 @@
 
             var place = places[0];
             marker.title = place.name;
-            marker.position = place.geometry.location;
+            marker.setPosition(place.geometry.location);
             map.setCenter(marker.position);
+        });
+
+        google.maps.event.addListener(map, 'click', function(event) {
+            marker.setPosition(event.latLng);
         });
 
         google.maps.event.addListener(map, 'bounds_changed', function () {
