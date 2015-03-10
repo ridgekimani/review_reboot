@@ -43,10 +43,14 @@
             marker.title = place.name;
             marker.setPosition(place.geometry.location);
             map.setCenter(marker.position);
+            var value = 'POINT (' + event.latLng.lng() + ' ' + event.latLng.lat() + ')';
+            $("#id_location").html(value);
         });
 
         google.maps.event.addListener(map, 'click', function(event) {
             marker.setPosition(event.latLng);
+            var value = 'POINT (' + event.latLng.lng() + ' ' + event.latLng.lat() + ')';
+            $("#id_location").html(value);
         });
 
         google.maps.event.addListener(map, 'bounds_changed', function () {
