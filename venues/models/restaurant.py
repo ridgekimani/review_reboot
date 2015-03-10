@@ -8,23 +8,30 @@ __author__ = 'm'
 # not a parent class (Venue)
 class Restaurant(Venue):
     MENU_TYPES = (
+        (0, "-"),
         (1, "Partially Halal"),
         (2, "Full Halal"),
+    )
+
+    CHOICES = (
+        (None, "-"),
+        (False, "Yes"),
+        (True, "No"),
     )
 
     history_link = HistoricalRecords()
 
     cuisine = models.CharField(max_length=50)
-    menu = models.IntegerField(default=1, choices=MENU_TYPES)
+    menu = models.IntegerField(default=0, choices=MENU_TYPES)
 
     link = models.URLField(default="")
     google_reviews_url = models.URLField(default="")
 
-    catering = models.NullBooleanField(null=True, blank=True)
-    delivery = models.NullBooleanField(null=True, blank=True)
-    alcoholFree = models.NullBooleanField(null=True, blank=True)
-    porkFree = models.NullBooleanField(null=True, blank=True)
-    muslimOwner = models.NullBooleanField(null=True, blank=True)
+    catering = models.NullBooleanField(null=True, blank=True, choices=CHOICES)
+    delivery = models.NullBooleanField(null=True, blank=True, choices=CHOICES)
+    alcoholFree = models.NullBooleanField(null=True, blank=True, choices=CHOICES)
+    porkFree = models.NullBooleanField(null=True, blank=True, choices=CHOICES)
+    muslimOwner = models.NullBooleanField(null=True, blank=True, choices=CHOICES)
 
     @property
     def _history_user(self):

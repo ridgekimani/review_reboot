@@ -8,7 +8,7 @@
                     </a>
                         {% if user.is_venue_moderator %}
                             <a class="btn btn-small btn-success"
-                               onClick="window.open('{% url 'venues.views.venuess.update_restaurant' restaurant.pk %}', '_blank' )"
+                               href="{% url 'venues.views.venuess.update_restaurant' restaurant.pk %}"
                                role="button">Edit</a>
                         {% endif %}
                     </h3>
