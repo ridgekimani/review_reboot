@@ -24,8 +24,10 @@ class Restaurant(Venue):
     cuisine = models.CharField(max_length=50)
     menu = models.IntegerField(default=0, choices=MENU_TYPES)
 
-    link = models.URLField(default="")
+    website = models.URLField(default="")
     google_reviews_url = models.URLField(default="")
+    yelp_url = models.URLField(default="")
+    foursquare_url = models.URLField(default="")
 
     catering = models.NullBooleanField(null=True, blank=True, choices=CHOICES)
     delivery = models.NullBooleanField(null=True, blank=True, choices=CHOICES)
