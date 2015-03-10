@@ -3,7 +3,7 @@
         <div class="results-wrapper">
             <div class="content">
                 {% for restaurant in all_restaurants %}
-                    <h3><a href="{% url 'venues.views.venuess.restaurant' restaurant.pk %}">
+                    <h3><a href="{% url 'venues.views.venuess.restaurant_by_slug' restaurant.slug %}">
                         {{ restaurant.name }}
                     </a>
                         {% if user.is_venue_moderator %}

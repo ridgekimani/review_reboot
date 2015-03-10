@@ -3,13 +3,12 @@ from django.contrib.contenttypes.models import ContentType
 from django.core.context_processors import csrf
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.core.urlresolvers import reverse
-from django.http.response import HttpResponse
 from django.shortcuts import redirect, render
 
-from restaurant import settings
 from restaurant.utils import get_client_ip
 from venues import forms
-from venues.models import Restaurant, Report
+from venues.models import Restaurant
+from venues.models.report import Report
 
 
 def report_restaurant(request, rest_pk):

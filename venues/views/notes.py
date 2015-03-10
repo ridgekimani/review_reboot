@@ -8,8 +8,8 @@ from django.shortcuts import redirect, get_object_or_404, render
 from django.views.decorators.http import require_POST, require_GET
 from restaurant.utils import get_client_ip
 from venues.forms import NoteForm
-from venues.models import Restaurant, Note
-
+from venues.models import Restaurant
+from venues.models.note import Note
 
 
 def show_all_notes(request, rest_pk):

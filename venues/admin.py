@@ -2,7 +2,12 @@ from django.contrib.auth.models import User
 from django.contrib.gis import admin
 from simple_history.admin import SimpleHistoryAdmin
 from django.contrib.auth.admin import UserAdmin
-from venues import models
+from venues.models import Restaurant, Masjid
+
+from venues.models.category import Category
+from venues.models.comment import Comment
+from venues.models.note import Note
+from venues.models.report import Report
 from venues.models.venue_user import VenueUser
 
 
@@ -56,9 +61,9 @@ class CategoryAdmin(admin.ModelAdmin):
     list_display = ('name', 'id')
 
 # Register your models here.
-admin.site.register(models.Restaurant, RestaurantAdmin)
-admin.site.register(models.Masjid, MasjidAdmin)
-admin.site.register(models.Comment, CommentAdmin)
-admin.site.register(models.Category, CategoryAdmin)
-admin.site.register(models.Note, NoteAdmin)
-admin.site.register(models.Report, admin.ModelAdmin)
+admin.site.register(Restaurant, RestaurantAdmin)
+admin.site.register(Masjid, MasjidAdmin)
+admin.site.register(Comment, CommentAdmin)
+admin.site.register(Category, CategoryAdmin)
+admin.site.register(Note, NoteAdmin)
+admin.site.register(Report, admin.ModelAdmin)

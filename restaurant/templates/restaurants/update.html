@@ -50,34 +50,5 @@
 
     {% addtoblock "js" %}
         {% include "restaurants/google-map.html" %}
-        {#        <script src="https://maps.googleapis.com/maps/api/js?libraries=places"></script>#}
-        {#        <script>#}
-        {#            function initialize() {#}
-        {#                var mapCanvas = document.getElementById('map-canvas');#}
-        {#                latlng = new google.maps.LatLng({{restaurant.location.y}}, {{restaurant.location.x}});#}
-        {#                var mapOptions = {#}
-        {#                    center: latlng,#}
-        {#                    zoom: 18,#}
-        {#                    mapTypeId: google.maps.MapTypeId.ROADMAP,#}
-        {#                    mapTypeControl: false#}
-        {#                };#}
-        {#                var map = new google.maps.Map(mapCanvas, mapOptions);#}
-        {#                var marker = new google.maps.Marker({#}
-        {#                    position: latlng,#}
-        {#                    map: map,#}
-        {#                    draggable: true,#}
-        {#                    title: '{{ restaurant.name }} | {{ restaurant.address }}'#}
-        {#                });#}
-        {##}
-        {#                google.maps.event.addListener(marker, 'dragend', function (event) {#}
-        {#                    var value = 'POINT (' + event.latLng.lng() + ' ' + event.latLng.lat() + ')';#}
-        {#                    $("#id_location").html(value);#}
-        {#                });#}
-        {##}
-        {#                var input = document.getElementById('pac-input');#}
-        {#                var searchBox = new google.maps.places.SearchBox(input);#}
-        {#            }#}
-        {#            google.maps.event.addDomListener(window, 'load', initialize);#}
-        {#        </script>#}
     {% endaddtoblock %}
 {% endblock %}

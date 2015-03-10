@@ -5,7 +5,7 @@
         {% if form.location.value %}
             // TODO bad hack should be fixed with better way to get x,y value of location
             re = /POINT\s*\((-?\d+(.\d+)?)\s+(-?\d+(.\d+)\))/i;
-            result = re.exec('{{ form.location.value }}');
+            result = re.exec("{% spaceless %}{{ form.location.value }}{% endspaceless %}");
             position = new google.maps.LatLng(parseFloat(result[3]), parseFloat(result[1]));
         {% else %}
             position = new google.maps.LatLng(-33.8902, 151.1759);
@@ -14,7 +14,7 @@
         map = new google.maps.Map(document.getElementById('map-canvas'), {
             mapTypeId: google.maps.MapTypeId.ROADMAP,
             center: position,
-            zoom: 12
+            zoom: 16
         });
 
         var marker = new google.maps.Marker({

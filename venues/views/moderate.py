@@ -3,8 +3,9 @@ from django.contrib.auth.decorators import user_passes_test
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.http.response import HttpResponse, HttpResponseBadRequest
 from django.shortcuts import render, render_to_response, get_object_or_404
-from restaurant.utils import require_in_POST
-from venues.models import Restaurant, Comment
+from venues.models import Restaurant
+from venues.models.comment import Comment
+
 
 @user_passes_test(lambda u: u.is_venue_moderator)
 def index(request):

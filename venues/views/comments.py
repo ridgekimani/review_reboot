@@ -10,9 +10,9 @@ from django.shortcuts import redirect, get_object_or_404, render, render_to_resp
 from django.views.decorators.http import require_POST, require_GET
 
 from restaurant.utils import get_client_ip
-from venues import models
 from venues.forms import CommentForm
-from venues.models import Restaurant, Comment
+from venues.models import Restaurant
+from venues.models.comment import Comment
 
 
 @login_required
@@ -30,7 +30,7 @@ def comment(request, rest_pk):
     if request.method == u'GET':
         try:
             filterargs = {'venue_id': rest_pk, 'user': request.user}
-            comment = models.Comment.objects.get(**filterargs)
+            comment = Comment.objects.get(**filterargs)
             context['text'] = comment.text
             context['rating'] = comment.rating
 
@@ -41,9 +41,9 @@ def comment(request, rest_pk):
 
         filterargs = {'venue_id': rest_pk, 'user': request.user}
         try:
-            comment = models.Comment.objects.get(**filterargs)
+            comment = Comment.objects.get(**filterargs)
         except ObjectDoesNotExist:
-            comment = models.Comment(user=request.user, content_object=rest)
+            comment = Comment(user=request.user, content_object=rest)
         comment.text = request.POST[u'comment']
         comment.rating = int(request.POST[u'rating'])
         comment.save()
@@ -57,7 +57,7 @@ def comment(request, rest_pk):
 
 
 def show_all_comments(request, rest_pk):
-    comments = models.Comment.objects.filter(venue_id=rest_pk)
+    comments = Comment.objects.filter(venue_id=rest_pk)
     data = serializers.serialize('json', comments)
     data = json.loads(data)
     return HttpResponse(json.dumps({"response": {"total": len(data), "comments": data}}),

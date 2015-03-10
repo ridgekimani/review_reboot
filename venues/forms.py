@@ -1,10 +1,9 @@
 from django import forms
-from venues import models
-
+from venues.models import Restaurant, Comment, Note, Report
 
 class RestaurantForm(forms.ModelForm):
     class Meta:
-        model = models.Restaurant
+        model = Restaurant
         fields = ['name', 'cuisine', 'address', 'phone', 'categories', 'catering', 'delivery', 'alcoholFree',
                   'porkFree', 'muslimOwner', 'location']
         widgets = {
@@ -19,18 +18,18 @@ class AddressForm(forms.Form):
 
 class CommentForm(forms.ModelForm):
     class Meta:
-        model = models.Comment
+        model = Comment
         fields = ['rating', 'text']
 
 
 class NoteForm(forms.ModelForm):
     class Meta:
-        model = models.Note
+        model = Note
         fields = ['text']
         exclude = ('modified_ip',)
 
 
 class ReportForm(forms.ModelForm):
     class Meta:
-        model = models.Report
+        model = Report
         fields = ['report', 'note']

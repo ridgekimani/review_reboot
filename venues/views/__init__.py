@@ -1,17 +1,16 @@
 import json
 
 from django.http import HttpResponse
-from django.core import serializers
 from django.contrib.auth import login
 from social.apps.django_app.utils import psa
 
-from venues import models
+from venues.models.category import Category
 
 
 def get_category(request):
     if request.is_ajax():
         cat = request.GET['term']
-        categories = models.Category.objects.filter(name__icontains=cat)[:20]
+        categories = Category.objects.filter(name__icontains=cat)[:20]
         results = []
         for category in categories:
             cat_json = {}
