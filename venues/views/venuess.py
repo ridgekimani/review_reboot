@@ -138,6 +138,11 @@ def restaurants_lists(request):
         page = request.GET.get('page')
         restaurants = Restaurant.objects.all()
 
+    if hasattr(request.user, 'is_venue_moderator') and request.user.is_venue_moderator():
+        pass
+    else:
+        restaurants = Restaurant.objects.filter(approved=True)
+
     paginator = Paginator(restaurants, 5)
     page = request.GET.get("page")
     try:
@@ -264,6 +269,10 @@ def closest(request):
 
 def restaurant(request, rest_pk):
     _restaurant = Restaurant.objects.get(pk=rest_pk)
+
+    if not _restaurant.approved and not (hasattr(request.user, 'is_venue_moderator') and request.user.is_venue_moderator()):
+        return redirect(reverse("django.contrib.auth.views.login") + "?next=%s" % request.path)
+
     return render(request, 'restaurants/item.html', {
         'restaurant': _restaurant,
         'comments': Comment.list_for_venue(_restaurant).order_by('-modified_on'),
