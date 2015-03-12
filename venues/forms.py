@@ -28,7 +28,7 @@ class CommonForm(forms.ModelForm):
 
             self.instance.modified_ip = get_client_ip(self.request)
 
-        super(CommonForm, self).save(commit)
+        return super(CommonForm, self).save(commit)
 
 
 class RestaurantForm(CommonForm):
