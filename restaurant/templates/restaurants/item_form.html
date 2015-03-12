@@ -15,17 +15,9 @@
     </div>
 </div>
 
-<h4>
-    <div class="input-group{% if form.cuisine.errors %} has-error{% endif %}">
-        <div class="input-group-addon">
-            cuisine
-        </div>
-        {{ form.cuisine|add_class:'form-control' }}
-    </div>
-</h4>
 
 <h4>
-    <div class="input-group{% if form.cuisine.errors %} has-error{% endif %}">
+    <div class="input-group{% if form.address.errors %} has-error{% endif %}">
         <div class="input-group-addon">
             Address
         </div>
@@ -54,7 +46,7 @@
 <div class="panel panel-success" style="margin-top: 0.75em">
     <div class="panel-body">
         <div class="r-categories">
-            {% bootstrap_field form.categories %}
+            {% bootstrap_field form.cuisines %}
         </div>
     </div>
 </div>

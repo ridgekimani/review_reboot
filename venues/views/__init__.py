@@ -3,19 +3,18 @@ import json
 from django.http import HttpResponse
 from django.contrib.auth import login
 from social.apps.django_app.utils import psa
-
-from venues.models.category import Category
+from venues.models.cuisine import Cuisine
 
 
 def get_category(request):
     if request.is_ajax():
         cat = request.GET['term']
-        categories = Category.objects.filter(name__icontains=cat)[:20]
+        cuisines = Cuisine.objects.filter(name__icontains=cat)[:20]
         results = []
-        for category in categories:
+        for cuisine in cuisines:
             cat_json = {}
-            cat_json['id'] = category.id
-            cat_json['value'] = category.name
+            cat_json['id'] = cuisine.id
+            cat_json['value'] = cuisine.name
             results.append(cat_json)
         data = json.dumps(results)
     else:

@@ -19,8 +19,8 @@ from restaurant.utils import get_client_ip
 from venues import forms
 from venues.forms import RestaurantForm
 from venues.models import Masjid, Restaurant
-from venues.models.category import Category
 from venues.models.comment import Comment
+from venues.models.cuisine import Cuisine
 from venues.models.note import Note
 from venues.models.report import Report
 
@@ -40,7 +40,7 @@ def get_masjids(longitude, latitude, categories):
     distance_m = 15000
     list_of_cats = []
     for c in categories:
-        list_of_cats.append(Category.objects.get(name=c))
+        list_of_cats.append(Cuisine.objects.get(name=c))
     if list_of_cats:
         masjids = Masjid.gis.filter(
             location__distance_lte=(currentPoint, distance_m),
@@ -75,7 +75,7 @@ def get_masjids(longitude, latitude, categories):
         # Replace category ids with names
         cat_names = []
         for cat_id in masjid['fields']['categories']:
-            cat = Category.objects.get(id=cat_id)
+            cat = Cuisine.objects.get(id=cat_id)
             cat_names.append(cat.name)
         masjid['fields']['categories'] = cat_names
 
@@ -97,11 +97,11 @@ def restaurants_lists(request):
             list_of_cats = []
             if category:
                 try:
-                    list_of_cats.append(Category.objects.get(name__icontains=category))
+                    list_of_cats.append(Cuisine.objects.get(name__icontains=category))
                 except (MultipleObjectsReturned):
-                    length = Category.objects.filter(name__icontains=category).__len__()
+                    length = Cuisine.objects.filter(name__icontains=category).__len__()
                     for l in range(length):
-                        list_of_cats.append(Category.objects.filter(name__icontains=category)[l])
+                        list_of_cats.append(Cuisine.objects.filter(name__icontains=category)[l])
                 except (ObjectDoesNotExist):
                     pass
             if not address:
@@ -174,7 +174,7 @@ def get_restaurants(longitude, latitude, categories):
     distance_m = 15000
     list_of_cats = []
     for c in categories:
-        list_of_cats.append(Category.objects.get(name=c))
+        list_of_cats.append(Cuisine.objects.get(name=c))
     if list_of_cats:
         restaurants = Restaurant.gis.filter(
             location__distance_lte=(currentPoint, distance_m),
@@ -217,7 +217,7 @@ def get_restaurants(longitude, latitude, categories):
         # Replace category ids with names
         cat_names = []
         for cat_id in restaurant['fields']['categories']:
-            cat = Category.objects.get(id=cat_id)
+            cat = Cuisine.objects.get(id=cat_id)
             cat_names.append(cat.name)
         restaurant['fields']['categories'] = cat_names
 
@@ -296,7 +296,7 @@ def add_restaurant(request):
         form = RestaurantForm(request=request)
         return render(request, "restaurants/new.html", {
             "form": form,
-            "categories": Category.objects.all()
+            "categories": Cuisine.objects.all()
         })
     elif request.method == "POST":
         form = RestaurantForm(request.POST, request=request)
@@ -306,7 +306,7 @@ def add_restaurant(request):
         elif not request.is_ajax():
             return render(request, "restaurants/new.html", {
                 "form": form,
-                "categories": Category.objects.all()
+                "categories": Cuisine.objects.all()
             })
         return HttpBadRequest(form.errors())
     return HttpBadRequest()

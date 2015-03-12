@@ -9,7 +9,6 @@ class TestVenuess(TestCaseEx):
             name="1244",
             address="245",
             phone="1923819273",
-            cuisine="asdkasdl",
         )
         rest.save()
 
@@ -24,7 +23,6 @@ class TestVenuess(TestCaseEx):
             name="1244",
             address="245",
             phone="1923819273",
-            cuisine="asdkasdl",
         )
         rest.save()
 
@@ -43,7 +41,6 @@ class TestVenuess(TestCaseEx):
             name="1244",
             address="245",
             phone="1923819273",
-            cuisine="asdkasdl",
         )
         rest.save()
 
@@ -58,7 +55,6 @@ class TestVenuess(TestCaseEx):
             name="1244",
             address="245",
             phone="1923819273",
-            cuisine="asdkasdl",
         )
         rest.save()
 
