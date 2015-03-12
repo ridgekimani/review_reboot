@@ -42,7 +42,7 @@ def index(request):
             previous = items[1]
             if previous:
                 for field in rest._meta.get_all_field_names():
-                    if field not in ['categories', 'modified_by', 'modified_on', 'slug'] and getattr(rest, field) != getattr(previous, field):
+                    if field not in ['categories', 'modified_by', 'created_by', 'modified_by_id', 'created_by_id', 'modified_on', 'slug'] and getattr(rest, field) != getattr(previous, field):
                         changed_fields.append(field)
         else:
             changed_fields.append("created")

@@ -44,7 +44,6 @@ class Restaurant(Venue):
     def _history_user(self, value):
         self.modified_by = value
 
-
     def show_url(self):
         return reverse("venues.views.venuess.restaurant", args=[self.id])
 

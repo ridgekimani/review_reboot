@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% load bootstrap3 sekizai_tags %}
+{% block title %}Restaurants moderation{% endblock %}
+{% block body %}
+    <div class="list-group">
+        {% for restaurant in restaurants %}
+            <div class="list-group-item">   {{ restaurant }}</div>
+        {% endfor %}
+    </div>
+
+{% endblock %}

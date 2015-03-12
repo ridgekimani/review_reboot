@@ -30,6 +30,11 @@
         </a>
     </li>
     <li>
+        <a role="menuitem" tabindex="-1" href="{% url "venues.views.profile.index" %}">
+            profile
+        </a>
+    </li>
+    <li>
         <a role="menuitem" tabindex="-1" href="{% url "django.contrib.auth.views.logout" %}?next={{ request.path }}">
             Logout
         </a>

@@ -34,25 +34,28 @@ class Venue(models.Model):
             )
         ]
     )
+
     location = gis_models.PointField(
         u'Latitude/Longitude',
         geography=True,
         blank=True,
         null=True
     )
+
     categories = models.ManyToManyField(Category, null=True)
     avg_rating = models.DecimalField(max_digits=3, decimal_places=2, null=True, blank=True)
-    closed_reports_count = models.IntegerField(default=0)
 
     is_closed = models.BooleanField(default=False)
     approved = models.BooleanField(default=False, help_text=u"Is this venue approved by moderator")
 
-
     # Potentially User can make changes in this model
-    modified_by = models.ForeignKey(User, null=True, blank=True)
+    created_by = models.ForeignKey(User, null=True, blank=True,
+                                   related_name='%(class)s_created_by', editable=False)
+    modified_by = models.ForeignKey(User, null=True, blank=True,
+                                    related_name='%(class)s_modified_by', editable=False)
+
     modified_on = models.DateTimeField(auto_now=True, null=True)
     modified_ip = models.CharField(default='', max_length=39, editable=False)
-
 
     # Query Manager
     gis = gis_models.GeoManager()
