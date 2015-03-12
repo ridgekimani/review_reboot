@@ -19,28 +19,34 @@ class Report(models.Model):
         (3, 'Wrong Location'),
         (4, 'Other')
     )
+
     created_on = models.DateTimeField(auto_now_add=True)
     modified_on = models.DateTimeField(auto_now=True)
-    user = models.ForeignKey(
+
+    created_by = models.ForeignKey(
         User,
         null=True,
         default=None,
-        related_name='report_user'
+        related_name="%(class)s_created_by",
+        editable=False
     )
+    closed_by = models.ForeignKey(
+        User,
+        null=True,
+        default=None,
+        related_name="%(class)s_closed_by",
+        editable=False
+    )
+    resolved = models.BooleanField(default=False)
+
     content_type = models.ForeignKey(ContentType, editable=False)
     venue_id = models.PositiveIntegerField(editable=False)
     content_object = generic.GenericForeignKey('content_type', 'venue_id')
+
     type = models.IntegerField(choices=REPORTS, default=4)
     note = models.TextField(blank=True)
-    moderator = models.ForeignKey(
-        User,
-        null=True,
-        default=None,
-        related_name='report_moderator'
-    )
-    moderator_flag = models.BooleanField(default=False)
-    moderator_note = models.TextField(null=True)
 
+    moderator_note = models.TextField(null=True)
     modified_ip = models.CharField(default='', max_length=39, editable=False)
 
     @staticmethod

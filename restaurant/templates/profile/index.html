@@ -2,10 +2,18 @@
 {% load bootstrap3 sekizai_tags %}
 {% block title %}Restaurants moderation{% endblock %}
 {% block body %}
-    <div class="list-group">
-        {% for restaurant in restaurants %}
-            <div class="list-group-item">   {{ restaurant }}</div>
-        {% endfor %}
+    <div class="row">
+        <div class="col-md-6">
+            <div class="list-group">
+                {% for restaurant in restaurants %}
+                    <div class="list-group-item">   {{ restaurant }}</div>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="col-md-6">
+
+        </div>
     </div>
+
 
 {% endblock %}

@@ -44,17 +44,17 @@ class MasjidAdmin(SimpleHistoryAdmin):
 class RestaurantAdmin(SimpleHistoryAdmin):
     list_display = ('name', 'id', 'phone', 'avg_rating')
 
-
-class CommentAdmin(admin.ModelAdmin):
-    list_display = ('venue_name', 'rating', 'short_text', 'user')
-    fields = (('venue_name', 'user'), 'rating', 'text')
-    readonly_fields = ('venue_name',)
-
-
-class NoteAdmin(admin.ModelAdmin):
-    list_display = ('venue_name', 'text', 'user')
-    fields = (('venue_name', 'user'), 'text')
-    readonly_fields = ('venue_name',)
+#
+# class CommentAdmin(admin.ModelAdmin):
+#     list_display = ('venue_name', 'rating', 'short_text', 'created_by')
+#     fields = (('venue_name', 'created_by'), 'rating', 'text')
+#     readonly_fields = ('venue_name',)
+#
+#
+# class NoteAdmin(admin.ModelAdmin):
+#     list_display = ('venue_name', 'text', 'created_by')
+#     fields = (('venue_name', 'created_by'), 'text')
+#     readonly_fields = ('venue_name',)
 
 
 class CategoryAdmin(admin.ModelAdmin):
@@ -63,7 +63,7 @@ class CategoryAdmin(admin.ModelAdmin):
 # Register your models here.
 admin.site.register(Restaurant, RestaurantAdmin)
 admin.site.register(Masjid, MasjidAdmin)
-admin.site.register(Comment, CommentAdmin)
+# admin.site.register(Comment, CommentAdmin)
 admin.site.register(Category, CategoryAdmin)
-admin.site.register(Note, NoteAdmin)
+# admin.site.register(Note, NoteAdmin)
 admin.site.register(Report, admin.ModelAdmin)

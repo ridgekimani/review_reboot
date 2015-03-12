@@ -7,6 +7,7 @@ from django.template.defaultfilters import slugify
 from django_countries.fields import CountryField
 from simple_history.models import HistoricalRecords
 from venues.models.category import Category
+from venues.models.common import CommonModel
 
 
 __author__ = 'm'
