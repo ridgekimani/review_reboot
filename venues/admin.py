@@ -4,8 +4,8 @@ from simple_history.admin import SimpleHistoryAdmin
 from django.contrib.auth.admin import UserAdmin
 from venues.models import Restaurant, Masjid
 
-from venues.models.category import Category
 from venues.models.comment import Comment
+from venues.models.cuisine import Cuisine
 from venues.models.note import Note
 from venues.models.report import Report
 from venues.models.venue_user import VenueUser
@@ -57,13 +57,13 @@ class RestaurantAdmin(SimpleHistoryAdmin):
 #     readonly_fields = ('venue_name',)
 
 
-class CategoryAdmin(admin.ModelAdmin):
+class CuisineAdmin(admin.ModelAdmin):
     list_display = ('name', 'id')
 
 # Register your models here.
 admin.site.register(Restaurant, RestaurantAdmin)
 admin.site.register(Masjid, MasjidAdmin)
 # admin.site.register(Comment, CommentAdmin)
-admin.site.register(Category, CategoryAdmin)
+admin.site.register(Cuisine, CuisineAdmin)
 # admin.site.register(Note, NoteAdmin)
 admin.site.register(Report, admin.ModelAdmin)

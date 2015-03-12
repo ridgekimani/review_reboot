@@ -5,7 +5,10 @@ from venues.models.venue import Venue
 __author__ = 'm'
 
 def index(request):
-    restaurants = Restaurant.objects.filter(modified_by_id=request.user.pk)
+    user_restaurants = Restaurant.objects.filter(created_by=request.user)
+    modified_by_user_restaurants = Restaurant.objects.filter(modified_by=request.user)\
+        .exclude(pk__in=user_restaurants)
     return render(request, "profile/index.html", {
-        'restaurants': restaurants
+        'user_restaurants': user_restaurants,
+        'modified_by_user_restaurants': modified_by_user_restaurants,
     })

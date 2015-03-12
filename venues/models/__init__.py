@@ -1,5 +1,5 @@
 from venues.models.venue import *
-from venues.models.category import *
+from venues.models.cuisine import *
 from venues.models.comment import *
 from venues.models.masjid import *
 from venues.models.note import *

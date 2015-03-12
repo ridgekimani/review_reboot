@@ -6,7 +6,6 @@ from django.contrib.gis.db import models as gis_models
 from django.template.defaultfilters import slugify
 from django_countries.fields import CountryField
 from simple_history.models import HistoricalRecords
-from venues.models.category import Category
 from venues.models._common import CommonModel
 
 
@@ -43,7 +42,6 @@ class Venue(CommonModel):
         null=True
     )
 
-    categories = models.ManyToManyField(Category, null=True)
     avg_rating = models.DecimalField(max_digits=3, decimal_places=2, null=True, blank=True)
 
     is_closed = models.BooleanField(default=False)

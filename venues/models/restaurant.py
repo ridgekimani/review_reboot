@@ -2,6 +2,7 @@ from django.core.urlresolvers import reverse
 from django.db import models
 from simple_history.models import HistoricalRecords
 from venues.models import Venue
+from venues.models.cuisine import Cuisine
 
 __author__ = 'm'
 
@@ -22,7 +23,6 @@ class Restaurant(Venue):
 
     history_link = HistoricalRecords()
 
-    cuisine = models.CharField(max_length=50)
     menu = models.IntegerField(default=0, choices=MENU_TYPES)
 
     website = models.URLField(default="")
@@ -35,6 +35,9 @@ class Restaurant(Venue):
     alcoholFree = models.NullBooleanField(null=True, blank=True, choices=CHOICES)
     porkFree = models.NullBooleanField(null=True, blank=True, choices=CHOICES)
     muslimOwner = models.NullBooleanField(null=True, blank=True, choices=CHOICES)
+
+    cuisines = models.ManyToManyField(Cuisine, null=True)
+
 
     @property
     def _history_user(self):
