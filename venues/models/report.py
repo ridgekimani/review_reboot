@@ -14,10 +14,10 @@ class Report(models.Model):
     https://docs.djangoproject.com/en/1.6/ref/contrib/contenttypes/#generic-relations
     '''
     REPORTS = (
-        ('closed', 'Closed'),
-        ('is_duplicate', 'Is a duplicate'),
-        ('wrong_location', 'Wrong Location'),
-        ('other', 'Other')
+        (1, 'Closed'),
+        (2, 'Is a duplicate'),
+        (3, 'Wrong Location'),
+        (4, 'Other')
     )
     created_on = models.DateTimeField(auto_now_add=True)
     modified_on = models.DateTimeField(auto_now=True)
@@ -30,7 +30,7 @@ class Report(models.Model):
     content_type = models.ForeignKey(ContentType, editable=False)
     venue_id = models.PositiveIntegerField(editable=False)
     content_object = generic.GenericForeignKey('content_type', 'venue_id')
-    report = models.CharField(choices=REPORTS, max_length=30)
+    type = models.IntegerField(choices=REPORTS, default=4)
     note = models.TextField(blank=True)
     moderator = models.ForeignKey(
         User,
@@ -53,7 +53,7 @@ class Report(models.Model):
     def __unicode__(self):
         return u' '.join([
             venues.Restaurant.objects.get(id=self.venue_id).name, '\n'
-                                                           'report:', self.get_report_display(), '\n'
+                                                           'report:', self.get_type_display(), '\n'
                                                                                                  'note:', self.note
         ])
 

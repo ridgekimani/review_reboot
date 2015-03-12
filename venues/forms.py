@@ -1,4 +1,5 @@
 from django import forms
+from django_countries.widgets import CountrySelectWidget
 from venues.models import Restaurant, Comment, Note, Report
 
 class RestaurantForm(forms.ModelForm):
@@ -7,7 +8,7 @@ class RestaurantForm(forms.ModelForm):
         fields = ['name', 'cuisine', 'address', 'phone', 'categories', 'catering', 'delivery', 'alcoholFree',
                   'porkFree', 'muslimOwner', 'location', 'menu']
         widgets = {
-            'categories': forms.CheckboxSelectMultiple()
+            'categories': forms.CheckboxSelectMultiple(),
         }
 
 
@@ -32,4 +33,4 @@ class NoteForm(forms.ModelForm):
 class ReportForm(forms.ModelForm):
     class Meta:
         model = Report
-        fields = ['report', 'note']
+        fields = ['type', 'note']

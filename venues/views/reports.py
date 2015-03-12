@@ -39,8 +39,8 @@ def report_restaurant(request, rest_pk):
         if form.is_valid():
             form.save()
 
-            if form.cleaned_data['report'] == u'closed':
-                rest.update_close_state()
+            # if form.cleaned_data['tipe'] == ':
+            #     rest.update_close_state()
 
             if rest.slug:
                 return redirect(reverse('venues.views.venuess.restaurant_by_slug', args=[rest.slug]))

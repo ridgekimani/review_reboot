@@ -5,6 +5,7 @@ from django.http.response import HttpResponse, HttpResponseBadRequest
 from django.shortcuts import render, render_to_response, get_object_or_404
 from venues.models import Restaurant
 from venues.models.comment import Comment
+from venues.models.report import Report
 
 
 @user_passes_test(lambda u: u.is_venue_moderator())
@@ -64,6 +65,23 @@ def index(request):
         'recently_added_reviews': recently_added_reviews,
     }
     return render(request, "moderate/index.html", context)
+
+@login_required
+@user_passes_test(lambda u: u.is_venue_moderator())
+def reports(request):
+    reports = Report.objects.all()
+    paginatorReports = Paginator(reports, 10)
+    page = request.GET.get("page")
+    try:
+        reports = paginatorReports.page(page)
+    except PageNotAnInteger:
+        reports = paginatorReports.page(1)
+    except EmptyPage:
+        reports = paginatorReports.page(paginatorReports.num_pages)
+
+    return render(request, "moderate/reports.html", {
+        'reports': reports
+    })
 
 
 @login_required

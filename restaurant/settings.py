@@ -42,8 +42,6 @@ DATABASES = {
     'default': credentials['database']
 }
 
-
-
 #GEOS_LIBRARY_PATH = os.environ.get('GEOS_LIBRARY_PATH')
 #GDAL_LIBRARY_PATH = os.environ.get('GDAL_LIBRARY_PATH')
 
@@ -57,9 +55,6 @@ DATABASES = {
 # SECURITY WARNING: keep the secret key used in production secret!
 
 # SECURITY WARNING: don't run with debug turned on in production!
-
-
-
 
 # Application definition
 
@@ -75,6 +70,7 @@ INSTALLED_APPS = (
     'social.apps.django_app.default',
     'sekizai',
     'bootstrap3',
+    'django_countries',
     # pinax-account apps:
     # "ppacc",
     "bootstrapform",
@@ -113,9 +109,6 @@ AUTHENTICATION_BACKENDS = (
     'social.backends.facebook.FacebookOAuth2',
     'account.auth_backends.UsernameAuthenticationBackend',
 )
-
-#TODO Change in production
-
 
 
 TEMPLATE_CONTEXT_PROCESSORS = (

@@ -4,6 +4,7 @@ from django.core.validators import RegexValidator, URLValidator
 from django.db import models
 from django.contrib.gis.db import models as gis_models
 from django.template.defaultfilters import slugify
+from django_countries.fields import CountryField
 from simple_history.models import HistoricalRecords
 from venues.models.category import Category
 
@@ -18,7 +19,11 @@ class Venue(models.Model):
 
     name = models.CharField(max_length=100)
     slug = models.SlugField()
+
     address = models.CharField(max_length=150)
+    city = models.CharField(max_length=150)
+    country = CountryField()
+
     phone = models.CharField(
         max_length=12,
         blank=True,
@@ -87,6 +92,33 @@ class Venue(models.Model):
         self.slug = slugify(self.name)
         super(Venue, self).save(args, kwargs)
 
+    @property
+    def show_url(self):
+        """
+        :return: show url of item
+        """
+        return ""
+
+    @property
+    def add_url(self):
+        """
+        :return: add url of item
+        """
+        return ""
+
+    @property
+    def edit_url(self):
+        """
+        :return: edit url of item
+        """
+        return ""
+
+    @property
+    def remove_url(self):
+        """
+        :return: remove url of item
+        """
+        return ""
 
 
 

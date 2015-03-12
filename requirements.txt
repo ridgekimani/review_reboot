@@ -1,5 +1,6 @@
-Django==1.7.5
+Django==1.7.6
 django-tastypie # REST api
+django-countries # countries list
 
 dj-database-url==0.3.0
 dj-static==0.0.6

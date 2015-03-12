@@ -28,7 +28,13 @@
         });
 
         // Create the search box and link it to the UI element.
-        var input = document.getElementById('pac-input');
+        var input = document.getElementById('id_address');
+        $(input).on('keypress', function (event) {
+            if (event.keyCode == 13) {
+                event.stopImmediatePropagation();
+                return false;
+            }
+        });
         //map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
         var searchBox = new google.maps.places.SearchBox(input);
 
@@ -40,10 +46,13 @@
             }
 
             var place = places[0];
+
+            console.log(place);
             marker.title = place.name;
             marker.setPosition(place.geometry.location);
             map.setCenter(marker.position);
-            var value = 'POINT (' + event.latLng.lng() + ' ' + event.latLng.lat() + ')';
+
+            var value = 'POINT (' + marker.position.lng() + ' ' + marker.position.lat() + ')';
             $("#id_location").html(value);
         });
 
@@ -59,6 +68,7 @@
         });
 
         google.maps.event.addListener(marker, 'dragend', function (event) {
+            console.log(event);
             var value = 'POINT (' + event.latLng.lng() + ' ' + event.latLng.lat() + ')';
             $("#id_location").html(value);
         });

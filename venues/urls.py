@@ -11,6 +11,7 @@ urlpatterns = patterns('venues.views',
     url(r'comments/(?P<comment_pk>[0-9]+)/update/$', 'comments.update_comment'),
 
     url(r'moderate/$', 'moderate.index'),
+    url(r'moderate/reports$', 'moderate.reports'),
 
     url(r'(?P<rest_pk>[0-9]+)/show-all-comments/$', 'comments.show_all_comments'),
     url(r'(?P<rest_pk>[0-9]+)/show-all-tips/$', 'notes.show_all_notes'),

@@ -1,0 +1,79 @@
+/*** COLORS ***/
+.navbar-super-top {
+  margin: 0;
+  border: 0;
+  width: 100%; }
+  .navbar-super-top form {
+    border: 0;
+    box-shadow: none;
+    margin: 8px 0;
+    padding: 0 13px; }
+    .navbar-super-top form input {
+      float: left; }
+
+.search-form input.form-control {
+  width: 267px; }
+
+#header .navbar-form {
+  padding: 0 7px; }
+
+.fieldWysiwye button[type=submit] {
+  float: right;
+  min-width: 89px;
+  margin: 7px 0; }
+
+.panel-super {
+  border: 1px solid rgba(255, 255, 255, 0.1); }
+  .panel-super .panel-heading {
+    background: rgba(255, 255, 255, 0.1); }
+  .panel-super .panel-body {
+    padding: 21px; }
+
+.block-area hr {
+  border-color: rgba(255, 255, 255, 0.1); }
+
+#r-map {
+  margin-bottom: 15px; }
+
+.btn {
+  line-height: 22px; }
+
+body.restaurant .table th {
+  border: 0; }
+body.restaurant .table tr td:nth-child(1) {
+  width: 10%;
+  min-width: 85px; }
+body.restaurant .table tr td:nth-child(2) {
+  width: 90%; }
+body.restaurant .mainTable {
+  padding: 8px 10px; }
+  body.restaurant .mainTable .title {
+    font-size: 30px; }
+  body.restaurant .mainTable .cuisine {
+    font-size: 13px; }
+  body.restaurant .mainTable .address {
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.7); }
+  body.restaurant .mainTable .phone {
+    font-size: 11px;
+    font-weight: bold; }
+body.restaurant .navbar-brand {
+  width: 233px; }
+
+.addVenue .block-label label {
+  display: block; }
+.addVenue .theForm table {
+  width: 100%; }
+  .addVenue .theForm table td {
+    padding: 2px 0; }
+    .addVenue .theForm table td:nth-child(1) {
+      width: 10%;
+      min-width: 85px; }
+  .addVenue .theForm table th {
+    padding: 4px 0 8px; }
+.addVenue .theForm .forTable {
+  padding: 7px 14px; }
+.addVenue .theForm .forRadioInline label {
+  margin-right: 14px; }
+.addVenue .theForm button[type=submit] {
+  min-width: 89px; }

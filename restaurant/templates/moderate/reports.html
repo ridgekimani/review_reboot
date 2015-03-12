@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% load bootstrap3 sekizai_tags %}
+{% block title %}Restaurants moderation{% endblock %}
+{% block body %}
+    <div class="list-group">
+        {% for report in reports %}
+
+            <div class="list-group-item list-group-item-warning">
+                <i> {{ report.get_type_display }}</i> |
+                <a href="{{ report.content_object.edit_url }}">{{ report.content_object.name }}</a> |
+                {{ report.note }}
+            </div>
+        {% endfor %}
+    </div>
+    {% bootstrap_pagination reports %}
+{% endblock %}
