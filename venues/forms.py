@@ -1,28 +1,32 @@
 from django import forms
 from django_countries.widgets import CountrySelectWidget
+from restaurant.utils import get_client_ip
 from venues.models import Restaurant, Comment, Note, Report
 
 
-class FormWithUser(forms.ModelForm):
+class CommonForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         """
         make sure to provide user argument when contruction form
         """
-        self.user = kwargs.pop('user', None)
-        super(FormWithUser, self).__init__(*args, **kwargs)
+        self.request = kwargs.pop('request', None)
+        super(CommonForm, self).__init__(*args, **kwargs)
 
     def save(self, commit=True):
         """
-        extending base save method for allowing user tracking
+        extending base save method for allowing request tracking
         """
         if self.instance.pk is None:
-            self.instance.created_by = self.user
+            self.instance.created_by = self.request.user
         else:
-            self.instance.modified_by = self.user
-        super(FormWithUser, self).save(commit)
+            self.instance.modified_by = self.request.user
+
+        self.instance.modified_ip = get_client_ip(self.request)
+
+        super(CommonForm, self).save(commit)
 
 
-class RestaurantForm(FormWithUser):
+class RestaurantForm(CommonForm):
     class Meta:
         model = Restaurant
         fields = ['name', 'cuisine', 'address', 'phone', 'categories', 'catering', 'delivery', 'alcoholFree',
@@ -37,20 +41,19 @@ class AddressForm(forms.Form):
     category = forms.CharField(required=False)
 
 
-class CommentForm(FormWithUser):
+class CommentForm(CommonForm):
     class Meta:
         model = Comment
         fields = ['rating', 'text']
 
 
-class NoteForm(FormWithUser):
+class NoteForm(CommonForm):
     class Meta:
         model = Note
         fields = ['text']
-        exclude = ('modified_ip',)
 
 
-class ReportForm(FormWithUser):
+class ReportForm(CommonForm):
     class Meta:
         model = Report
         fields = ['type', 'note']

@@ -36,10 +36,9 @@ def add_note(request, rest_pk):
         user=request.user,
         venue_id=_restaurant.pk,
         content_type=related_object_type,
-        modified_ip=get_client_ip(request)
     )
 
-    form = NoteForm(request.POST, instance=note)
+    form = NoteForm(request.POST, instance=note, request=request)
     if form.is_valid():
         form.save()
 
@@ -59,12 +58,11 @@ def update_note(request, note_pk):
     }
 
     if request.method == 'GET':
-        context['form'] = NoteForm(instance=note)
+        context['form'] = NoteForm(instance=note, request=request)
     elif request.method == 'POST':
-        form = NoteForm(request.POST, instance=note)
+        form = NoteForm(request.POST, instance=note, request=request)
 
         if form.is_valid():
-            note.modified_ip = get_client_ip(request)
             form.save()
             if rest.slug:
                 return redirect(reverse('venues.views.venuess.restaurant_by_slug', args=[rest.slug]))

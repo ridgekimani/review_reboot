@@ -293,13 +293,13 @@ def remove_restaurant(request, rest_pk):
 @login_required
 def add_restaurant(request):
     if request.method == "GET":
-        form = RestaurantForm(user=request.user)
+        form = RestaurantForm(request=request)
         return render(request, "restaurants/new.html", {
             "form": form,
             "categories": Category.objects.all()
         })
     elif request.method == "POST":
-        form = RestaurantForm(request.POST, user=request.user)
+        form = RestaurantForm(request.POST, request=request)
         if form.is_valid():
             new_restaurant = form.save()
             return redirect(reverse('venues.views.venuess.restaurant_by_slug', args=[new_restaurant.slug]))
@@ -324,8 +324,7 @@ def update_restaurant(request, rest_pk):
 
     if request.method == 'POST':
         rest_data = request.POST.copy()
-        rest_data['modified_ip'] = get_client_ip(request)
-        form = forms.RestaurantForm(rest_data, instance=_restaurant, user=request.user)  # A form bound to the POST data
+        form = forms.RestaurantForm(rest_data, instance=_restaurant, request=request)  # A form bound to the POST data
         if form.is_valid():
             form.save()
             # context['is_saved'] = True
@@ -335,7 +334,7 @@ def update_restaurant(request, rest_pk):
                 return redirect(reverse('venues.views.venuess.restaurant', args=[rest_pk]))
         context['form'] = form
     else:
-        context['form'] = forms.RestaurantForm(instance=_restaurant)
+        context['form'] = forms.RestaurantForm(instance=_restaurant, request=request)
 
     return render(request, 'restaurants/update.html', context)
 

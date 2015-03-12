@@ -2,11 +2,12 @@ from django.contrib.auth.models import User
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
 from django.contrib.contenttypes import generic
+from venues.models._common import CommonModel
 
 __author__ = 'm'
 
 
-class Comment(models.Model):
+class Comment(CommonModel):
     '''
     This class uses generic ForeignKey, for details read here
     https://docs.djangoproject.com/en/1.6/ref/contrib/contenttypes/#generic-relations

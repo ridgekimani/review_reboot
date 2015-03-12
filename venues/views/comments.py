@@ -81,10 +81,9 @@ def add_comment(request, rest_pk):
         user=request.user,
         venue_id=_restaurant.pk,
         content_type=related_object_type,
-        modified_ip=get_client_ip(request),
     )
 
-    form = CommentForm(request.POST, instance=comment)
+    form = CommentForm(request.POST, instance=comment, request=request)
     if form.is_valid():
         form.save()
 
@@ -105,10 +104,9 @@ def update_comment(request, comment_pk):
     }
 
     if request.method == 'GET':
-        context['form'] = CommentForm(instance=comment)
+        context['form'] = CommentForm(instance=comment, request=request)
     elif request.method == 'POST':
-        comment.modified_ip = get_client_ip(request)
-        form = CommentForm(request.POST, instance=comment)
+        form = CommentForm(request.POST, instance=comment, request=request)
         if form.is_valid():
             form.save()
             if rest.slug:

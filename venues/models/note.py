@@ -2,26 +2,16 @@ from django.contrib.auth.models import User
 from django.contrib.contenttypes import generic
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
+from venues.models._common import CommonModel
 
 __author__ = 'm'
 
 
-class Note(models.Model):
+class Note(CommonModel):
     '''
     This class uses generic ForeignKey, for details read here
     https://docs.djangoproject.com/en/1.6/ref/contrib/contenttypes/#generic-relations
     '''
-    # modified info
-    created_on = models.DateTimeField(auto_now_add=True)
-    created_by = models.ForeignKey(User, related_name="%(class)s_created_by",
-                                   default=None, null=True, blank=True)
-
-    modified_on = models.DateTimeField(auto_now=True)
-    modified_by = models.ForeignKey(User, related_name="%(class)s_modified_by",
-                                   default=None, null=True, blank=True)
-
-    modified_ip = models.CharField(default='', max_length=39, editable=False)
-
     # venue info
     content_type = models.ForeignKey(ContentType, editable=False)
     venue_id = models.PositiveIntegerField(editable=False)

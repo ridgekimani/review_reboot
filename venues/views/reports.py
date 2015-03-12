@@ -20,7 +20,7 @@ def report_restaurant(request, rest_pk):
     }
 
     if request.method == 'GET':
-        context['form'] = forms.ReportForm()
+        context['form'] = forms.ReportForm(request=request)
         return render(request, 'reports/report.html', context)
     elif request.method == 'POST':
         data = request.POST.copy()
@@ -28,11 +28,10 @@ def report_restaurant(request, rest_pk):
         report = Report(
             user=request.user if request.user.is_authenticated() else None,
             content_type=related_object_type,
-            modified_ip=get_client_ip(request),
             venue_id=rest_pk,
         )
 
-        form = forms.ReportForm(request.POST, instance=report)
+        form = forms.ReportForm(request.POST, instance=report, request=request)
 
         context['form'] = form
 

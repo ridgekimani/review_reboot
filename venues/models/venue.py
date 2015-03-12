@@ -7,13 +7,13 @@ from django.template.defaultfilters import slugify
 from django_countries.fields import CountryField
 from simple_history.models import HistoricalRecords
 from venues.models.category import Category
-from venues.models.common import CommonModel
+from venues.models._common import CommonModel
 
 
 __author__ = 'm'
 
 # Create your models here.
-class Venue(models.Model):
+class Venue(CommonModel):
     '''
     General model for venues.
     '''
@@ -48,15 +48,6 @@ class Venue(models.Model):
 
     is_closed = models.BooleanField(default=False)
     approved = models.BooleanField(default=False, help_text=u"Is this venue approved by moderator")
-
-    # Potentially User can make changes in this model
-    created_by = models.ForeignKey(User, null=True, blank=True,
-                                   related_name='%(class)s_created_by', editable=False)
-    modified_by = models.ForeignKey(User, null=True, blank=True,
-                                    related_name='%(class)s_modified_by', editable=False)
-
-    modified_on = models.DateTimeField(auto_now=True, null=True)
-    modified_ip = models.CharField(default='', max_length=39, editable=False)
 
     # Query Manager
     gis = gis_models.GeoManager()
