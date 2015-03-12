@@ -314,7 +314,11 @@ def add_restaurant(request):
 
 @login_required
 def update_restaurant(request, rest_pk):
-    _restaurant = Restaurant.objects.get(pk=rest_pk)
+    _restaurant = get_object_or_404(Restaurant, pk=rest_pk)
+
+    if not (request.user.is_venue_moderator or _restaurant.created_by == request.user):
+        return redirect(reverse('venues.views.venuess.restaurant_by_slug', args=[_restaurant.slug]))
+
     context = {
         'restaurant': _restaurant,
         'comments': Comment.list_for_venue(_restaurant),

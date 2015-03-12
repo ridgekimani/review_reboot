@@ -26,7 +26,6 @@ def report_restaurant(request, rest_pk):
         data = request.POST.copy()
 
         report = Report(
-            user=request.user if request.user.is_authenticated() else None,
             content_type=related_object_type,
             venue_id=rest_pk,
         )
@@ -51,9 +50,6 @@ def report_restaurant(request, rest_pk):
 
 @login_required
 def moderate_reports(request):
-    # if request.user.username not in settings.ALLOWED_TO_MODERATE:
-    #     return HttpResponse(status=500)
-
     reports = Report.objects.all()
     paginator = Paginator(
         sorted(reports, key=lambda r: r.created_on, reverse=True),
@@ -80,7 +76,6 @@ def moderate_report(request, pk):
             report.moderator_flag = True
         if 'moderator_note' in request.POST:
             report.moderator_note = request.POST['moderator_note']
-        report.moderator = request.user
         report.save()
         return redirect(
             '/moderate-reports/?page={n}'.format(
