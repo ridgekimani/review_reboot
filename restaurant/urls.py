@@ -10,7 +10,14 @@ import venues.views.venuess
 
 admin.autodiscover()
 
-urlpatterns = patterns('',
+if settings.DEBUG:
+    urlpatterns = patterns('',
+        url(r'^media/(?P<path>.*)$', 'django.views.static.serve',
+            {'document_root': settings.MEDIA_ROOT, 'show_indexes': True}),
+        url(r'', include('django.contrib.staticfiles.urls')),
+    )
+
+urlpatterns += patterns('',
 
 
     url(r'^moderate-reports/$', venues.views.reports.moderate_reports),
@@ -35,9 +42,3 @@ urlpatterns = patterns('',
     # url(r'^logout/$', views.log_out),
 )
 
-if settings.DEBUG:
-    urlpatterns = patterns('',
-        url(r'^media/(?P<path>.*)$', 'django.views.static.serve',
-            {'document_root': settings.MEDIA_ROOT, 'show_indexes': True}),
-        url(r'', include('django.contrib.staticfiles.urls')),
-    ) + urlpatterns

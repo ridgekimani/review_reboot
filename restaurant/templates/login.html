@@ -19,10 +19,16 @@
                     <button type="submit" class="btn btn-primary pull-left">Login</button>
                 </form>
                 <div class="pull-right">
-                    <a class="btn btn-primary" data-toggle="modal"
-                       href="{% url 'social:begin' 'google' %}?next={{ request.path }}">via Google</a>
-                    <a class="btn btn-primary" data-toggle="modal"
-                       href="{% url 'social:begin' 'facebook' %}?next={{ request.path }}">via Facebook</a>
+                    <a class="btn btn-social btn-google-plus" data-toggle="modal"
+                       href="{% url 'social:begin' 'google' %}?next={{ request.path }}">
+                        <i class="fa fa-google"></i>
+                        Login wih Google
+                    </a>
+                    <a class="btn btn-social btn-facebook" data-toggle="modal"
+                       href="{% url 'social:begin' 'facebook' %}?next={{ request.path }}">
+                        <i class="fa fa-facebook"></i>
+                        Login with Facebook
+                    </a>
                 </div>
                 <div class="clearfix"></div>
             </div>
