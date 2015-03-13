@@ -18,6 +18,7 @@ class Comment(CommonModel):
 
     rating = models.IntegerField(null=True, blank=True)
     text = models.TextField(blank=True)
+    approved = models.BooleanField(default=False)
 
     @staticmethod
     def list_for_venue(venue):

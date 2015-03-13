@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% load bootstrap3 sekizai_tags %}
+{% block title %}Restaurants moderation{% endblock %}
+{% block body %}
+    <div class="list-group">
+        {% for note in notes %}
+            <div class="list-group-item list-group-item-success">
+                <a href="{{ note.content_object.show_url }}">{{ note.content_object }}</a> |
+                <div>
+                    {{ note.text }}
+                </div>
+            </div>
+        {% empty %}
+            <div class="list-group-item">
+                You didn't write any notes
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

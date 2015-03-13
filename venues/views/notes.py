@@ -33,7 +33,6 @@ def add_note(request, rest_pk):
     related_object_type = ContentType.objects.get_for_model(_restaurant)
 
     note = Note(
-        user=request.user,
         venue_id=_restaurant.pk,
         content_type=related_object_type,
     )

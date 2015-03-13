@@ -12,7 +12,7 @@ admin.autodiscover()
 
 urlpatterns = patterns('',
 
-    url(r'^restaurants/', include(venues.urls)),
+    url(r'^', include(venues.urls)),
 
     url(r'^moderate-reports/$', venues.views.reports.moderate_reports),
     url(r'^reports/(?P<pk>[0-9]+)/moderate/$', venues.views.reports.moderate_report),

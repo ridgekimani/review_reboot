@@ -17,7 +17,10 @@ urlpatterns = patterns('venues.views',
     url(r'moderate/reports$', 'moderate.reports'),
 
     #profile
-    url(r'profile/$', 'profile.index'),
+    url(r'profile/restaurants/$', 'profile.myrestaurants'),
+    url(r'profile/comments/$', 'profile.mycomments'),
+    url(r'profile/notes/$', 'profile.mynotes'),
+    url(r'profile/reports/$', 'profile.myreports'),
 
     # venues
     url(r'(?P<rest_pk>[0-9]+)/show-all-comments/$', 'comments.show_all_comments'),

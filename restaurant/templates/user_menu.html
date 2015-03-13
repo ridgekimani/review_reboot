@@ -24,20 +24,35 @@
             </a>
         </li>
     {% endif %}
-<li role="presentation" class="divider"></li>
+    <li role="presentation" class="divider"></li>
     <li>
-        <a role="menuitem" tabindex="-1" href="{% url "venues.views.venuess.add_restaurant" %}">
+        <a role="menuitem" href="{% url "venues.views.venuess.add_restaurant" %}">
             Add restaurant
         </a>
     </li>
     <li>
-        <a role="menuitem" tabindex="-1" href="{% url "venues.views.profile.index" %}">
-            My profile
+        <a role="menuitem" href="{% url "venues.views.profile.myrestaurants" %}">
+            My restaurants
+        </a>
+    </li>
+    <li>
+        <a role="menuitem" href="{% url "venues.views.profile.mynotes" %}">
+            My notes
+        </a>
+    </li>
+    <li>
+        <a role="menuitem" href="{% url "venues.views.profile.mycomments" %}">
+            My comments
+        </a>
+    </li>
+    <li>
+        <a role="menuitem" href="{% url "venues.views.profile.myreports" %}">
+            My reports
         </a>
     </li>
     <li role="presentation" class="divider"></li>
     <li>
-        <a role="menuitem" tabindex="-1" href="{% url "django.contrib.auth.views.logout" %}?next={{ request.path }}">
+        <a role="menuitem" href="{% url "django.contrib.auth.views.logout" %}?next={{ request.path }}">
             Logout
         </a>
     </li>
