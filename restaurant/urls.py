@@ -28,6 +28,7 @@ urlpatterns = patterns('',
     url(r'^accounts/logout/$', 'django.contrib.auth.views.logout'),
 
     url(r'^admin/', include(admin.site.urls)),
+    url(r'^social/', include('social.apps.django_app.urls', namespace='social')),
     url(r'^', include(venues.urls)),
     url(r'^$', venues.views.venuess.closest),
 

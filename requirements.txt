@@ -7,7 +7,6 @@ dj-static==0.0.6
 geopy==1.1.2
 psycopg2==2.5.3
 python-social-auth==0.2.1
-django-social-auth
 
 #Pinax-project-account section
 pinax-theme-bootstrap==5.5.1

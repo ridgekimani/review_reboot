@@ -29,7 +29,6 @@ ROOT_URLCONF = 'restaurant.urls'
 
 WSGI_APPLICATION = 'restaurant.wsgi.application'
 
-LOGIN_URL = '/login/facebook/'
 
 LANGUAGE_CODE = 'en-us'
 

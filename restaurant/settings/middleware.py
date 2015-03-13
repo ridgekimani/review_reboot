@@ -1,5 +1,3 @@
-__author__ = 'm'
-
 
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',

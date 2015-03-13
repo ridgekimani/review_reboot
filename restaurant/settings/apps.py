@@ -1,6 +1,3 @@
-__author__ = 'm'
-
-
 INSTALLED_APPS = (
     'django.contrib.admin',
     'django.contrib.auth',
@@ -10,11 +7,11 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'django.contrib.gis',
     # 'south',
-    # 'social.apps.django_app.default',
+    'social.apps.django_app.default',
     'sekizai',
     'bootstrap3',
     'django_countries',
-    'social_auth',
+    # 'social_auth',
     # pinax-account apps:
     # "ppacc",
 
