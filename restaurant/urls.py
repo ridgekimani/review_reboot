@@ -12,7 +12,6 @@ admin.autodiscover()
 
 urlpatterns = patterns('',
 
-    url(r'^', include(venues.urls)),
 
     url(r'^moderate-reports/$', venues.views.reports.moderate_reports),
     url(r'^reports/(?P<pk>[0-9]+)/moderate/$', venues.views.reports.moderate_report),
@@ -29,6 +28,7 @@ urlpatterns = patterns('',
     url(r'^accounts/logout/$', 'django.contrib.auth.views.logout'),
 
     url(r'^admin/', include(admin.site.urls)),
+    url(r'^', include(venues.urls)),
     url(r'^$', venues.views.venuess.closest),
 
     # url(r'^logout/$', views.log_out),

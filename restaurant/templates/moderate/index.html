@@ -5,11 +5,11 @@
     <div class="row">
         <div class="col-md-4">
             <div class="list-group">
-                <div class="list-group-item list-group-item-danger">
+                <div class="list-group-item">
                     Restaurants under need to approve:
                 </div>
                 {% for r in restaurants %}
-                    <div class="list-group-item">
+                    <div class="list-group-item {{ r.approved|yesno:'list-group-item-success,list-group-item-warning' }}">
                         <div class="row">
                             <div class="col-md-12">
 
@@ -33,7 +33,7 @@
                                     </div>
 
                                 </div>
-                                <a href="{% url "venues.views.venuess.restaurant_by_slug" r.slug %}">{{ r.name }}</a>
+                                <a href="{{ r.show_url }}">{{ r.name }}</a>
 
                             </div>
                         </div>
@@ -68,17 +68,26 @@
             <div class="col-md-5">
                 <div class="list-group">
                     <div class="list-group-item list-group-item-info">
-                        Recently added reviews:
+                        Comments under need to approve:
                     </div>
                     {% for item in recently_added_reviews %}
-                        <div class="list-group-item">
+                        <div class="list-group-item {{ item.approved|yesno:'list-group-item-success,list-group-item-warning' }}" >
                             <div>
                                 <a href="{% url "venues.views.venuess.restaurant" item.venue_id %}">{{ item.venue_name }}</a>
 
-                                <div class="badge pull-right">{{ item.rating }} / 5</div>
+                                <div class="pull-right">
+                                    <div class="badge pull-right">
+                                        {{ item.rating }} / 5
+                                    </div>
+                                    {% if not item.approved %}
+                                        <br/>
+                                        <a href="{% url "venues.views.moderate.approve_comment" item.pk %}">approve</a>
+                                    {% endif %}
+                                </div>
                             </div>
 
                             {{ item.text|truncatewords:'5' }}
+                            <div class="clearfix"></div>
                         </div>
                     {% endfor %}
                     {% if recently_added_reviews.paginator.num_pages > 1 %}

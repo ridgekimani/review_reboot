@@ -16,7 +16,7 @@
                     </div>
                 {% endif %}
                 <div>
-                    {{ report.created_on }}
+                    {{ report.created_on }} {% if report.created_by %} by <strong>{{ report.created_by }}</strong> {% endif %}
                 </div>
             </div>
 

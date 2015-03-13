@@ -5,7 +5,10 @@
     <div class="list-group">
         {% for report in reports %}
 
-            <div class="list-group-item {{ report.closed_by|yesno:"list-group-item-success, list-group-item-warning" }}">
+            <div class="list-group-item {{ report.resolved|yesno:"list-group-item-success, list-group-item-warning" }}">
+                <div class="pull-right">
+                    {{ report.resolved|yesno:',opened' }}
+                </div>
                 <i> {{ report.get_type_display }}</i> |
                 <a href="{{ report.content_object.edit_url }}">{{ report.content_object.name }}</a> |
                 {{ report.note }}

@@ -11,6 +11,7 @@ urlpatterns = patterns('venues.views',
     # comments editing
     url(r'comments/(?P<comment_pk>[0-9]+)/remove/$', 'comments.remove_comment'),
     url(r'comments/(?P<comment_pk>[0-9]+)/update/$', 'comments.update_comment'),
+    url(r'comments/(?P<comment_pk>[0-9]+)/approve/$', 'moderate.approve_comment'),
 
     # moderate
     url(r'moderate/$', 'moderate.index'),

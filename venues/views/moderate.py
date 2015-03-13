@@ -49,7 +49,7 @@ def index(request):
         rest.changed_fields = changed_fields
 
     # added reviews
-    list = Comment.objects.order_by("-modified_on")
+    list = Comment.objects.order_by("-approved", "-modified_on")
     paginatorApproved = Paginator(list, 10)
     page = request.GET.get("pageReview")
     try:
@@ -88,19 +88,38 @@ def reports(request):
 @login_required
 @user_passes_test(lambda u: u.is_venue_moderator())
 def approve_restaurant(request, rest_pk):
-    if request.method == "POST":
-        restaurant = get_object_or_404(Restaurant, pk=rest_pk)
-        restaurant.approved = request.POST['approved'] == u'true'
-        restaurant.save()
+    restaurant = get_object_or_404(Restaurant, pk=rest_pk)
+    restaurant.approved = request.POST['approved'] == u'true'
+    restaurant.save()
 
+    if request.is_ajax():
         return HttpResponse()
-    return HttpResponseBadRequest()
+    else:
+        return redirect(request.META['HTTP_REFERER'])
+
+
+@login_required
+@user_passes_test(lambda u: u.is_venue_moderator())
+def approve_comment(request, comment_pk):
+    comment = get_object_or_404(Comment, pk=comment_pk)
+    comment.approved = True
+    comment.save()
+
+    if request.is_ajax():
+        return HttpResponse()
+    else:
+        return redirect(request.META['HTTP_REFERER'])
 
 
 @login_required
 @user_passes_test(lambda u: u.is_venue_moderator())
 def resolve_report(request, id):
     report = get_object_or_404(Report, pk=id)
+
+    if request.method == "POST":
+        if 'moderator_note' in request.POST:
+            reports.moderator_note = request.POST['moderator_note']
+
     report.closed_by = request.user
     report.resolved = True
     report.save()
