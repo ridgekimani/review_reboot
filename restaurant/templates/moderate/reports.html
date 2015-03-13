@@ -12,7 +12,7 @@
 
                 {% if not report.closed_by %}
                     <div class="pull-right">
-                        <a href="{% url "venues.views.moderate.close_report" report.pk %}">close</a>
+                        <a href="{% url "venues.views.moderate.resolve_report" report.pk %}">close</a>
                     </div>
                 {% endif %}
                 <div>

@@ -99,9 +99,10 @@ def approve_restaurant(request, rest_pk):
 
 @login_required
 @user_passes_test(lambda u: u.is_venue_moderator())
-def close_report(request, id):
+def resolve_report(request, id):
     report = get_object_or_404(Report, pk=id)
     report.closed_by = request.user
+    report.resolved = True
     report.save()
 
     if request.is_ajax():

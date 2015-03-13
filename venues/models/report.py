@@ -9,10 +9,10 @@ import venues.models.venue
 class Report(models.Model):
     '''
     Represents table row with user report for venue
-
-    This class uses generic ForeignKey, for details read here
-    https://docs.djangoproject.com/en/1.6/ref/contrib/contenttypes/#generic-relations
     '''
+    class Meta:
+        ordering = ['resolved', '-created_on']
+
     REPORTS = (
         (1, 'Closed'),
         (2, 'Is a duplicate'),

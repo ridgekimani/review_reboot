@@ -15,7 +15,7 @@ urlpatterns = patterns('venues.views',
     # moderate
     url(r'moderate/$', 'moderate.index'),
     url(r'moderate/reports$', 'moderate.reports'),
-    url(r'moderate/reports/(?P<id>[0-9]+)/close$', 'moderate.close_report'),
+    url(r'moderate/reports/(?P<id>[0-9]+)/close$', 'moderate.resolve_report'),
 
     #profile
     url(r'profile/restaurants/$', 'profile.myrestaurants'),
