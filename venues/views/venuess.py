@@ -155,7 +155,7 @@ def restaurants_lists(request):
     context = {'all_restaurants': restaurants, 'form': form, 'longitude': longitude, 'latitude': latitude}
     return render(request, 'restaurants/restaurants.html', context)
     # else:
-    #     context = {'all_restaurants': restaurants, 'form': form, 'longitude': longitude, 'latitude': latitude}
+    # context = {'all_restaurants': restaurants, 'form': form, 'longitude': longitude, 'latitude': latitude}
     #     return render(request, 'restaurants/restaurants.html', context)
 
 
@@ -270,7 +270,8 @@ def closest(request):
 def restaurant(request, rest_pk):
     _restaurant = Restaurant.objects.get(pk=rest_pk)
 
-    if not _restaurant.approved and not (hasattr(request.user, 'is_venue_moderator') and request.user.is_venue_moderator()):
+    if not _restaurant.approved and not (
+        hasattr(request.user, 'is_venue_moderator') and request.user.is_venue_moderator()):
         return redirect(reverse("django.contrib.auth.views.login") + "?next=%s" % request.path)
 
     return render(request, 'restaurants/item.html', {
@@ -283,11 +284,13 @@ def restaurant(request, rest_pk):
 
 @user_passes_test(lambda u: u.is_venue_moderator())
 def remove_restaurant(request, rest_pk):
-    if request.method == "POST":
-        rest = get_object_or_404(Restaurant, pk=rest_pk)
-        rest.delete()
+    rest = get_object_or_404(Restaurant, pk=rest_pk)
+    rest.delete()
+
+    if request.is_ajax():
         return HttpResponse()
-    return HttpResponseBadRequest()
+    else:
+        return redirect(reverse("venues.views.venuess.restaurants_lists"))
 
 
 @login_required

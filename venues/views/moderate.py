@@ -2,7 +2,7 @@ from account.decorators import login_required
 from django.contrib.auth.decorators import user_passes_test
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.http.response import HttpResponse, HttpResponseBadRequest
-from django.shortcuts import render, render_to_response, get_object_or_404
+from django.shortcuts import render, render_to_response, get_object_or_404, redirect
 from venues.models import Restaurant
 from venues.models.comment import Comment
 from venues.models.report import Report
@@ -10,7 +10,6 @@ from venues.models.report import Report
 
 @user_passes_test(lambda u: u.is_venue_moderator())
 def index(request):
-
     # approved items paginator
     list = Restaurant.objects.order_by("approved", "name")
     paginatorApproved = Paginator(list, 10)
@@ -42,7 +41,8 @@ def index(request):
             previous = items[1]
             if previous:
                 for field in rest._meta.get_all_field_names():
-                    if field not in ['cuisines', 'modified_by', 'created_by', 'modified_by_id', 'created_by_id', 'modified_on', 'slug'] and getattr(rest, field) != getattr(previous, field):
+                    if field not in ['cuisines', 'modified_by', 'created_by', 'modified_by_id', 'created_by_id',
+                                     'modified_on', 'slug'] and getattr(rest, field) != getattr(previous, field):
                         changed_fields.append(field)
         else:
             changed_fields.append("created")
@@ -65,6 +65,7 @@ def index(request):
         'recently_added_reviews': recently_added_reviews,
     }
     return render(request, "moderate/index.html", context)
+
 
 @login_required
 @user_passes_test(lambda u: u.is_venue_moderator())
@@ -94,4 +95,18 @@ def approve_restaurant(request, rest_pk):
 
         return HttpResponse()
     return HttpResponseBadRequest()
+
+
+@login_required
+@user_passes_test(lambda u: u.is_venue_moderator())
+def close_report(request, id):
+    report = get_object_or_404(Report, pk=id)
+    report.closed_by = request.user
+    report.save()
+
+    if request.is_ajax():
+        return HttpResponse()
+    else:
+        return redirect(request.META['HTTP_REFERER'])
+
 
