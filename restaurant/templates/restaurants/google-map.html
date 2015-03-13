@@ -47,7 +47,18 @@
 
             var place = places[0];
 
-            console.log(place);
+            for(var item in place.address_components) {
+                var component = place.address_components[item];
+                if (component.types && component.types[1] == 'political') {
+                    if (component.types[0] == 'locality') {
+                        $("#id_city").val(component.long_name);
+                    }
+                    if (component.types[0] == 'country') {
+                        $("#id_country").val(component.short_name);
+                    }
+                }
+            }
+
             marker.title = place.name;
             marker.setPosition(place.geometry.location);
             map.setCenter(marker.position);
