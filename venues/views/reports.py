@@ -1,4 +1,4 @@
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.contenttypes.models import ContentType
 from django.core.context_processors import csrf
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
@@ -11,6 +11,7 @@ from venues.models import Restaurant
 from venues.models.report import Report
 
 
+@login_required
 def report_restaurant(request, rest_pk):
     rest = Restaurant.objects.get(id=rest_pk)
     related_object_type = ContentType.objects.get_for_model(rest)
@@ -38,7 +39,7 @@ def report_restaurant(request, rest_pk):
             form.save()
 
             # if form.cleaned_data['tipe'] == ':
-            #     rest.update_close_state()
+            # rest.update_close_state()
 
             if rest.slug:
                 return redirect(reverse('venues.views.venuess.restaurant_by_slug', args=[rest.slug]))
@@ -48,7 +49,7 @@ def report_restaurant(request, rest_pk):
         return render(request, 'reports/report.html', context)
 
 
-@login_required
+@user_passes_test(lambda u: u.is_venue_moderator())
 def moderate_reports(request):
     reports = Report.objects.all()
     paginator = Paginator(
@@ -69,6 +70,7 @@ def moderate_reports(request):
     return render(request, 'reports/moderate_reports.html', context)
 
 
+@user_passes_test(lambda u: u.is_venue_moderator())
 def moderate_report(request, pk):
     if request.method == 'POST':
         report = Report.objects.get(id=pk)
