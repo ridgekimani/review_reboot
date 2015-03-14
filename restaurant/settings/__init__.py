@@ -25,6 +25,7 @@ from restaurant.settings.dirs import *
 from restaurant.settings.middleware import *
 from restaurant.settings.social import *
 from restaurant.settings.logging import *
+from restaurant.settings.tests import *
 
 ROOT_URLCONF = 'restaurant.urls'
 

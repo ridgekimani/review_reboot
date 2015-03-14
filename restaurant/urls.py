@@ -20,8 +20,8 @@ urlpatterns = patterns('',
     url(r'', include('social.apps.django_app.urls', namespace='social')),
     # url(r'^register-by-token/(?P<backend>[^/]+)/$', venues.views.register_by_access_token),
 
-    url(r'^accounts/login/$', 'django.contrib.auth.views.login'),
-    url(r'^accounts/logout/$', 'django.contrib.auth.views.logout'),
+    url(r'^accounts/login/$', 'django.contrib.auth.views.login', name="account_login"),
+    url(r'^accounts/logout/$', 'django.contrib.auth.views.logout', name="account_logout"),
 
     url(r'^admin/', include(admin.site.urls)),
     url(r'^social/', include('social.apps.django_app.urls', namespace='social')),

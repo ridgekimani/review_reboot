@@ -1,6 +1,7 @@
 from account.decorators import login_required
 from django.contrib.auth.decorators import user_passes_test
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
+from django.core.urlresolvers import reverse
 from django.http.response import HttpResponse, HttpResponseBadRequest
 from django.shortcuts import render, render_to_response, get_object_or_404, redirect
 from venues.models import Restaurant
@@ -95,7 +96,9 @@ def approve_restaurant(request, rest_pk):
     if request.is_ajax():
         return HttpResponse()
     else:
-        return redirect(request.META['HTTP_REFERER'])
+        if "HTTP_REFERER" in request:
+            return redirect(request.META['HTTP_REFERER'])
+        return redirect(reverse("venues.views.venuess.restaurants_lists"))
 
 
 @login_required

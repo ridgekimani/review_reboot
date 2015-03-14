@@ -44,7 +44,7 @@ class TestVenuess(TestCaseEx):
         )
         rest.save()
 
-        self.can_post("venues.views.moderate.approve_restaurant", params={'approved': True}, pargs=[
+        self.redirect_on_post("venues.views.moderate.approve_restaurant", params={'approved': True}, pargs=[
             rest.pk
         ])
         self.client.logout()
@@ -58,6 +58,6 @@ class TestVenuess(TestCaseEx):
         )
         rest.save()
 
-        self.can_post("venues.views.moderate.approve_restaurant", params={'approved': True}, pargs=[
+        self.redirect_on_post("venues.views.moderate.approve_restaurant", params={'approved': True}, pargs=[
             rest.pk
         ])

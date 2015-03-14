@@ -1,7 +1,6 @@
 <div class="panel panel-default">
     <div class="panel-heading">
         <h4>Review by <strong>{{ review.created_by }}</strong>
-
             <div class="pull-right">
                 {{ review.rating }} / 5
                 {% if user.is_authenticated %}
@@ -10,7 +9,7 @@
                             <a class="btn btn-success" href="{% url "venues.views.reviews.update_review" review.pk %}">
                                 <span class="glyphicon glyphicon-edit"></span>
                             </a>
-                            {% if user.is_superuser %}
+                            {% if user.venue_moderator %}
                                 <a class="btn btn-danger note-remove"
                                    href="{% url "venues.views.reviews.remove_review" review.pk %}">
                                     <span class="glyphicon glyphicon-remove"></span>
@@ -20,7 +19,6 @@
                     </div>
                 {% endif %}
             </div>
-
         </h4>
     </div>
     <div class="panel-body">
