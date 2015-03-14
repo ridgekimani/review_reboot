@@ -3,7 +3,7 @@ from restaurant.settings import credentials
 
 POSTGIS_VERSION = (2, 1, 2)
 
-if sys.argv[1] == "test":
+if len(sys.argv) > 1 and sys.argv[1] == "test":
     DATABASES = {
         'default': {
             'ENGINE': 'django.contrib.gis.db.backends.spatialite',
