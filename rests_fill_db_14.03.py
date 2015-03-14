@@ -10,12 +10,17 @@ from venues.models import Cuisine, Restaurant
 
 RESTS_SQLITE_FILE='upload.db'
 
+f = open('categories_name.txt','r')
+cats = [c.replace("\n", "") for c in f.readlines()]
+f.close()
+
 counter = 0
 
 sq_conn = sqlite3.connect(RESTS_SQLITE_FILE)
 sq_curs = sq_conn.cursor()
 
 for row in sq_curs.execute("SELECT * FROM Restaurant;"):
+    rest_cats = row[3].split(', ')
     rest = Restaurant(
         name = row[0],
         address = row[1],
@@ -28,6 +33,13 @@ for row in sq_curs.execute("SELECT * FROM Restaurant;"):
     )
     rest.save()
     counter +=1
+    for cat in rest_cats:
+        try:
+            cat_in_db = Category.objects.get(name=cat)
+            rest.cuisines.add(cat_in_db)
+            rest.save()
+        except:
+            pass
 
 print "Saved in db: ", counter
 sq_conn.close()
