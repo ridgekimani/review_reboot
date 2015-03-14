@@ -42,7 +42,8 @@ class MasjidAdmin(SimpleHistoryAdmin):
 
 
 class RestaurantAdmin(SimpleHistoryAdmin):
-    list_display = ('name', 'id', 'phone', 'avg_rating')
+    list_display = ('name', 'id', 'catering', 'delivery')
+    search_fields = ['name']
 
 #
 # class CommentAdmin(admin.ModelAdmin):
