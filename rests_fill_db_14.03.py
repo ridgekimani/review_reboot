@@ -6,9 +6,9 @@ Cuisine, eatingOptions and categories don't stored in db.
 '''
 import sqlite3
 from django.contrib.gis import geos
-from venues.models import Category, Restaurant
+from venues.models import Cuisine, Restaurant
 
-RESTS_SQLITE_FILE='restaurants_14.03.db'
+RESTS_SQLITE_FILE='upload.db'
 
 counter = 0
 
