@@ -17,8 +17,8 @@ class Restaurant(Venue):
 
     CHOICES = (
         (None, "-"),
-        (False, "Yes"),
-        (True, "No"),
+        (False, "No"),
+        (True, "Yes"),
     )
 
     history_link = HistoricalRecords()
