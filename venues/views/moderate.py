@@ -9,6 +9,7 @@ from venues.models import Review
 from venues.models.report import Report
 
 
+@login_required
 @user_passes_test(lambda u: u.is_venue_moderator())
 def index(request):
     # approved items paginator
@@ -90,7 +91,7 @@ def reports(request):
 @user_passes_test(lambda u: u.is_venue_moderator())
 def approve_restaurant(request, rest_pk):
     restaurant = get_object_or_404(Restaurant, pk=rest_pk)
-    restaurant.approved = request.POST['approved'] == u'true'
+    restaurant.approved = request.POST['approved'].lower() == u'true'
     restaurant.save()
 
     if request.is_ajax():
@@ -111,7 +112,9 @@ def approve_review(request, review_pk):
     if request.is_ajax():
         return HttpResponse()
     else:
-        return redirect(request.META['HTTP_REFERER'])
+        if "HTTP_REFERER" in request:
+            return redirect(request.META['HTTP_REFERER'])
+        return redirect(reverse("venues.views.venuess.restaurants_lists"))
 
 
 @login_required
@@ -121,7 +124,7 @@ def resolve_report(request, id):
 
     if request.method == "POST":
         if 'moderator_note' in request.POST:
-            reports.moderator_note = request.POST['moderator_note']
+            report.moderator_note = request.POST['moderator_note']
 
     report.closed_by = request.user
     report.resolved = True
@@ -130,6 +133,8 @@ def resolve_report(request, id):
     if request.is_ajax():
         return HttpResponse()
     else:
-        return redirect(request.META['HTTP_REFERER'])
+        if "HTTP_REFERER" in request:
+            return redirect(request.META['HTTP_REFERER'])
+        return redirect(reverse("venues.views.venuess.restaurants_lists"))
 
 

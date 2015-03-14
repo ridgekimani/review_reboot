@@ -1,3 +1,4 @@
+from urlparse import urlsplit
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from django.test import TestCase
@@ -107,8 +108,9 @@ class TestCaseEx(TestCase):
             HTTP_X_REQUESTED_WITH='XMLHttpRequest' if ajax else None
         )
         self.assertEqual(response.status_code, 302)
-        self.assertRedirects(response,
-                             reverse("django.contrib.auth.views.login") + '?next=%s' % reverse(view_name, args=pargs))
+        url = response.url.split("?")[0]
+        scheme, netloc, path, query, fragment = urlsplit(url)
+        self.assertEqual(path, reverse("django.contrib.auth.views.login"))
         return response
 
     def redirect_to_login_on_get(self, view_name, params=None, pargs=None, ajax=False):
@@ -125,8 +127,9 @@ class TestCaseEx(TestCase):
             HTTP_X_REQUESTED_WITH='XMLHttpRequest' if ajax else None
         )
         self.assertEqual(response.status_code, 302)
-        self.assertRedirects(response,
-                             reverse("django.contrib.auth.views.login") + '?next=%s' % reverse(view_name, args=pargs))
+        url = response.url.split("?")[0]
+        scheme, netloc, path, query, fragment = urlsplit(url)
+        self.assertEqual(path, reverse("django.contrib.auth.views.login"))
         return response
 
     def redirect_on_post(self, view_name, params=None, pargs=None, ajax=False):
