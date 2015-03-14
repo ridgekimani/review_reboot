@@ -59,14 +59,14 @@ class Venue(CommonModel):
         return self.name
 
     def update_avg_rating(self):
-        from venues.models.comment import Comment
-        self_comments = Comment.objects.filter(venue_id=self.id)
-        num_of_comments = float(len(self_comments))
-        if num_of_comments == 0.0:
+        from venues.models import Review
+        self_reviews = Review.objects.filter(venue_id=self.id)
+        num_of_reviews = float(len(self_reviews))
+        if num_of_reviews == 0.0:
             return
         avg_rating = 0.0
-        for comment in self_comments:
-            avg_rating += comment.rating / num_of_comments
+        for review in self_reviews:
+            avg_rating += review.rating / num_of_reviews
         self.avg_rating = avg_rating
         self.save()
 

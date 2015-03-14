@@ -3,7 +3,7 @@
     <div class="panel-body">
         <h3>{{ venue_name }}</h3>
 
-        <form autocomplete="off" action="{% url "venues.views.comments.add_comment" restaurant.pk %}" method="post">{% csrf_token %}
+        <form autocomplete="off" action="{% url "venues.views.reviews.add_review" restaurant.pk %}" method="post">{% csrf_token %}
             <label>Rating: </label>
 
             {% for i in 12345|make_list %}
@@ -16,8 +16,8 @@
             {% endfor %}
 
             <div class="form-group">
-                <textarea class="form-control" id="commentArea" name="text"
-                          placeholder="Type your comment here" required>{{ text }}</textarea>
+                <textarea class="form-control" id="reviewArea" name="text"
+                          placeholder="Type your review here" required>{{ text }}</textarea>
                 <br>
                 <button type="submit" class="btn btn-default">Submit</button>
 {#                {% if is_saved %}#}

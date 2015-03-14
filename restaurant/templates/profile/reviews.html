@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% load bootstrap3 sekizai_tags %}
+{% block title %}Restaurants moderation{% endblock %}
+{% block body %}
+    <div class="list-group">
+        {% for review in reviews %}
+            <div class="list-group-item {{ review.approved|yesno:"list-group-item-success, list-group-item-danger" }}">
+                <a class="btn btn-default pull-right" href="{% url "venues.views.reviews.update_review" review.id %}">
+                    <span class="glyphicon glyphicon-edit"></span>
+                </a>
+                <a href="{{ review.content_object.show_url }}">{{ review.content_object }}</a> |
+                <strong>{{ review.rating }}</strong> of 5
+                <div>
+                    {{ review.text }}
+                </div>
+            </div>
+        {% empty %}
+            <div class="list-group-item">
+                You didn't write any reviews
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

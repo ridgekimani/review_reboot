@@ -68,7 +68,7 @@
             <div class="col-md-5">
                 <div class="list-group">
                     <div class="list-group-item list-group-item-info">
-                        Comments under need to approve:
+                        Reviews under need to approve:
                     </div>
                     {% for item in recently_added_reviews %}
                         <div class="list-group-item {{ item.approved|yesno:'list-group-item-success,list-group-item-warning' }}" >
@@ -81,7 +81,7 @@
                                     </div>
                                     {% if not item.approved %}
                                         <br/>
-                                        <a href="{% url "venues.views.moderate.approve_comment" item.pk %}">approve</a>
+                                        <a href="{% url "venues.views.moderate.approve_review" item.pk %}">approve</a>
                                     {% endif %}
                                 </div>
                             </div>

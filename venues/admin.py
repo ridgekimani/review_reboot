@@ -4,7 +4,7 @@ from simple_history.admin import SimpleHistoryAdmin
 from django.contrib.auth.admin import UserAdmin
 from venues.models import Restaurant, Masjid
 
-from venues.models.comment import Comment
+from venues.models import Review
 from venues.models.cuisine import Cuisine
 from venues.models.note import Note
 from venues.models.report import Report

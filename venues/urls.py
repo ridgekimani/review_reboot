@@ -8,10 +8,10 @@ urlpatterns = patterns('venues.views',
     url(r'notes/(?P<note_pk>[0-9]+)/remove/$', 'notes.remove_note'),
     url(r'notes/(?P<note_pk>[0-9]+)/update/$', 'notes.update_note'),
 
-    # comments editing
-    url(r'comments/(?P<comment_pk>[0-9]+)/remove/$', 'comments.remove_comment'),
-    url(r'comments/(?P<comment_pk>[0-9]+)/update/$', 'comments.update_comment'),
-    url(r'comments/(?P<comment_pk>[0-9]+)/approve/$', 'moderate.approve_comment'),
+    # reviews editing
+    url(r'reviews/(?P<review_pk>[0-9]+)/remove/$', 'reviews.remove_review'),
+    url(r'reviews/(?P<review_pk>[0-9]+)/update/$', 'reviews.update_review'),
+    url(r'reviews/(?P<review_pk>[0-9]+)/approve/$', 'moderate.approve_review'),
 
     # moderate
     url(r'moderate/$', 'moderate.index'),
@@ -20,12 +20,12 @@ urlpatterns = patterns('venues.views',
 
     #profile
     url(r'profile/restaurants/$', 'profile.myrestaurants'),
-    url(r'profile/comments/$', 'profile.mycomments'),
+    url(r'profile/reviews/$', 'profile.myreviews'),
     url(r'profile/notes/$', 'profile.mynotes'),
     url(r'profile/reports/$', 'profile.myreports'),
 
     # venues
-    url(r'(?P<rest_pk>[0-9]+)/show-all-comments/$', 'comments.show_all_comments'),
+    url(r'(?P<rest_pk>[0-9]+)/show-all-reviews/$', 'reviews.show_all_reviews'),
     url(r'(?P<rest_pk>[0-9]+)/show-all-tips/$', 'notes.show_all_notes'),
     url(r'(?P<rest_pk>[0-9]+)/report/$', 'reports.report_restaurant'),
     url(r'(?P<rest_pk>[0-9]+)/remove', 'venuess.remove_restaurant'),
@@ -33,8 +33,8 @@ urlpatterns = patterns('venues.views',
     url(r'(?P<rest_pk>[0-9]+)/approve/$', 'moderate.approve_restaurant'),
     url(r'(?P<rest_pk>[0-9]+)/profile$', 'venuess.restaurant'),
     url(r'(?P<rest_pk>[0-9]+)/note/new/$', 'notes.add_note'),
-    url(r'(?P<rest_pk>[0-9]+)/comment/new/', 'comments.add_comment'),
-    url(r'(?P<rest_pk>[0-9]+)/comment/$', 'comments.comment'),
+    url(r'(?P<rest_pk>[0-9]+)/review/new/', 'reviews.add_review'),
+    url(r'(?P<rest_pk>[0-9]+)/review/$', 'reviews.review'),
 
     # common
     url(r'restaurants_lists/$', 'venuess.restaurants_lists'),

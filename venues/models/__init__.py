@@ -1,6 +1,6 @@
 from venues.models.venue import *
 from venues.models.cuisine import *
-from venues.models.comment import *
+from venues.models.review import *
 from venues.models.masjid import *
 from venues.models.note import *
 from venues.models.report import *

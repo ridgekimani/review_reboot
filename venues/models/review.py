@@ -7,7 +7,7 @@ from venues.models._common import CommonModel
 __author__ = 'm'
 
 
-class Comment(CommonModel):
+class Review(CommonModel):
     '''
     This class uses generic ForeignKey, for details read here
     https://docs.djangoproject.com/en/1.6/ref/contrib/contenttypes/#generic-relations
@@ -23,7 +23,7 @@ class Comment(CommonModel):
     @staticmethod
     def list_for_venue(venue):
         related_object_type = ContentType.objects.get_for_model(venue)
-        return Comment.objects.filter(content_type__pk=related_object_type.id,
+        return Review.objects.filter(content_type__pk=related_object_type.id,
                                       venue_id=venue.id)
 
     @property

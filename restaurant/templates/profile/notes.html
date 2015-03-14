@@ -5,6 +5,9 @@
     <div class="list-group">
         {% for note in notes %}
             <div class="list-group-item list-group-item-success">
+                <a class="btn btn-default pull-right" href="{% url "venues.views.notes.update_note" note.id %}">
+                    <span class="glyphicon glyphicon-edit"></span>
+                </a>
                 <a href="{{ note.content_object.show_url }}">{{ note.content_object }}</a> |
                 <div>
                     {{ note.text }}

@@ -19,7 +19,7 @@ from restaurant.utils import get_client_ip
 from venues import forms
 from venues.forms import RestaurantForm
 from venues.models import Masjid, Restaurant
-from venues.models.comment import Comment
+from venues.models import Review
 from venues.models.cuisine import Cuisine
 from venues.models.note import Note
 from venues.models.report import Report
@@ -265,7 +265,7 @@ def closest(request):
 # @login_required
 # def log_out(request):
 # logout(request)
-# return render(request, "comment.html")
+# return render(request, "review.html")
 
 def restaurant(request, rest_pk):
     _restaurant = Restaurant.objects.get(pk=rest_pk)
@@ -276,7 +276,7 @@ def restaurant(request, rest_pk):
 
     return render(request, 'restaurants/item.html', {
         'restaurant': _restaurant,
-        'comments': Comment.list_for_venue(_restaurant).order_by('-modified_on'),
+        'reviews': Review.list_for_venue(_restaurant).order_by('-modified_on'),
         'notes': Note.list_for_venue(_restaurant).order_by('-modified_on'),
         'reports': Report.list_for_venue(_restaurant),
     })
@@ -324,7 +324,7 @@ def update_restaurant(request, rest_pk):
 
     context = {
         'restaurant': _restaurant,
-        'comments': Comment.list_for_venue(_restaurant),
+        'reviews': Review.list_for_venue(_restaurant),
         'notes': Note.list_for_venue(_restaurant),
         'reports': Report.list_for_venue(_restaurant),
     }

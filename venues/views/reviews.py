@@ -10,13 +10,13 @@ from django.shortcuts import redirect, get_object_or_404, render, render_to_resp
 from django.views.decorators.http import require_POST, require_GET
 
 from restaurant.utils import get_client_ip
-from venues.forms import CommentForm
+from venues.forms import ReviewForm
 from venues.models import Restaurant
-from venues.models.comment import Comment
+from venues.models import Review
 
 
 @login_required
-def comment(request, rest_pk):
+def review(request, rest_pk):
     '''
     rest_pk must be valid one for existing restaurant or
     ValueError will be raised on save() attempt in POST part.
@@ -30,9 +30,9 @@ def comment(request, rest_pk):
     if request.method == u'GET':
         try:
             filterargs = {'venue_id': rest_pk, 'user': request.user}
-            comment = Comment.objects.get(**filterargs)
-            context['text'] = comment.text
-            context['rating'] = comment.rating
+            review = Review.objects.get(**filterargs)
+            context['text'] = review.text
+            context['rating'] = review.rating
 
         except ObjectDoesNotExist:
             pass
@@ -41,48 +41,48 @@ def comment(request, rest_pk):
 
         filterargs = {'venue_id': rest_pk, 'user': request.user}
         try:
-            comment = Comment.objects.get(**filterargs)
+            review = Review.objects.get(**filterargs)
         except ObjectDoesNotExist:
-            comment = Comment(user=request.user, content_object=rest)
-        comment.text = request.POST[u'comment']
-        comment.rating = int(request.POST[u'rating'])
-        comment.save()
-        context['text'] = comment.text
-        context['rating'] = comment.rating
+            review = Review(user=request.user, content_object=rest)
+        review.text = request.POST[u'review']
+        review.rating = int(request.POST[u'rating'])
+        review.save()
+        context['text'] = review.text
+        context['rating'] = review.rating
         context['is_saved'] = True
         rest.update_avg_rating()
 
     context.update(csrf(request))
-    return render_to_response('comments/comment-form.html', context)
+    return render_to_response('reviews/review-form.html', context)
 
 
-def show_all_comments(request, rest_pk):
-    comments = Comment.objects.filter(venue_id=rest_pk)
-    data = serializers.serialize('json', comments)
+def show_all_reviews(request, rest_pk):
+    reviews = Review.objects.filter(venue_id=rest_pk)
+    data = serializers.serialize('json', reviews)
     data = json.loads(data)
-    return HttpResponse(json.dumps({"response": {"total": len(data), "comments": data}}),
+    return HttpResponse(json.dumps({"response": {"total": len(data), "reviews": data}}),
                         content_type='application/json')
 
 
 @login_required
 @require_GET
-def remove_comment(request, comment_pk):
-    Comment.objects.get(pk=comment_pk).delete()
+def remove_review(request, review_pk):
+    Review.objects.get(pk=review_pk).delete()
     return redirect(request.META['HTTP_REFERER'])
 
 
 @login_required
 @require_POST
-def add_comment(request, rest_pk):
+def add_review(request, rest_pk):
     _restaurant = Restaurant.objects.get(pk=rest_pk)
     related_object_type = ContentType.objects.get_for_model(_restaurant)
 
-    comment = Comment(
+    review = Review(
         venue_id=_restaurant.pk,
         content_type=related_object_type,
     )
 
-    form = CommentForm(request.POST, instance=comment, request=request)
+    form = ReviewForm(request.POST, instance=review, request=request)
     if form.is_valid():
         form.save()
 
@@ -90,22 +90,22 @@ def add_comment(request, rest_pk):
 
 
 @login_required
-def update_comment(request, comment_pk):
-    comment = Comment.objects.get(pk=comment_pk)
-    rest_pk = comment.venue_id
+def update_review(request, review_pk):
+    review = Review.objects.get(pk=review_pk)
+    rest_pk = review.venue_id
 
     rest = get_object_or_404(Restaurant, id=rest_pk)
 
     context = {
         'restaurant': rest,
-        'comment': comment,
+        'review': review,
         'ratings': xrange(1, 6),
     }
 
     if request.method == 'GET':
-        context['form'] = CommentForm(instance=comment, request=request)
+        context['form'] = ReviewForm(instance=review, request=request)
     elif request.method == 'POST':
-        form = CommentForm(request.POST, instance=comment, request=request)
+        form = ReviewForm(request.POST, instance=review, request=request)
         if form.is_valid():
             form.save()
             if rest.slug:
@@ -115,5 +115,5 @@ def update_comment(request, comment_pk):
         else:
             context['form'] = form
 
-    return render(request, 'comments/update.html', context)
+    return render(request, 'reviews/update.html', context)
 

@@ -1,7 +1,7 @@
 from django import forms
 from django_countries.widgets import CountrySelectWidget
 from restaurant.utils import get_client_ip
-from venues.models import Restaurant, Comment, Note, Report
+from venues.models import Restaurant, Review, Note, Report
 
 
 class CommonForm(forms.ModelForm):
@@ -46,9 +46,9 @@ class AddressForm(forms.Form):
     category = forms.CharField(required=False)
 
 
-class CommentForm(CommonForm):
+class ReviewForm(CommonForm):
     class Meta:
-        model = Comment
+        model = Review
         fields = ['rating', 'text']
 
 

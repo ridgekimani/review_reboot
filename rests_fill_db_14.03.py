@@ -8,9 +8,9 @@ import sqlite3
 from django.contrib.gis import geos
 from venues.models import Cuisine, Restaurant
 
-RESTS_SQLITE_FILE='upload.db'
+RESTS_SQLITE_FILE = 'upload.db'
 
-f = open('categories_name.txt','r')
+f = open('categories_name.txt', 'r')
 cats = [c.replace("\n", "") for c in f.readlines()]
 f.close()
 
@@ -22,20 +22,20 @@ sq_curs = sq_conn.cursor()
 for row in sq_curs.execute("SELECT * FROM Restaurant;"):
     rest_cats = row[3].split(', ')
     rest = Restaurant(
-        name = row[0],
-        address = row[1],
-        phone = row[2].replace(" ", "") or '',
-        catering = "Catering" in row[4],
-        delivery = "Delivery" in row[4],
-        location = geos.GEOSGeometry('POINT(%s %s)' %(row[10], row[9])),
-        yelp_url = row[6] or '',
-        foursquare_url = row[8] or '',
+        name=row[0],
+        address=row[1],
+        phone=row[2].replace(" ", "") or '',
+        catering="Catering" in row[4],
+        delivery="Delivery" in row[4],
+        location=geos.GEOSGeometry('POINT(%s %s)' % (row[10], row[9])),
+        yelp_url=row[6] or '',
+        foursquare_url=row[8] or '',
     )
     rest.save()
-    counter +=1
+    counter += 1
     for cat in rest_cats:
         try:
-            cat_in_db = Category.objects.get(name=cat)
+            cat_in_db = Cuisine.objects.get(name=cat)
             rest.cuisines.add(cat_in_db)
             rest.save()
         except:
@@ -45,7 +45,7 @@ print "Saved in db: ", counter
 sq_conn.close()
 
 # TABLE Restaurant (
-#     0name text, 
+# 0name text,
 #     1address text, 
 #     2phone int,
 #     3cuisine text, 
