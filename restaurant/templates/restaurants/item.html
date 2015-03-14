@@ -34,15 +34,18 @@
                 </div>
             </h1>
 
-            <h2>{{ restaurant.cuisine }}</h2>
-            <h4>{{ restaurant.eatingOptions }}</h4>
+            <h4>  {% for category in restaurant.cuisines.all %}
+                        {{ category }}
+                    {% endfor %}
 
-            <h3>{{ restaurant.address }}</h3>
+            </h4>
+
+            <h4>{{ restaurant.address }}</h4>
 
             <div class="row">
                 {% if  restaurant.phone %}
                     <div class="col-md-12">
-                        <h3><span class="glyphicon glyphicon-earphone"></span> {{ restaurant.phone }}</h3>
+                        <h4><span class="glyphicon glyphicon-earphone"></span> {{ restaurant.phone }}</h4>
                     </div>
                 {% endif %}
             </div>

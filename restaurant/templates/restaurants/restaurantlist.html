@@ -12,7 +12,7 @@
                                role="button">Edit</a>
                         {% endif %}
                     </h3>
-                    {% for category in restaurant.categories.all %}
+                    {% for category in restaurant.cuisines.all %}
                         {{ category }}
                     {% endfor %}
                     {{ restaurant.address }} <br/>
