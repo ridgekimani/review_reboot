@@ -14,10 +14,12 @@ class Report(models.Model):
         ordering = ['resolved', '-created_on']
 
     REPORTS = (
-        (1, 'Closed'),
-        (2, 'Is a duplicate'),
-        (3, 'Wrong Location'),
-        (4, 'Other')
+        (1, 'No longer Halal :('),
+        (2, 'Address is Da`eef'),
+        (3, 'Incorrect address'),
+        (4, 'Incorrect Map Pin'),
+        (5, 'Out of business'),
+        (6, 'Other')
     )
 
     created_on = models.DateTimeField(auto_now_add=True)
