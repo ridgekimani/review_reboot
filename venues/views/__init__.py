@@ -24,16 +24,16 @@ def get_category(request):
 
 
 
-@psa('social:complete')
-def register_by_access_token(request, backend):
-    # This view expects an access_token GET parameter, if it's needed,
-    # request.backend and request.strategy will be loaded with the current
-    # backend and strategy.
-    token = request.GET.get('access_token')
-    user = request.backend.do_auth(request.GET.get('access_token'))
-    if user:
-        login(request, user)
-        return HttpResponse(json.dumps({"success": True}), content_type='application/json')
-    else:
-        return HttpResponse(json.dumps({"success": False}), content_type='application/json')
+# @psa('social:complete')
+# def register_by_access_token(request, backend):
+#     # This view expects an access_token GET parameter, if it's needed,
+#     # request.backend and request.strategy will be loaded with the current
+#     # backend and strategy.
+#     token = request.GET.get('access_token')
+#     user = request.backend.do_auth(request.GET.get('access_token'))
+#     if user:
+#         login(request, user)
+#         return HttpResponse(json.dumps({"success": True}), content_type='application/json')
+#     else:
+#         return HttpResponse(json.dumps({"success": False}), content_type='application/json')
 

@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User
 from restaurant.utils import TestCaseEx
-from venues.models.restaurant import Restaurant
+from venues.models import Restaurant
 
 
 class TestVenuess(TestCaseEx):

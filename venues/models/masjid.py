@@ -1,5 +1,3 @@
-# simple_history will add its tables to db only if field added to model class,
-# not a parent class (Venue)
 from django.core.validators import URLValidator
 from django.db import models
 from simple_history.models import HistoricalRecords

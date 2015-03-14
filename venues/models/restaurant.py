@@ -36,7 +36,7 @@ class Restaurant(Venue):
     porkFree = models.NullBooleanField(null=True, blank=True, choices=CHOICES)
     muslimOwner = models.NullBooleanField(null=True, blank=True, choices=CHOICES)
 
-    cuisines = models.ManyToManyField(Cuisine, null=True)
+    cuisines = models.ManyToManyField(Cuisine, null=True, default=None)
 
 
     @property

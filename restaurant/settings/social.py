@@ -8,10 +8,9 @@ SOCIAL_AUTH_FACEBOOK_SECRET = credentials['SOCIAL_AUTH_FACEBOOK_SECRET']
 
 # for more backends check http://django-social-auth.readthedocs.org/en/latest/configuration.html
 AUTHENTICATION_BACKENDS = (
-    'social.backends.facebook.FacebookOAuth2',
-    'social.backends.google.GoogleOpenIdConnect',
-    'django.contrib.auth.backends.ModelBackend',
-    'account.auth_backends.UsernameAuthenticationBackend',
+    "django.contrib.auth.backends.ModelBackend",
+    "social.backends.facebook.FacebookOAuth2",
+    "social.backends.google.GoogleOpenIdConnect",
 )
 
 
@@ -29,9 +28,9 @@ SOCIAL_AUTH_ADMIN_USER_SEARCH_FIELDS = ['username', 'first_name']
 # ]
 #
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
-ACCOUNT_OPEN_SIGNUP = True
-ACCOUNT_EMAIL_UNIQUE = True
-ACCOUNT_EMAIL_CONFIRMATION_REQUIRED = True
-ACCOUNT_LOGIN_REDIRECT_URL = "home"
-ACCOUNT_LOGOUT_REDIRECT_URL = "home"
-ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS = 2
+# ACCOUNT_OPEN_SIGNUP = True
+# ACCOUNT_EMAIL_UNIQUE = True
+# ACCOUNT_EMAIL_CONFIRMATION_REQUIRED = True
+# ACCOUNT_LOGIN_REDIRECT_URL = "home"
+# ACCOUNT_LOGOUT_REDIRECT_URL = "home"
+# ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS = 2
