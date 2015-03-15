@@ -281,7 +281,7 @@ def restaurant(request, rest_pk):
 @login_required
 def remove_restaurant(request, rest_pk):
     rest = get_object_or_404(Restaurant, pk=rest_pk)
-    if not request.user.venueuser.venue_moderator:
+    if not request.user.is_venue_moderator():
         if not (rest.created_by == request.user and not rest.approved):
             return redirect(reverse('django.contrib.auth.views.login') + "?next=%s" % request.path)
 
@@ -319,9 +319,7 @@ def add_restaurant(request):
 def update_restaurant(request, rest_pk):
     _restaurant = get_object_or_404(Restaurant, pk=rest_pk)
 
-    # if not (request.user.is_venue_moderator or _restaurant.created_by == request.user):
-    #     return redirect(reverse('venues.views.venuess.restaurant_by_slug', args=[_restaurant.slug]))
-    if not request.user.venueuser.venue_moderator:
+    if not request.user.is_venue_moderator():
         if not (_restaurant.created_by == request.user and not _restaurant.approved):
             return redirect(reverse('django.contrib.auth.views.login') + "?next=%s" % request.path)
 
