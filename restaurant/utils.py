@@ -1,6 +1,7 @@
 from urlparse import urlsplit
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
+from django.http.response import HttpResponseBadRequest
 from django.test import TestCase
 
 __author__ = 'm'
@@ -83,12 +84,9 @@ class TestCaseEx(TestCase):
         return _wrapper
 
     @staticmethod
-    def login(fn, user=None):
+    def login(fn):
         def _wrapper(self=None):
-            if user:
-                self.client.login(username=user.username, password=user.password)
-            else:
-                self.client.login(username=self.user.username, password=self.password)
+            self.client.login(username=self.user.username, password=self.password)
             fn(self)
             self.client.logout()
 

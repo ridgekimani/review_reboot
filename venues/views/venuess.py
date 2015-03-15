@@ -1,4 +1,5 @@
 import json
+from django.contrib.gis.geos import Point
 
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.http.response import HttpResponseBadRequest
@@ -74,15 +75,15 @@ def get_masjids(longitude, latitude, categories):
 
         # Replace category ids with names
         cat_names = []
-        for cat_id in masjid['fields']['categories']:
+        for cat_id in masjid['fields']['cuisines']:
             cat = Cuisine.objects.get(id=cat_id)
             cat_names.append(cat.name)
-        masjid['fields']['categories'] = cat_names
+        masjid['fields']['cuisines'] = cat_names
 
     return data
 
 
-def restaurants_lists(request):
+def index(request):
     form = forms.AddressForm()
     restaurants = []
     latitude = ""
@@ -156,10 +157,10 @@ def restaurants_lists(request):
     return render(request, 'restaurants/restaurants.html', context)
     # else:
     # context = {'all_restaurants': restaurants, 'form': form, 'longitude': longitude, 'latitude': latitude}
-    #     return render(request, 'restaurants/restaurants.html', context)
+    # return render(request, 'restaurants/restaurants.html', context)
 
 
-def get_restaurants(longitude, latitude, categories):
+def __get_restaurants(longitude, latitude, categories):
     '''
     Returns objects at given point that satisfy set of categories,
     or all of them if categories is empty.
@@ -170,7 +171,7 @@ def get_restaurants(longitude, latitude, categories):
     output:
         list of dicts
     '''
-    currentPoint = geos.GEOSGeometry('POINT(%s %s)' % (longitude, latitude))
+    currentPoint = Point(float(longitude), float(latitude))  # geos.GEOSGeometry('POINT(%s %s)' % (longitude, latitude))
     distance_m = 15000
     list_of_cats = []
     for c in categories:
@@ -216,10 +217,10 @@ def get_restaurants(longitude, latitude, categories):
 
         # Replace category ids with names
         cat_names = []
-        for cat_id in restaurant['fields']['categories']:
+        for cat_id in restaurant['fields']['cuisines']:
             cat = Cuisine.objects.get(id=cat_id)
             cat_names.append(cat.name)
-        restaurant['fields']['categories'] = cat_names
+        restaurant['fields']['cuisines'] = cat_names
 
     return data
 
@@ -243,9 +244,9 @@ def closest(request):
                 venues = get_masjids(lon, lat, categories=[])
                 response_message = "No venues for this categories, here are some other ones you might like"
         else:
-            venues = get_restaurants(lon, lat, categories)
+            venues = __get_restaurants(lon, lat, categories)
             if not venues:
-                venues = get_restaurants(lon, lat, categories=[])
+                venues = __get_restaurants(lon, lat, categories=[])
                 response_message = "No venues for this categories, here are some other ones you might like"
 
         return HttpResponse(
@@ -259,20 +260,15 @@ def closest(request):
             content_type='application/json'
         )
     else:
-        return redirect(reverse('venues.views.venuess.restaurants_lists'))
+        return redirect(reverse('venues.views.venuess.index'))
 
-
-# @login_required
-# def log_out(request):
-# logout(request)
-# return render(request, "review.html")
 
 def restaurant(request, rest_pk):
-    _restaurant = Restaurant.objects.get(pk=rest_pk)
+    _restaurant = get_object_or_404(Restaurant, pk=rest_pk)
 
-    if not _restaurant.approved and not (
-        hasattr(request.user, 'is_venue_moderator') and request.user.is_venue_moderator()):
-        return redirect(reverse("django.contrib.auth.views.login") + "?next=%s" % request.path)
+    if not _restaurant.approved and \
+            not (hasattr(request.user, 'is_venue_moderator') and request.user.is_venue_moderator()):
+        raise Http404
 
     return render(request, 'restaurants/item.html', {
         'restaurant': _restaurant,
@@ -282,15 +278,19 @@ def restaurant(request, rest_pk):
     })
 
 
-@user_passes_test(lambda u: u.is_venue_moderator())
+@login_required
 def remove_restaurant(request, rest_pk):
     rest = get_object_or_404(Restaurant, pk=rest_pk)
+    if not request.user.venueuser.venue_moderator:
+        if not (rest.created_by == request.user and not rest.approved):
+            return redirect(reverse('django.contrib.auth.views.login') + "?next=%s" % request.path)
+
     rest.delete()
 
     if request.is_ajax():
         return HttpResponse()
     else:
-        return redirect(reverse("venues.views.venuess.restaurants_lists"))
+        return redirect(reverse("venues.views.venuess.index"))
 
 
 @login_required
@@ -319,8 +319,11 @@ def add_restaurant(request):
 def update_restaurant(request, rest_pk):
     _restaurant = get_object_or_404(Restaurant, pk=rest_pk)
 
-    if not (request.user.is_venue_moderator or _restaurant.created_by == request.user):
-        return redirect(reverse('venues.views.venuess.restaurant_by_slug', args=[_restaurant.slug]))
+    # if not (request.user.is_venue_moderator or _restaurant.created_by == request.user):
+    #     return redirect(reverse('venues.views.venuess.restaurant_by_slug', args=[_restaurant.slug]))
+    if not request.user.venueuser.venue_moderator:
+        if not (_restaurant.created_by == request.user and not _restaurant.approved):
+            return redirect(reverse('django.contrib.auth.views.login') + "?next=%s" % request.path)
 
     context = {
         'restaurant': _restaurant,
@@ -354,9 +357,6 @@ def restaurant_by_slug(request, slug):
     :param slug:
     :return:
     '''
-    r = Restaurant.objects.filter(slug=slug).first()
-    if not r:
-        raise Http404()
-    else:
-        return restaurant(request, r.pk)
+    r = get_object_or_404(Restaurant, slug=slug)
+    return restaurant(request, r.pk)
 

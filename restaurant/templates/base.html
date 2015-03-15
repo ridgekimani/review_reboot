@@ -17,7 +17,7 @@
         <a class="navbar-brand" href="/">Restaurants</a>
         <ul class="nav navbar-nav">
         </ul>
-        <form method="post" action="{% url "venues.views.venuess.restaurants_lists" %}"
+        <form method="post" action="{% url "venues.views.venuess.index" %}"
               class="navbar-form search-form navbar-left" id="restaurant-form">
             {% csrf_token %}
             <input type="text" name="address" class="form-control" placeholder="address"/>

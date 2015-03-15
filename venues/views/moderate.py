@@ -99,7 +99,7 @@ def approve_restaurant(request, rest_pk):
     else:
         if "HTTP_REFERER" in request:
             return redirect(request.META['HTTP_REFERER'])
-        return redirect(reverse("venues.views.venuess.restaurants_lists"))
+        return redirect(reverse("venues.views.venuess.index"))
 
 
 @login_required
@@ -114,7 +114,7 @@ def approve_review(request, review_pk):
     else:
         if "HTTP_REFERER" in request:
             return redirect(request.META['HTTP_REFERER'])
-        return redirect(reverse("venues.views.venuess.restaurants_lists"))
+        return redirect(reverse("venues.views.venuess.index"))
 
 
 @login_required
@@ -135,6 +135,6 @@ def resolve_report(request, id):
     else:
         if "HTTP_REFERER" in request:
             return redirect(request.META['HTTP_REFERER'])
-        return redirect(reverse("venues.views.venuess.restaurants_lists"))
+        return redirect(reverse("venues.views.venuess.index"))
 
 

@@ -37,10 +37,11 @@ urlpatterns = patterns('venues.views',
     url(r'(?P<rest_pk>[0-9]+)/review/$', 'reviews.review'),
 
     # common
-    url(r'restaurants_lists/$', 'venuess.restaurants_lists'),
     url(r'get_category/', 'get_category', name='get_drugs'),
     url(r'new$', 'venuess.add_restaurant'),
 
     # restautant by slug
     url(r'(?P<slug>[\w-]+)/$', 'venuess.restaurant_by_slug'),
+    # index page
+    url(r'$', 'venuess.index'),
 )

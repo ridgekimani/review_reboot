@@ -209,7 +209,7 @@ class TestModerate(TestCaseVenue):
 
         self.assertEqual(report.resolved, True)
         self.assertEqual(report.moderator_note, params['moderator_note'])
-        self.assertEqual(report.closed_by, self.moderator)
+        self.assertEqual(report.closed_by, self.moderator_user)
 
     @TestCaseVenue.superuser
     def test_superuser_can_resolve_report(self):
