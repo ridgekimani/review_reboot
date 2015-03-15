@@ -9,7 +9,6 @@ def is_venue_moderator(user):
     else:
         return user.is_superuser
 
-
 User.add_to_class("is_venue_moderator", is_venue_moderator)
 User.venue_user = property(lambda u: VenueUser.objects.get_or_create(user=u)[0])
 

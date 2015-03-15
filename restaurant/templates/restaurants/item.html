@@ -5,7 +5,17 @@
 
     <div class="block-area">
         <div class="table table-bordered tile  mainTable">
-            <div class="title">{{ restaurant.name }}</div>
+            <div class="title">
+                {{ restaurant.name }}
+                {% if user.is_authenticated %}
+                    <small>
+                        | <a href="{% url "venues.views.venuess.update_restaurant" restaurant.pk %}">edit</a>
+                        {% if user.is_venue_moderator %}
+                            | <a href="{% url "venues.views.venuess.remove_restaurant" restaurant.pk %}">remove</a>
+                        {% endif %}
+                    </small>
+                {% endif %}
+            </div>
             <div class="cuisine">{% for cuisine in restaurant.cuisines.all %}{{ cuisine }}{% endfor %}</div>
             <div class="address">{{ restaurant.address }}</div>
             <div class="phone">{{ restaurant.phone }}</div>
@@ -56,26 +66,26 @@
             <!-- END GOOGLE MAP -->
         </div>
 
-{#        <div class="tab-container tile">#}
-{#            <ul class="nav tab nav-tabs">#}
-{#                <li class="active"><a href="#home">Home</a></li>#}
-{#            </ul>#}
-{#            <div class="tab-content">#}
-{#                <div class="tab-pane active" id="home">#}
-{#                    <p>Duis eleifend sapien nec nisl semper, vitae accumsan arcu feugiat. Suspendisse potenti. Aenean#}
-{#                        vestibulum massa ut congue accumsan. Donec sapien nulla, sollicitudin eu odio fringilla,#}
-{#                        vulputate ornare quam. Morbi congue in sem non congue. Vivamus diam velit, lacinia eu lorem ac,#}
-{#                        pellentesque lobortis arcu. Morbi congue dolor sed arcu imperdiet posuere.</p>#}
-{##}
-{#                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. In vel enim non dui fermentum#}
-{#                        sollicitudin. In id metus dolor. Suspendisse dapibus, metus vitae posuere gravida, odio orci#}
-{#                        dictum purus, vitae lobortis elit lacus id sem. Vestibulum ut rhoncus dui. Sed congue vestibulum#}
-{#                        fermentum. Nulla imperdiet quam et ipsum lobortis laoreet. Phasellus in lectus ligula.#}
-{#                        Suspendisse potenti. Aliquam massa nulla, congue ut quam sed, scelerisque laoreet massa. Ut#}
-{#                        ultrices aliquet suscipit.</p>#}
-{#                </div>#}
-{#            </div>#}
-{#        </div>#}
+        {#        <div class="tab-container tile">#}
+        {#            <ul class="nav tab nav-tabs">#}
+        {#                <li class="active"><a href="#home">Home</a></li>#}
+        {#            </ul>#}
+        {#            <div class="tab-content">#}
+        {#                <div class="tab-pane active" id="home">#}
+        {#                    <p>Duis eleifend sapien nec nisl semper, vitae accumsan arcu feugiat. Suspendisse potenti. Aenean#}
+        {#                        vestibulum massa ut congue accumsan. Donec sapien nulla, sollicitudin eu odio fringilla,#}
+        {#                        vulputate ornare quam. Morbi congue in sem non congue. Vivamus diam velit, lacinia eu lorem ac,#}
+        {#                        pellentesque lobortis arcu. Morbi congue dolor sed arcu imperdiet posuere.</p>#}
+        {##}
+        {#                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. In vel enim non dui fermentum#}
+        {#                        sollicitudin. In id metus dolor. Suspendisse dapibus, metus vitae posuere gravida, odio orci#}
+        {#                        dictum purus, vitae lobortis elit lacus id sem. Vestibulum ut rhoncus dui. Sed congue vestibulum#}
+        {#                        fermentum. Nulla imperdiet quam et ipsum lobortis laoreet. Phasellus in lectus ligula.#}
+        {#                        Suspendisse potenti. Aliquam massa nulla, congue ut quam sed, scelerisque laoreet massa. Ut#}
+        {#                        ultrices aliquet suscipit.</p>#}
+        {#                </div>#}
+        {#            </div>#}
+        {#        </div>#}
         <div class="row fieldWysiwye">
             <form action="#">
                 <div class="col-xs-12 col-md-6">

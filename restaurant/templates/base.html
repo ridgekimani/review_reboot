@@ -27,12 +27,17 @@
 <header id="header" class="media">
     <a href="" id="menu-toggle"></a>
     <a class="logo pull-left" href="/">SUPER ADMIN 1.0</a>
-
+    {% if not user.is_authenticated %}
+        <form class="navbar-form pull-right">
+            <a class="btn btn-primary" data-toggle="modal" href="#login_modal">Login</a>
+        </form>
+    {% endif %}
     <div class="media-body">
         <div class="media" id="top-menu">
-            <form method="post" action="/restaurants/restaurants_lists/" class="navbar-form search-form pull-left"
+            <form method="post" action="{% url "venues.views.venuess.index" %}"
+                  class="navbar-form search-form pull-left"
                   id="restaurant-form">
-                <input type='hidden' name='csrfmiddlewaretoken' value='yDalbaMPgy3SYTMJOiq3UgSbTtf8Fm0k'/>
+                {% csrf_token %}
                 <input type="text" id="pac-input" name="search" class="form-control" placeholder="Enter address"/>
                 <input class="btn btn-sm btn-alt" type="submit" value="Search"/>
             </form>
@@ -45,6 +50,7 @@
             </div>
         </div>
     </div>
+
 </header>
 
 <div class="clearfix"></div>
@@ -62,14 +68,9 @@
                     <img class="profile-pic animated" src="{% static "img/profile-pic.jpg" %}" alt="">
                 </a>
                 <ul class="dropdown-menu profile-menu">
-                    <li><a href="">My Profile</a> <i class="icon left">&#61903;</i><i class="icon right">&#61815;</i>
-                    </li>
-                    <li><a href="">Messages</a> <i class="icon left">&#61903;</i><i class="icon right">&#61815;</i></li>
-                    <li><a href="">Settings</a> <i class="icon left">&#61903;</i><i class="icon right">&#61815;</i></li>
-                    <li><a href="">Sign Out</a> <i class="icon left">&#61903;</i><i class="icon right">&#61815;</i></li>
+                    {% include "user_menu.html" %}
                 </ul>
-                <h4 class="m-0">User Name</h4>
-
+                <h4 class="m-0">{{ user }}</h4>
             </div>
 
             <!-- Calendar -->
@@ -77,74 +78,6 @@
                 <div id="sidebar-calendar"></div>
             </div>
 
-            <!-- Feeds -->
-            <div class="s-widget m-b-25">
-                <h2 class="tile-title">
-                    News Feeds
-                </h2>
-
-                <div class="s-widget-body">
-                    <div id="news-feed"></div>
-                </div>
-            </div>
-
-            <!-- Projects -->
-            <div class="s-widget m-b-25">
-                <h2 class="tile-title">
-                    Projects on going
-                </h2>
-
-                <div class="s-widget-body">
-                    <div class="side-border">
-                        <small>Joomla Website</small>
-                        <div class="progress progress-small">
-                            <a href="#" data-toggle="tooltip" title="" class="progress-bar tooltips progress-bar-danger"
-                               style="width: 60%;" data-original-title="60%">
-                                <span class="sr-only">60% Complete</span>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="side-border">
-                        <small>Opencart E-Commerce Website</small>
-                        <div class="progress progress-small">
-                            <a href="#" data-toggle="tooltip" title="" class="tooltips progress-bar progress-bar-info"
-                               style="width: 43%;" data-original-title="43%">
-                                <span class="sr-only">43% Complete</span>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="side-border">
-                        <small>Social Media API</small>
-                        <div class="progress progress-small">
-                            <a href="#" data-toggle="tooltip" title=""
-                               class="tooltips progress-bar progress-bar-warning" style="width: 81%;"
-                               data-original-title="81%">
-                                <span class="sr-only">81% Complete</span>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="side-border">
-                        <small>VB.Net Software Package</small>
-                        <div class="progress progress-small">
-                            <a href="#" data-toggle="tooltip" title=""
-                               class="tooltips progress-bar progress-bar-success" style="width: 10%;"
-                               data-original-title="10%">
-                                <span class="sr-only">10% Complete</span>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="side-border">
-                        <small>Chrome Extension</small>
-                        <div class="progress progress-small">
-                            <a href="#" data-toggle="tooltip" title=""
-                               class="tooltips progress-bar progress-bar-success" style="width: 95%;"
-                               data-original-title="95%">
-                                <span class="sr-only">95% Complete</span>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
 
         <!-- Side Menu -->
@@ -233,19 +166,17 @@
         </ul>
 
     </aside>
-    <!-- Breadcrumb -->
-    <ol class="breadcrumb hidden-xs">
-        <li><a href="#">Home</a></li>
-        <li><a href="#">Library</a></li>
-        <li class="active">Data</li>
-    </ol>
+{#    <!-- Breadcrumb -->#}
+{#    <ol class="breadcrumb hidden-xs">#}
+{#        <li><a href="#">Home</a></li>#}
+{#        <li><a href="#">Library</a></li>#}
+{#        <li class="active">Data</li>#}
+{#    </ol>#}
     <!-- Content -->
     <section id="content" class="container">
         {% block body %}
         {% endblock %}
-
         <hr class="whiter m-t-20"/>
-
     </section>
 </section>
 {#<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&amp;signed_in=true&amp;libraries=places"></script>#}
@@ -281,5 +212,6 @@
 <!-- All JS functions -->
 <script src="{% static "js/functions.js" %}"></script>
 {% render_block "js" %}
+{% include "login.html" %}
 </body>
 </html>
