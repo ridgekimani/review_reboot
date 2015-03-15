@@ -1,4 +1,9 @@
 {% if user.is_authenticated %}
+    <li>
+        <a role="menuitem" href="{% url "venues.views.profile.myprofile" %}">
+            My Profile
+        </a>
+    </li>
     {% if user.is_staff %}
         <li>
             <a role="menuitem" tabindex="-1" href="/admin/">

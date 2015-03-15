@@ -302,7 +302,9 @@ def add_restaurant(request):
             "categories": Cuisine.objects.all()
         })
     elif request.method == "POST":
-        form = RestaurantForm(request.POST, request=request)
+        rest_data = request.POST.copy()
+        rest_data['cuisines'] = list([int(i) for i in rest_data['cuisines']])
+        form = RestaurantForm(rest_data, request=request)
         if form.is_valid():
             new_restaurant = form.save()
             return redirect(reverse('venues.views.venuess.restaurant_by_slug', args=[new_restaurant.slug]))
