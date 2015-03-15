@@ -10,7 +10,7 @@ from venues.models import Cuisine, Restaurant
 
 RESTS_SQLITE_FILE = 'upload.db'
 
-f = open('categories_name.txt', 'r')
+f = open('cuisineList.txt', 'r')
 cats = [c.replace("\n", "") for c in f.readlines()]
 f.close()
 

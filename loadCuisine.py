@@ -1,6 +1,6 @@
 from venues.models import Cuisine
 
-f = open('categories_name.txt','r')
+f = open('cuisineList.txt','r')
 cats = [c.replace("\n", "") for c in f.readlines()]
 f.close()
 
