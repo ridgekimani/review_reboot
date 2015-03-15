@@ -1,4 +1,4 @@
-{% load static bootstrap3 sekizai_tags %}
+{% load static bootstrap3 sekizai_tags assets %}
 <!doctype html>
 <html>
 <head>
@@ -11,16 +11,12 @@
 
     <title>Super Admin Responsive Template</title>
 
-    <!-- CSS -->
-    <link href="{% static "css/bootstrap.min.css" %}" rel="stylesheet">
-    <link href="{% static "css/animate.min.css" %}" rel="stylesheet">
-    <link href="{% static "css/font-awesome.min.css" %}" rel="stylesheet">
-    <link href="{% static "css/form.css" %}" rel="stylesheet">
-    <link href="{% static "css/calendar.css" %}" rel="stylesheet">
-    <link href="{% static "css/style.css" %}" rel="stylesheet">
-    <link href="{% static "css/icons.css" %}" rel="stylesheet">
-    <link href="{% static "css/generics.css" %}" rel="stylesheet">
-    <link href="{% static "scss/restaurant.css" %}" rel="stylesheet">
+    {% assets "basecss" %}
+        <link rel="stylesheet" href="{{ ASSET_URL }}"/>
+    {% endassets %}
+    {% assets "core-js" %}
+        <script src="{{ ASSET_URL }}"></script>
+    {% endassets %}
 
 </head>
 <body id="skin-blur-violate" class="restaurant addVenue">
@@ -166,51 +162,28 @@
         </ul>
 
     </aside>
-{#    <!-- Breadcrumb -->#}
-{#    <ol class="breadcrumb hidden-xs">#}
-{#        <li><a href="#">Home</a></li>#}
-{#        <li><a href="#">Library</a></li>#}
-{#        <li class="active">Data</li>#}
-{#    </ol>#}
+    {#    <!-- Breadcrumb -->#}
+    {#    <ol class="breadcrumb hidden-xs">#}
+    {#        <li><a href="#">Home</a></li>#}
+    {#        <li><a href="#">Library</a></li>#}
+    {#        <li class="active">Data</li>#}
+    {#    </ol>#}
     <!-- Content -->
     <section id="content" class="container">
         {% block body %}
         {% endblock %}
-        <hr class="whiter m-t-20"/>
+        {#        <hr class="whiter m-t-20"/>#}
     </section>
 </section>
-{#<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&amp;signed_in=true&amp;libraries=places"></script>#}
-<!-- Javascript Libraries -->
-<!-- jQuery -->
-<script src="{% static "js/jquery.min.js" %}"></script>
-<!-- jQuery Library -->
-{#<script src="{% static "js/form_googlemaps.js" %}"></script>#}
 
-
-<!-- Bootstrap -->
-<script src="{% static "js/bootstrap.min.js" %}"></script>
-
-<!--  Form Related -->
-<script src="{% static "js/select.min.js" %}"></script>
-<!-- Custom Select -->
-<script src="{% static "js/icheck.js" %}"></script>
-<!-- &lt;!&ndash; Custom Checkbox + Radio &ndash;&gt;-->
-<script src="{% static "js/autosize.min.js" %}"></script>
-<!-- Textare autosize -->
-<!-- UX -->
+{% assets "base-js" %}
+    <script src="{{ ASSET_URL }}"></script>
+{% endassets %}
 <script src="{% static "js/scroll.min.js" %}"></script>
-<!-- Custom Scrollbar -->
-<!-- Other -->
+<script src="{% static "js/icheck.js" %}"></script>
 <script src="{% static "js/calendar.min.js" %}"></script>
-<!-- Calendar -->
-<script src="{% static "js/feeds.min.js" %}"></script>
-<!-- News Feeds -->
-<script src="{% static "js/toggler.min.js" %}"></script>
-<!-- Toggler -->
-
-
-<!-- All JS functions -->
 <script src="{% static "js/functions.js" %}"></script>
+
 {% render_block "js" %}
 {% include "login.html" %}
 </body>

@@ -13,4 +13,5 @@ INSTALLED_APPS = (
     'simple_history',
     'venues',
     "widget_tweaks", # for form add class
+    'django_assets',
 )

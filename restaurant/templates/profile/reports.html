@@ -2,6 +2,8 @@
 {% load bootstrap3 sekizai_tags %}
 {% block title %}Restaurants moderation{% endblock %}
 {% block body %}
+        <h4 class="page-title">My reports</h4>
+    <div class="block-area">
     <div class="list-group">
         {% for report in reports %}
 
@@ -14,5 +16,6 @@
                 {{ report.note }}
             </div>
         {% endfor %}
+    </div>
     </div>
 {% endblock %}

@@ -2,99 +2,103 @@
 {% load bootstrap3 sekizai_tags %}
 {% block title %}Restaurants moderation{% endblock %}
 {% block body %}
-    <div class="row">
-        <div class="col-md-4">
-            <div class="list-group">
-                <div class="list-group-item">
-                    Restaurants under need to approve:
-                </div>
-                {% for r in restaurants %}
-                    <div class="list-group-item {{ r.approved|yesno:'list-group-item-success,list-group-item-warning' }}">
-                        <div class="row">
-                            <div class="col-md-12">
+    <h4 class="page-title">Moderate</h4>
+    <div class="block-area">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="list-group">
+                    <div class="list-group-item">
+                        Restaurants under need to approve:
+                    </div>
+                    {% for r in restaurants %}
+                        <div class="list-group-item {{ r.approved|yesno:'list-group-item-success,list-group-item-warning' }}">
+                            <div class="row">
+                                <div class="col-md-12">
 
-                                <div class="pull-right" style="padding-left: 1em">
-                                    <button class="btn btn-sm btn-danger btn-remove pull-right" style="margin-left: 1em"
-                                            data-href="{% url "venues.views.venuess.remove_restaurant" r.pk %}">
-                                        <span class=" glyphicon glyphicon-remove"></span>
-                                    </button>
-
-                                    <div class="btn-group btn-group-sm pull-right">
-                                        <a class="btn btn-success"
-                                           href="{% url "venues.views.venuess.update_restaurant" r.pk %}">
-                                            <span class="glyphicon glyphicon-edit"></span>
-                                        </a>
-
-                                        <button class="btn btn-approve {{ r.approved|yesno:"btn-info,btn-default" }}"
-                                                data-approved="{{ r.approved|yesno:"true,false" }}"
-                                                data-href="{% url "venues.views.moderate.approve_restaurant" r.pk %}">
-                                            <span class="glyphicon glyphicon-ok"></span>
+                                    <div class="pull-right" style="padding-left: 1em">
+                                        <button class="btn btn-sm btn-danger btn-remove pull-right"
+                                                style="margin-left: 1em"
+                                                data-href="{% url "venues.views.venuess.remove_restaurant" r.pk %}">
+                                            <span class=" glyphicon glyphicon-remove"></span>
                                         </button>
+
+                                        <div class="btn-group btn-group-sm pull-right">
+                                            <a class="btn btn-success"
+                                               href="{% url "venues.views.venuess.update_restaurant" r.pk %}">
+                                                <span class="glyphicon glyphicon-edit"></span>
+                                            </a>
+
+                                            <button class="btn btn-approve {{ r.approved|yesno:"btn-info,btn-default" }}"
+                                                    data-approved="{{ r.approved|yesno:"true,false" }}"
+                                                    data-href="{% url "venues.views.moderate.approve_restaurant" r.pk %}">
+                                                <span class="glyphicon glyphicon-ok"></span>
+                                            </button>
+                                        </div>
+
                                     </div>
+                                    <a href="{{ r.show_url }}">{{ r.name }}</a>
 
                                 </div>
-                                <a href="{{ r.show_url }}">{{ r.name }}</a>
-
                             </div>
                         </div>
-                    </div>
-                {% endfor %}
-                <div class="text-center">
-                    {% bootstrap_pagination restaurants parameter_name="page" %}
-                </div>
-            </div>
-        </div>
-        <div class="col-md-8">
-            <div class="col-md-7">
-                <div class="list-group">
-                    <div class="list-group-item list-group-item-success">
-                        Recently updated restaurants:
-                    </div>
-                    {% for item in recently_update_restaurants %}
-                        <div class="list-group-item">
-                            <a href="{% url "venues.views.venuess.restaurant_by_slug" item.slug %}">{{ item.name }}</a><br/>
-                            changes: <i>{% for f in  item.changed_fields %}
-                            {{ f }}
-                        {% endfor %}</i>
-                        </div>
                     {% endfor %}
-                    {% if recently_update_restaurants.paginator.num_pages > 1 %}
-                        <div class="text-center">
-                            {% bootstrap_pagination recently_update_restaurants parameter_name="pageUpdated" %}
-                        </div>
-                    {% endif %}
+                    <div class="text-center">
+                        {% bootstrap_pagination restaurants parameter_name="page" %}
+                    </div>
                 </div>
             </div>
-            <div class="col-md-5">
-                <div class="list-group">
-                    <div class="list-group-item list-group-item-info">
-                        Reviews under need to approve:
+            <div class="col-md-8">
+                <div class="col-md-7">
+                    <div class="list-group">
+                        <div class="list-group-item list-group-item-success">
+                            Recently updated restaurants:
+                        </div>
+                        {% for item in recently_update_restaurants %}
+                            <div class="list-group-item">
+                                <a href="{% url "venues.views.venuess.restaurant_by_slug" item.slug %}">{{ item.name }}</a><br/>
+                                changes: <i>{% for f in  item.changed_fields %}
+                                {{ f }}
+                            {% endfor %}</i>
+                            </div>
+                        {% endfor %}
+                        {% if recently_update_restaurants.paginator.num_pages > 1 %}
+                            <div class="text-center">
+                                {% bootstrap_pagination recently_update_restaurants parameter_name="pageUpdated" %}
+                            </div>
+                        {% endif %}
                     </div>
-                    {% for item in recently_added_reviews %}
-                        <div class="list-group-item {{ item.approved|yesno:'list-group-item-success,list-group-item-warning' }}" >
-                            <div>
-                                <a href="{% url "venues.views.venuess.restaurant" item.venue_id %}">{{ item.venue_name }}</a>
+                </div>
+                <div class="col-md-5">
+                    <div class="list-group">
+                        <div class="list-group-item list-group-item-info">
+                            Reviews under need to approve:
+                        </div>
+                        {% for item in recently_added_reviews %}
+                            <div class="list-group-item {{ item.approved|yesno:'list-group-item-success,list-group-item-warning' }}">
+                                <div>
+                                    <a href="{% url "venues.views.venuess.restaurant" item.venue_id %}">{{ item.venue_name }}</a>
 
-                                <div class="pull-right">
-                                    <div class="badge pull-right">
-                                        {{ item.rating }} / 5
+                                    <div class="pull-right">
+                                        <div class="badge pull-right">
+                                            {{ item.rating }} / 5
+                                        </div>
+                                        {% if not item.approved %}
+                                            <br/>
+                                            <a href="{% url "venues.views.moderate.approve_review" item.pk %}">approve</a>
+                                        {% endif %}
                                     </div>
-                                    {% if not item.approved %}
-                                        <br/>
-                                        <a href="{% url "venues.views.moderate.approve_review" item.pk %}">approve</a>
-                                    {% endif %}
                                 </div>
-                            </div>
 
-                            {{ item.text|truncatewords:'5' }}
-                            <div class="clearfix"></div>
-                        </div>
-                    {% endfor %}
-                    {% if recently_added_reviews.paginator.num_pages > 1 %}
-                        <div class="text-center">
-                            {% bootstrap_pagination recently_added_reviews parameter_name="pageReview" %}
-                        </div>
-                    {% endif %}
+                                {{ item.text|truncatewords:'5' }}
+                                <div class="clearfix"></div>
+                            </div>
+                        {% endfor %}
+                        {% if recently_added_reviews.paginator.num_pages > 1 %}
+                            <div class="text-center">
+                                {% bootstrap_pagination recently_added_reviews parameter_name="pageReview" %}
+                            </div>
+                        {% endif %}
+                    </div>
                 </div>
             </div>
         </div>
