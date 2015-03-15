@@ -19,17 +19,31 @@ def show_all_notes(request, rest_pk):
     return HttpResponse(json.dumps({"response": {"total": len(data), "tips": data}}), content_type='application/json')
 
 
-@login_required
 @require_GET
+@login_required
 def remove_note(request, note_pk):
-    Note.objects.get(pk=note_pk).delete()
-    return redirect(request.META['HTTP_REFERER'])
+    note = get_object_or_404(Note, pk=note_pk)
+    if request.user.is_venue_moderator() or note.created_by==request.user:
+        note.delete()
+    else:
+        return redirect(reverse("account_login"))
+
+    if request.is_ajax():
+        return HttpResponse()
+    else:
+        if 'HTTP_REFERER' in request.META:
+            return redirect(request.META['HTTP_REFERER'])
+        else:
+            return redirect(reverse("venues.views.venuess.index"))
 
 
 @login_required
 @require_POST
 def add_note(request, rest_pk):
-    _restaurant = Restaurant.objects.get(pk=rest_pk)
+    _restaurant = get_object_or_404(Restaurant, pk=rest_pk)
+    if not _restaurant.approved and not request.user.is_venue_moderator():
+        return redirect(reverse("account_login"))
+
     related_object_type = ContentType.objects.get_for_model(_restaurant)
 
     note = Note(
@@ -41,12 +55,18 @@ def add_note(request, rest_pk):
     if form.is_valid():
         form.save()
 
-    return redirect(request.META['HTTP_REFERER'])
+    if request.is_ajax():
+        return HttpResponse()
+    else:
+        if 'HTTP_REFERER' in request.META:
+            return redirect(request.META['HTTP_REFERER'])
+        else:
+            return redirect(reverse("venues.views.venuess.index"))
 
 
 @login_required
 def update_note(request, note_pk):
-    note = Note.objects.get(pk=note_pk)
+    note = get_object_or_404(Note, pk=note_pk)
     rest_pk = note.venue_id
 
     rest = get_object_or_404(Restaurant, id=rest_pk)
@@ -55,6 +75,9 @@ def update_note(request, note_pk):
         'restaurant': rest,
         'note': note,
     }
+
+    if not rest.approved and not request.user.is_venue_moderator():
+        return redirect(reverse('account_login'))
 
     if request.method == 'GET':
         context['form'] = NoteForm(instance=note, request=request)
