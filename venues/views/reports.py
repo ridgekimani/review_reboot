@@ -3,7 +3,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.core.context_processors import csrf
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.core.urlresolvers import reverse
-from django.shortcuts import redirect, render
+from django.shortcuts import redirect, render, get_object_or_404
 
 from restaurant.utils import get_client_ip
 from venues import forms
@@ -48,7 +48,7 @@ def report_restaurant(request, rest_pk):
 
         return render(request, 'reports/report.html', context)
 
-
+@login_required
 @user_passes_test(lambda u: u.is_venue_moderator())
 def moderate_reports(request):
     reports = Report.objects.all()
@@ -70,17 +70,15 @@ def moderate_reports(request):
     return render(request, 'reports/moderate_reports.html', context)
 
 
+@login_required
 @user_passes_test(lambda u: u.is_venue_moderator())
 def moderate_report(request, pk):
     if request.method == 'POST':
-        report = Report.objects.get(id=pk)
-        if 'moderator_flag' in request.POST:
-            report.moderator_flag = True
+        report = get_object_or_404(Report, id=pk)
+        if 'resolved' in request.POST:
+            report.resolved = request.POST['resolved'].lower() == 'true'
         if 'moderator_note' in request.POST:
             report.moderator_note = request.POST['moderator_note']
         report.save()
-        return redirect(
-            '/moderate-reports/?page={n}'.format(
-                n=request.POST['page_num']
-            )
-        )
+        postfix = "?page=%d" % request.POST['page_num'] if 'page_num' in request.POST else ''
+        return redirect(reverse("venues.views.reports.moderate_reports") + postfix)
