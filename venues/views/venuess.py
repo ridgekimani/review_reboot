@@ -332,6 +332,7 @@ def update_restaurant(request, rest_pk):
 
     if request.method == 'POST':
         rest_data = request.POST.copy()
+        rest_data['cuisines'] = list([int(i) for i in rest_data['cuisines']])
         form = forms.RestaurantForm(rest_data, instance=_restaurant, request=request)  # A form bound to the POST data
         if form.is_valid():
             form.save()

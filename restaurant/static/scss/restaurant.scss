@@ -1,0 +1,149 @@
+@import "vars";
+$grey: #CABFC2;
+.navbar-super-top{
+  margin: 0;
+  border: 0;
+  width: 100%;
+  form{
+    border: 0;
+    box-shadow: none;
+    margin: 8px 0;
+    padding: 0 13px;
+    input{
+      float: left;
+      &[name=search]{
+        margin-right: 8px;
+      }
+    }
+    input.btn-alt[type=submit]{
+      background: transparentize(#000, 0.65)!important;
+      &:hover{
+        background:transparentize(#fff, 0.65)!important; ;
+      }
+    }
+  }
+
+}
+.search-form {
+  input.form-control {
+    width: 267px;
+  }
+}
+#header{
+  .navbar-form{
+    padding: 0 7px;
+  }
+}
+#content{
+  .page-title{
+    font-size: 30px;
+  }
+}
+.fieldWysiwye{
+  button[type=submit]{
+    float: right;
+    min-width: 89px;
+    margin: 7px 0;
+  }
+}
+.panel-super{
+  border: 1px solid transparentize($white, 0.9);
+  .panel-heading{
+    background: transparentize($white, 0.9);
+  }
+  .panel-body{
+    padding: 21px;
+  }
+}
+.block-area{
+  hr{
+    border-color: transparentize($white, 0.9);
+  }
+}
+#r-map{
+  margin-bottom: 15px;
+}
+.btn{
+  line-height: 22px;
+}
+body.restaurant{
+  .table{
+    th{
+      border: 0;
+    }
+    tr{
+      td:nth-child(1){
+        width: 10%;
+        min-width: 85px;
+      }
+      td:nth-child(2){
+        width: 90%;
+      }
+    }
+  }
+  .mainTable{
+    padding: 8px 10px;
+    .title{
+      font-size: 30px;
+    }
+    .cuisine{
+      font-size: 13px;
+    }
+    .address{
+      font-size: 13px;
+      color: transparentize($white, 0.3);
+    }
+    .phone{
+      font-size: 11px;
+      font-weight: bold;
+    }
+    .subText{
+      span{
+        font-size: 11px;
+        font-weight: bold;
+      }
+      > span {
+        margin-right: 13px;
+        > span:first-of-type{
+          margin-right: 5px;
+        }
+      }
+    }
+  }
+  .navbar-brand{
+    width: 233px;
+  }
+}
+.addVenue{
+  .block-label{
+    label{
+      display: block;
+    }
+  }
+  .theForm{
+    table{
+      width: 100%;
+      td{
+        padding: 2px 0;
+        &:nth-child(1){
+          width: 10%;
+          min-width: 85px;
+        }
+      }
+      th{
+        padding: 4px 0 8px;
+      }
+    }
+    .forTable{
+      padding: 7px 14px;
+    }
+    .forRadioInline{
+      label{
+        margin-right: 14px;
+      }
+    }
+    button[type=submit]{
+      min-width: 89px;
+    }
+  }
+}

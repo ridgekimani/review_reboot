@@ -1,47 +1,285 @@
 {% load static bootstrap3 sekizai_tags %}
-<!DOCTYPE html>
+<!doctype html>
 <html>
 <head>
-    {% render_block "core-js" %}
-    {% render_block "core-css" %}
-    {% include "scripts.html" %}
-    {% include "styles.html" %}
-    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-    <title>{% block title %}{% endblock %}</title>
-</head>
-<body>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no">
+    <meta charset="utf-8">
 
-<div class="container">
-    <nav class="navbar navbar-default navbar-static-top" role="navigation">
-        <a class="navbar-brand" href="/">Restaurants</a>
-        <ul class="nav navbar-nav">
+    <meta name="description" content="Violate Responsive Admin Template">
+    <meta name="keywords" content="Super Admin, Admin, Template, Bootstrap">
+
+    <title>Super Admin Responsive Template</title>
+
+    <!-- CSS -->
+    <link href="{% static "css/bootstrap.min.css" %}" rel="stylesheet">
+    <link href="{% static "css/animate.min.css" %}" rel="stylesheet">
+    <link href="{% static "css/font-awesome.min.css" %}" rel="stylesheet">
+    <link href="{% static "css/form.css" %}" rel="stylesheet">
+    <link href="{% static "css/calendar.css" %}" rel="stylesheet">
+    <link href="{% static "css/style.css" %}" rel="stylesheet">
+    <link href="{% static "css/icons.css" %}" rel="stylesheet">
+    <link href="{% static "css/generics.css" %}" rel="stylesheet">
+    <link href="{% static "scss/restaurant.css" %}" rel="stylesheet">
+
+</head>
+<body id="skin-blur-violate" class="restaurant addVenue">
+<header id="header" class="media">
+    <a href="" id="menu-toggle"></a>
+    <a class="logo pull-left" href="/">SUPER ADMIN 1.0</a>
+
+    <div class="media-body">
+        <div class="media" id="top-menu">
+            <form method="post" action="/restaurants/restaurants_lists/" class="navbar-form search-form pull-left"
+                  id="restaurant-form">
+                <input type='hidden' name='csrfmiddlewaretoken' value='yDalbaMPgy3SYTMJOiq3UgSbTtf8Fm0k'/>
+                <input type="text" id="pac-input" name="search" class="form-control" placeholder="Enter address"/>
+                <input class="btn btn-sm btn-alt" type="submit" value="Search"/>
+            </form>
+            <div id="time" class="pull-right">
+                <span id="hours"></span>
+                :
+                <span id="min"></span>
+                :
+                <span id="sec"></span>
+            </div>
+        </div>
+    </div>
+</header>
+
+<div class="clearfix"></div>
+
+<section id="main" class="p-relative" role="main">
+
+    <!-- Sidebar -->
+    <aside id="sidebar">
+
+        <!-- Sidbar Widgets -->
+        <div class="side-widgets overflow">
+            <!-- Profile Menu -->
+            <div class="text-center s-widget m-b-25 dropdown" id="profile-menu">
+                <a href="" data-toggle="dropdown">
+                    <img class="profile-pic animated" src="{% static "img/profile-pic.jpg" %}" alt="">
+                </a>
+                <ul class="dropdown-menu profile-menu">
+                    <li><a href="">My Profile</a> <i class="icon left">&#61903;</i><i class="icon right">&#61815;</i>
+                    </li>
+                    <li><a href="">Messages</a> <i class="icon left">&#61903;</i><i class="icon right">&#61815;</i></li>
+                    <li><a href="">Settings</a> <i class="icon left">&#61903;</i><i class="icon right">&#61815;</i></li>
+                    <li><a href="">Sign Out</a> <i class="icon left">&#61903;</i><i class="icon right">&#61815;</i></li>
+                </ul>
+                <h4 class="m-0">User Name</h4>
+
+            </div>
+
+            <!-- Calendar -->
+            <div class="s-widget m-b-25">
+                <div id="sidebar-calendar"></div>
+            </div>
+
+            <!-- Feeds -->
+            <div class="s-widget m-b-25">
+                <h2 class="tile-title">
+                    News Feeds
+                </h2>
+
+                <div class="s-widget-body">
+                    <div id="news-feed"></div>
+                </div>
+            </div>
+
+            <!-- Projects -->
+            <div class="s-widget m-b-25">
+                <h2 class="tile-title">
+                    Projects on going
+                </h2>
+
+                <div class="s-widget-body">
+                    <div class="side-border">
+                        <small>Joomla Website</small>
+                        <div class="progress progress-small">
+                            <a href="#" data-toggle="tooltip" title="" class="progress-bar tooltips progress-bar-danger"
+                               style="width: 60%;" data-original-title="60%">
+                                <span class="sr-only">60% Complete</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="side-border">
+                        <small>Opencart E-Commerce Website</small>
+                        <div class="progress progress-small">
+                            <a href="#" data-toggle="tooltip" title="" class="tooltips progress-bar progress-bar-info"
+                               style="width: 43%;" data-original-title="43%">
+                                <span class="sr-only">43% Complete</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="side-border">
+                        <small>Social Media API</small>
+                        <div class="progress progress-small">
+                            <a href="#" data-toggle="tooltip" title=""
+                               class="tooltips progress-bar progress-bar-warning" style="width: 81%;"
+                               data-original-title="81%">
+                                <span class="sr-only">81% Complete</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="side-border">
+                        <small>VB.Net Software Package</small>
+                        <div class="progress progress-small">
+                            <a href="#" data-toggle="tooltip" title=""
+                               class="tooltips progress-bar progress-bar-success" style="width: 10%;"
+                               data-original-title="10%">
+                                <span class="sr-only">10% Complete</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="side-border">
+                        <small>Chrome Extension</small>
+                        <div class="progress progress-small">
+                            <a href="#" data-toggle="tooltip" title=""
+                               class="tooltips progress-bar progress-bar-success" style="width: 95%;"
+                               data-original-title="95%">
+                                <span class="sr-only">95% Complete</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Side Menu -->
+        <ul class="list-unstyled side-menu">
+            <li>
+                <a class="sa-side-home" href="index.html">
+                    <span class="menu-item">Dashboard</span>
+                </a>
+            </li>
+            <li>
+                <a class="sa-side-typography" href="typography.html">
+                    <span class="menu-item">Typography</span>
+                </a>
+            </li>
+            <li>
+                <a class="sa-side-widget" href="content-widgets.html">
+                    <span class="menu-item">Widgets</span>
+                </a>
+            </li>
+            <li>
+                <a class="sa-side-table" href="tables.html">
+                    <span class="menu-item">Tables</span>
+                </a>
+            </li>
+            <li class="dropdown active">
+                <a class="sa-side-form" href="">
+                    <span class="menu-item">Form</span>
+                </a>
+                <ul class="list-unstyled menu-item">
+                    <li><a href="form-elements.html">Basic Form Elements</a></li>
+                    <li><a href="form-components.html">Form Components</a></li>
+                    <li><a class="active" href="form-examples.html">Form Examples</a></li>
+                    <li><a href="form-validation.html">Form Validation</a></li>
+                </ul>
+            </li>
+            <li class="dropdown">
+                <a class="sa-side-ui" href="">
+                    <span class="menu-item">User Interface</span>
+                </a>
+                <ul class="list-unstyled menu-item">
+                    <li><a href="buttons.html">Buttons</a></li>
+                    <li><a href="labels.html">Labels</a></li>
+                    <li><a href="images-icons.html">Images &amp; Icons</a></li>
+                    <li><a href="alerts.html">Alerts</a></li>
+                    <li><a href="media.html">Media</a></li>
+                    <li><a href="components.html">Components</a></li>
+                    <li><a href="other-components.html">Others</a></li>
+                </ul>
+            </li>
+            <li class="dropdown">
+                <a class="sa-side-photos" href="">
+                    <span class="menu-item">PHOTO GALLERY</span>
+                </a>
+                <ul class="list-unstyled menu-item">
+                    <li><a href="photo-gallery.html">Google Images like</a></li>
+                    <li><a href="photo-gallery-alt.html">Photo Gallery - 2</a></li>
+                </ul>
+            </li>
+            <li>
+                <a class="sa-side-chart" href="charts.html">
+                    <span class="menu-item">Charts</span>
+                </a>
+            </li>
+            <li>
+                <a class="sa-side-folder" href="file-manager.html">
+                    <span class="menu-item">File Manager</span>
+                </a>
+            </li>
+            <li>
+                <a class="sa-side-calendar" href="calendar.html">
+                    <span class="menu-item">Calendar</span>
+                </a>
+            </li>
+            <li class="dropdown">
+                <a class="sa-side-page" href="">
+                    <span class="menu-item">Pages</span>
+                </a>
+                <ul class="list-unstyled menu-item">
+                    <li><a href="list-view.html">List View</a></li>
+                    <li><a href="profile-page.html">Profile Page</a></li>
+                    <li><a href="messages.html">Messages</a></li>
+                    <li><a href="login.html">Login</a></li>
+                    <li><a href="404.html">404 Error</a></li>
+                </ul>
+            </li>
         </ul>
-        <form method="post" action="{% url "venues.views.venuess.index" %}"
-              class="navbar-form search-form navbar-left" id="restaurant-form">
-            {% csrf_token %}
-            <input type="text" name="address" class="form-control" placeholder="address"/>
-            <input type="text" name="category" class="form-control" placeholder="category" id="id_category"
-                   style="position:relative;"/>
-            <input class="btn btn-default" type="submit" value="Search"/>
-        </form>
-        <ul class="nav navbar-nav pull-right">
-            {% if user.is_authenticated %}
-                <li class="dropdown">
-                    {% include "user_menu.html" %}
-                </li>
-            {% else %}
-                <li>
-                    <form class="navbar-form navbar-left">
-                        <a class="btn btn-primary" data-toggle="modal" href="#login_modal">Login</a>
-                    </form>
-                </li>
-            {% endif %}
-        </ul>
-    </nav>
-    {% block body %}{% endblock %}
-</div>
-{% include "login.html" %}
+
+    </aside>
+    <!-- Breadcrumb -->
+    <ol class="breadcrumb hidden-xs">
+        <li><a href="#">Home</a></li>
+        <li><a href="#">Library</a></li>
+        <li class="active">Data</li>
+    </ol>
+    <!-- Content -->
+    <section id="content" class="container">
+        {% block body %}
+        {% endblock %}
+
+        <hr class="whiter m-t-20"/>
+
+    </section>
+</section>
+{#<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&amp;signed_in=true&amp;libraries=places"></script>#}
+<!-- Javascript Libraries -->
+<!-- jQuery -->
+<script src="{% static "js/jquery.min.js" %}"></script>
+<!-- jQuery Library -->
+{#<script src="{% static "js/form_googlemaps.js" %}"></script>#}
+
+
+<!-- Bootstrap -->
+<script src="{% static "js/bootstrap.min.js" %}"></script>
+
+<!--  Form Related -->
+<script src="{% static "js/select.min.js" %}"></script>
+<!-- Custom Select -->
+<script src="{% static "js/icheck.js" %}"></script>
+<!-- &lt;!&ndash; Custom Checkbox + Radio &ndash;&gt;-->
+<script src="{% static "js/autosize.min.js" %}"></script>
+<!-- Textare autosize -->
+<!-- UX -->
+<script src="{% static "js/scroll.min.js" %}"></script>
+<!-- Custom Scrollbar -->
+<!-- Other -->
+<script src="{% static "js/calendar.min.js" %}"></script>
+<!-- Calendar -->
+<script src="{% static "js/feeds.min.js" %}"></script>
+<!-- News Feeds -->
+<script src="{% static "js/toggler.min.js" %}"></script>
+<!-- Toggler -->
+
+
+<!-- All JS functions -->
+<script src="{% static "js/functions.js" %}"></script>
 {% render_block "js" %}
 </body>
 </html>

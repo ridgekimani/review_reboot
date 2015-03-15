@@ -1,23 +1,17 @@
 {% extends 'base.html' %}
 {% load sekizai_tags static widget_tweaks %}
 {% block body %}
-    <!-- Multi Column -->
-    <div>
-        <div class="row">
-            <div class="col-md-8">
-                <form action="{% url "venues.views.venuess.add_restaurant" %}" method="POST">
-                    {% csrf_token %}
-                    {% include "restaurants/item_form.html" with is_add=True %}
-                </form>
-            </div>
-            <!-- GOOGLE MAP -->
-            <div class="col-md-4">
-                <input id="pac-input" class="form-control" type="text" placeholder="specify location">
+    <h4 class="page-title">Add new restaurant</h4>
 
-                <div id="map-canvas" style="width:100%;height:350px;margin: 18px 0;"></div>
+    <div class="block-area">
+        <form action="{% url "venues.views.venuess.add_restaurant" %}" method="POST" class="row form-columned theForm"
+              role="form">
+            {% csrf_token %}
+            {% include "restaurants/item_form.html" %}
+            <div class="col-xs-12 col-md-6 block-label">
+                <div id="map-canvas" style="width:100%;height:350px;"></div>
             </div>
-        </div>
-
+        </form>
     </div>
 
     {% addtoblock "js" %}

@@ -9,6 +9,7 @@ class CommonForm(forms.ModelForm):
     this is CommonForm for CommonModel,
     make sure to provide request argument to make it work
     """
+
     def __init__(self, *args, **kwargs):
         """
         make sure to provide request argument when contruction form
@@ -35,9 +36,15 @@ class RestaurantForm(CommonForm):
     class Meta:
         model = Restaurant
         fields = ['name', 'address', 'phone', 'cuisines', 'catering', 'delivery', 'alcoholFree',
-                  'porkFree', 'muslimOwner', 'location', 'menu', 'city', 'country']
+                  'porkFree', 'muslimOwner', 'location', 'menu', 'city', 'country', 'website']
         widgets = {
-            'cuisines': forms.CheckboxSelectMultiple(),
+            'menu': forms.RadioSelect(),
+            'alcoholFree': forms.RadioSelect(),
+            'porkFree': forms.RadioSelect(),
+            'muslimOwner': forms.RadioSelect(),
+            'catering': forms.RadioSelect(),
+            'delivery': forms.RadioSelect(),
+            'cuisines': forms.Select(),
         }
 
 
