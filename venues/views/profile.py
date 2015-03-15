@@ -49,3 +49,17 @@ def myreports(request):
     return render(request, "profile/reports.html", {
         'reports': user_reports
     })
+
+
+@login_required
+def myprofile(request):
+    user_reports = Report.objects.filter(created_by=request.user)
+    user_notes = Note.objects.filter(created_by=request.user)
+    user_reviews = Review.objects.filter(created_by=request.user)
+    user_restaurants = Restaurant.objects.filter(created_by=request.user)
+
+    return render(request, "profile/profile.html", {
+        'reviews': user_reviews,
+        'notes': user_notes,
+        'restaurants': user_restaurants,
+    })

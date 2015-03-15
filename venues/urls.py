@@ -23,6 +23,7 @@ urlpatterns = patterns('venues.views',
     url(r'profile/reviews/$', 'profile.myreviews'),
     url(r'profile/notes/$', 'profile.mynotes'),
     url(r'profile/reports/$', 'profile.myreports'),
+    url(r'profile/$', 'profile.myprofile'),
 
     # venues
     url(r'(?P<rest_pk>[0-9]+)/show-all-reviews/$', 'reviews.show_all_reviews'),

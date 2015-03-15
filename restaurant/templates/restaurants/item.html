@@ -1,101 +1,110 @@
 {% extends 'base.html' %}
 {% load sekizai_tags static %}
 {% block body %}
-    <!-- COMMON INFO -->
-    <div class="row">
-        <div class="col-md-8">
-            {% if restaurant.is_closed %}
-                <div class="alert alert-danger" role="alert">CLOSED</div>
+    <h4 class="page-title">Restaurant profile</h4>
 
-            {% endif %}
-            <h1>{{ restaurant.name }}
-                <div class="pull-right">
-                    <div class="btn-group">
-                        {% if user.is_authenticated %}
-                            {% if user.is_venue_moderator %}
-                                <a class="btn btn-success"
-                                   href="{% url "venues.views.venuess.update_restaurant" restaurant.pk %}">
-                                    <span class="glyphicon glyphicon-edit"></span>
-                                </a>
-
-                            {% endif %}
-                            <a class="btn btn-warning"
-                               href="{% url "venues.views.reports.report_restaurant" restaurant.pk %}">
-                                <span class="glyphicon glyphicon-warning-sign"></span>
-                            </a>
-                            {% if user.is_venue_moderator %}
-                                <a class="btn btn-danger"
-                                   href="{% url "venues.views.venuess.remove_restaurant" restaurant.pk %}">
-                                    <span class="glyphicon glyphicon-remove"></span>
-                                </a>
-                            {% endif %}
+    <div class="block-area">
+        <div class="table table-bordered tile  mainTable">
+            <div class="title">
+                {{ restaurant.name }}
+                {% if user.is_authenticated %}
+                    <small>
+                        | <a href="{% url "venues.views.venuess.update_restaurant" restaurant.pk %}">edit</a>
+                        {% if user.is_venue_moderator %}
+                            | <a href="{% url "venues.views.venuess.remove_restaurant" restaurant.pk %}">remove</a>
                         {% endif %}
-                    </div>
-                </div>
-            </h1>
-
-            <h4>  {% for category in restaurant.cuisines.all %}
-                        {{ category }}
-                    {% endfor %}
-
-            </h4>
-
-            <h4>{{ restaurant.address }}</h4>
-
-            <div class="row">
-                {% if  restaurant.phone %}
-                    <div class="col-md-12">
-                        <h4><span class="glyphicon glyphicon-earphone"></span> {{ restaurant.phone }}</h4>
-                    </div>
+                    </small>
                 {% endif %}
             </div>
+            <div class="cuisine">{% for cuisine in restaurant.cuisines.all %}{{ cuisine }}{% endfor %}</div>
+            <div class="address">{{ restaurant.address }}</div>
+            <div class="phone">{{ restaurant.phone }}</div>
+        </div>
+        <div class="row">
+            <div class="col-md-8">
+                <table class="table table-bordered table-hover tile tile">
+                    <tr>
+                        <th colspan="2">{{ restaurant.name }} - profile</th>
+                    </tr>
+                    <tr>
+                        <td>Menu:</td>
+                        <td>{{ restaurant.get_menu_display }}</td>
+                    </tr>
+                    <tr>
+                        <td>Alcohol:</td>
+                        <td>{{ restaurant.get_alcoholFree_display }}</td>
+                    </tr>
+                    <tr>
+                        <td>Pork free:</td>
+                        <td>{{ restaurant.get_porkFree_display }}</td>
+                    </tr>
+                </table>
 
-            <div class="r-categories">
-                <ul>
-                    {% for category in restaurant.categories.all %}
-                        <li>{{ category.name }}</li>
-                    {% endfor %}
-                </ul>
+                <table class="table table-bordered table-hover tile tile">
+                    <tr>
+                        <th colspan="2">More info</th>
+                    </tr>
+                    <tr>
+                        <td>Catering:</td>
+                        <td>{{ restaurant.get_catering_display }}</td>
+                    </tr>
+                    <tr>
+                        <td>Delivery:</td>
+                        <td>{{ restaurant.get_delivery_display }}</td>
+                    </tr>
+                    <tr>
+                        <td>Web site:</td>
+                        <td>{{ restaurant.website }}</td>
+                    </tr>
+                </table>
+
             </div>
+            <!-- GOOGLE MAP -->
+            <div class="col-md-4">
+                <div id="map-canvas" style="width: 100%; height: 300px"></div>
+            </div>
+            <!-- END GOOGLE MAP -->
         </div>
-        <!-- GOOGLE MAP -->
-        <div class="col-md-4">
-            <div id="map-canvas" style="width: 100%; height: 300px"></div>
 
-        </div>
-        <!-- END GOOGLE MAP -->
-    </div>
-    <!-- ENDCOMMON INFO -->
-
-    <hr/>
-    <div class="row">
-        <div class="col-md-8">
-            {% if user.is_authenticated %}
-                {% include 'reviews/review-form.html' %}
-                <hr/>
-            {% endif %}
-            {% for review in reviews %}
-                {% include "reviews/review.html" %}
-            {% endfor %}
-        </div>
-        <div class="col-md-4">
-            {% if user.is_authenticated %}
-                <div class="panel panel-default">
-                    <div class="panel-body">
-                        <form autocomplete="off" action="{% url "venues.views.notes.add_note" restaurant.id %}"
-                              method="post">
-                            {% if user.is_authenticated %}
-                                {% include 'notes/note-form.html' %}
-                            {% endif %}
-                        </form>
-                    </div>
+        {#        <div class="tab-container tile">#}
+        {#            <ul class="nav tab nav-tabs">#}
+        {#                <li class="active"><a href="#home">Home</a></li>#}
+        {#            </ul>#}
+        {#            <div class="tab-content">#}
+        {#                <div class="tab-pane active" id="home">#}
+        {#                    <p>Duis eleifend sapien nec nisl semper, vitae accumsan arcu feugiat. Suspendisse potenti. Aenean#}
+        {#                        vestibulum massa ut congue accumsan. Donec sapien nulla, sollicitudin eu odio fringilla,#}
+        {#                        vulputate ornare quam. Morbi congue in sem non congue. Vivamus diam velit, lacinia eu lorem ac,#}
+        {#                        pellentesque lobortis arcu. Morbi congue dolor sed arcu imperdiet posuere.</p>#}
+        {##}
+        {#                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. In vel enim non dui fermentum#}
+        {#                        sollicitudin. In id metus dolor. Suspendisse dapibus, metus vitae posuere gravida, odio orci#}
+        {#                        dictum purus, vitae lobortis elit lacus id sem. Vestibulum ut rhoncus dui. Sed congue vestibulum#}
+        {#                        fermentum. Nulla imperdiet quam et ipsum lobortis laoreet. Phasellus in lectus ligula.#}
+        {#                        Suspendisse potenti. Aliquam massa nulla, congue ut quam sed, scelerisque laoreet massa. Ut#}
+        {#                        ultrices aliquet suscipit.</p>#}
+        {#                </div>#}
+        {#            </div>#}
+        {#        </div>#}
+        <div class="row fieldWysiwye">
+            <form action="#">
+                <div class="col-xs-12 col-md-6">
+                    <div class="tile-title"><span class="panel-title">Write review</span></div>
+                    <div class="wysiwye-editor"></div>
+                    <button class="btn btn-sm" type="submit" name="submit_review" value="true">Submit</button>
                 </div>
-            {% endif %}
-            {% for note in notes %}
-                {% include "notes/note.html" %}
-            {% endfor %}
+            </form>
+            <form action="#">
+                <div class="col-xs-12 col-md-6">
+                    <div class="tile-title"><span class="panel-title">Write note</span></div>
+                    <div class="wysiwye-editor"></div>
+                    <button class="btn btn-sm" type="submit" name="submit_note" value="true">Submit</button>
+                </div>
+            </form>
         </div>
+
     </div>
+
     {% addtoblock "js" %}
         <!-- google-maps scripts -->
         <script src="https://maps.googleapis.com/maps/api/js"></script>

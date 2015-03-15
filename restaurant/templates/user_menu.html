@@ -1,10 +1,9 @@
-<a class="dropdown-toggle" role="button" id="dropdownMenu1"
-   data-toggle="dropdown" aria-expanded="true" style="cursor:pointer;">
-    <span class="glyphicon glyphicon-user"></span>
-    {{ user.username }}
-    <span class="caret"></span>
-</a>
-<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+{% if user.is_authenticated %}
+    <li>
+        <a role="menuitem" href="{% url "venues.views.profile.myprofile" %}">
+            My Profile
+        </a>
+    </li>
     {% if user.is_staff %}
         <li>
             <a role="menuitem" tabindex="-1" href="/admin/">
@@ -24,7 +23,6 @@
             </a>
         </li>
     {% endif %}
-    <li role="presentation" class="divider"></li>
     <li>
         <a role="menuitem" href="{% url "venues.views.venuess.add_restaurant" %}">
             Add restaurant
@@ -50,10 +48,10 @@
             My reports
         </a>
     </li>
-    <li role="presentation" class="divider"></li>
     <li>
         <a role="menuitem" href="{% url "django.contrib.auth.views.logout" %}?next={{ request.path }}">
             Logout
         </a>
     </li>
-</ul>
+{% else %}
+{% endif %}
