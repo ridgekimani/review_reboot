@@ -163,7 +163,7 @@ def index(request):
     # return render(request, 'restaurants/restaurants.html', context)
 
 
-def __get_restaurants(request, longitude, latitude, categories):
+def __get_restaurants(request, longitude, latitude, categories, limit=20):
     '''
     Returns objects at given point that satisfy set of categories,
     or all of them if categories is empty.
@@ -199,7 +199,7 @@ def __get_restaurants(request, longitude, latitude, categories):
     # seems that this thing doesn't actually order objects by distance
     # btw at this step there is no distance property in objects or rows in table
     # restaurants = restaurants.distance(currentPoint).order_by('distance')
-
+    restaurants = restaurants[:limit]
     # String based JSON
     data = serializers.serialize('json', restaurants)
     # Actual JSON object to be edited
