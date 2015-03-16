@@ -84,6 +84,9 @@ def get_masjids(longitude, latitude, categories):
 
 
 def index(request):
+    if 'lat' in request.GET and 'lon' in request.GET:
+        return closest(request)
+
     form = forms.AddressForm()
     restaurants = []
     latitude = ""
@@ -93,21 +96,21 @@ def index(request):
         form = forms.AddressForm(request.POST)
         if form.is_valid():
             address = form.cleaned_data['address']
-            category = form.cleaned_data['category']
+            cuisine = form.cleaned_data['cuisine']
 
             list_of_cats = []
-            if category:
+            if cuisine:
                 try:
-                    list_of_cats.append(Cuisine.objects.get(name__icontains=category))
+                    list_of_cats.append(Cuisine.objects.get(name__icontains=cuisine))
                 except (MultipleObjectsReturned):
-                    length = Cuisine.objects.filter(name__icontains=category).__len__()
+                    length = Cuisine.objects.filter(name__icontains=cuisine).__len__()
                     for l in range(length):
-                        list_of_cats.append(Cuisine.objects.filter(name__icontains=category)[l])
+                        list_of_cats.append(Cuisine.objects.filter(name__icontains=cuisine)[l])
                 except (ObjectDoesNotExist):
                     pass
             if not address:
                 if list_of_cats:
-                    restaurants = Restaurant.objects.filter(categories__in=list_of_cats)
+                    restaurants = Restaurant.objects.filter(cuisines__in=list_of_cats)
                 else:
                     restaurants = Restaurant.objects.all()
                 try:
@@ -160,7 +163,7 @@ def index(request):
     # return render(request, 'restaurants/restaurants.html', context)
 
 
-def __get_restaurants(longitude, latitude, categories):
+def __get_restaurants(request, longitude, latitude, categories):
     '''
     Returns objects at given point that satisfy set of categories,
     or all of them if categories is empty.
@@ -179,7 +182,7 @@ def __get_restaurants(longitude, latitude, categories):
     if list_of_cats:
         restaurants = Restaurant.gis.filter(
             location__distance_lte=(currentPoint, distance_m),
-            categories__in=list_of_cats,
+            cuisines__in=list_of_cats,
             is_closed=False
         )
     else:
@@ -187,6 +190,11 @@ def __get_restaurants(longitude, latitude, categories):
             location__distance_lte=(currentPoint, distance_m),
             is_closed=False
         )
+
+    if hasattr(request.user, 'is_venue_moderator') and request.user.is_venue_moderator():
+        pass
+    else:
+        restaurants = restaurants.filter(approved=True)
 
     # seems that this thing doesn't actually order objects by distance
     # btw at this step there is no distance property in objects or rows in table
@@ -215,7 +223,7 @@ def __get_restaurants(longitude, latitude, categories):
         restaurant['fields']['lng'] = lng
         restaurant['fields']['lat'] = lat
 
-        # Replace category ids with names
+        # Replace cuisine ids with names
         cat_names = []
         for cat_id in restaurant['fields']['cuisines']:
             cat = Cuisine.objects.get(id=cat_id)
@@ -227,40 +235,37 @@ def __get_restaurants(longitude, latitude, categories):
 
 @require_GET
 def closest(request):
-    if 'lat' in request.GET and 'lon' in request.GET:
-
-        lat = float(request.GET['lat'])
-        lon = float(request.GET['lon'])
-        if 'category' in request.GET:
-            categories = request.GET['category'].split('+')
-        else:
-            categories = []
-
-        response_message = ''
-
-        if request.GET.has_key('masjids'):
-            venues = get_masjids(lon, lat, categories)
-            if not venues:
-                venues = get_masjids(lon, lat, categories=[])
-                response_message = "No venues for this categories, here are some other ones you might like"
-        else:
-            venues = __get_restaurants(lon, lat, categories)
-            if not venues:
-                venues = __get_restaurants(lon, lat, categories=[])
-                response_message = "No venues for this categories, here are some other ones you might like"
-
-        return HttpResponse(
-            json.dumps({
-                "response": {
-                    "total": len(venues),
-                    "venues": sorted(venues, key=lambda venue: venue['fields']['distance']),
-                    "message": response_message
-                }
-            }),
-            content_type='application/json'
-        )
+    lat = float(request.GET['lat'])
+    lon = float(request.GET['lon'])
+    if 'category' in request.GET:
+        categories = request.GET['category'].split('+')
     else:
-        return redirect(reverse('venues.views.venuess.index'))
+        categories = []
+
+    response_message = ''
+
+    if request.GET.has_key('masjids'):
+        venues = get_masjids(lon, lat, categories)
+        if not venues:
+            venues = get_masjids(lon, lat, categories=[])
+            response_message = "No venues for this categories, here are some other ones you might like"
+    else:
+        venues = __get_restaurants(request, lon, lat, categories)
+        if not venues:
+            venues = __get_restaurants(request, lon, lat, categories=[])
+            response_message = "No venues for this categories, here are some other ones you might like"
+
+    return HttpResponse(
+        json.dumps({
+            "response": {
+                "total": len(venues),
+                "venues": sorted(venues, key=lambda venue: venue['fields']['distance']),
+                "message": response_message
+            }
+        }),
+        content_type='application/json'
+    )
+        # return redirect(reverse('venues.views.venuess.index'))
 
 
 def restaurant(request, rest_pk):
@@ -303,7 +308,7 @@ def add_restaurant(request):
         })
     elif request.method == "POST":
         rest_data = request.POST.copy()
-        rest_data['cuisines'] = list([int(i) for i in rest_data['cuisines']])
+        rest_data['cuisines'] = [int(rest_data['cuisines']), ]
         form = RestaurantForm(rest_data, request=request)
         if form.is_valid():
             new_restaurant = form.save()
@@ -334,7 +339,8 @@ def update_restaurant(request, rest_pk):
 
     if request.method == 'POST':
         rest_data = request.POST.copy()
-        rest_data['cuisines'] = list([int(i) for i in rest_data['cuisines']])
+        rest_data['cuisines'] = [int(rest_data['cuisines']), ]
+        # rest_data['cuisines'] = list([int(i) for i in rest_data['cuisines']])
         form = forms.RestaurantForm(rest_data, instance=_restaurant, request=request)  # A form bound to the POST data
         if form.is_valid():
             form.save()

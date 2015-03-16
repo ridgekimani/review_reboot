@@ -79,13 +79,13 @@ class TestVenuess(TestCaseVenue):
         self.assertContains(response, self.approvedRestaurant.name)
         self.assertContains(response, self.restaurant.name)
 
-    def test_closets_should_respond(self):
-        self.can_get("venues.views.venuess.closest")
+    # def test_closets_should_respond(self):
+    #     self.can_get("venues.views.venuess.closest")
 
     def test_closest_should_respond_with_lat_and_lng_parameters(self):
-        response = self.can_get("venues.views.venuess.closest", params={
+        response = self.can_get("venues.views.venuess.index", params={
             'lat': 0,
-            'lng': 0
+            'lon': 0
         })
         self.assertContains(response, self.approvedRestaurant.name)
         self.assertContains(response, self.approvedRestaurantWithoutCategory.name)
@@ -94,9 +94,9 @@ class TestVenuess(TestCaseVenue):
 
 
     def test_closest_should_respond_with_lat_and_lng_and_categories_parameters(self):
-        response = self.can_get("venues.views.venuess.closest", params={
+        response = self.can_get("venues.views.venuess.index", params={
             'lat': 0,
-            'lng': 0,
+            'lon': 0,
             'category': self.cuisine.name
         })
         self.assertContains(response, self.approvedRestaurant.name)
@@ -189,7 +189,7 @@ class TestVenuess(TestCaseVenue):
         params = {
             'name': 'alksjdlas',
             'address': 'laksdlkasd',
-            'cuisines': [self.cuisine.pk,],
+            'cuisines': self.cuisine.pk,
             'catering': True,
             'delivery': True,
             'alcoholFree': True,
@@ -199,6 +199,7 @@ class TestVenuess(TestCaseVenue):
             'menu': 1,
             'city': 'kalsjd',
             'country': 'RU',
+            'website': 'http://site.ru/',
         }
 
         count_before = Restaurant.objects.count()
@@ -222,10 +223,13 @@ class TestVenuess(TestCaseVenue):
         r = Restaurant()
         r.save()
 
+        cuisine = Cuisine.objects.create(name="nasjdasdashaksds62a")
+
+
         params = {
             'name': 'alksjdlas',
             'address': 'laksdlkasd',
-            'cuisines': [self.cuisine.pk,],
+            'cuisines': cuisine.pk,
             'catering': True,
             'delivery': True,
             'alcoholFree': True,
@@ -235,19 +239,48 @@ class TestVenuess(TestCaseVenue):
             'menu': 1,
             'city': 'kalsjd',
             'country': 'RU',
+            'website': 'http://site.ru/',
         }
 
         self.redirect_to_login_on_get("venues.views.venuess.update_restaurant", pargs=[r.pk], params=params)
 
     @TestCaseVenue.moderator
     def test_moderator_CAN_update_any_restaurant(self):
-        r = Restaurant()
+        r = Restaurant(name="lasjdklasd,.mxz,calsd")
+        Cuisine.objects.create(name="nasjdasdashaksdsa")
+        Cuisine.objects.create(name="nasjdasdashaksdsa")
+        Cuisine.objects.create(name="nasjdasdashaksdsa")
+        Cuisine.objects.create(name="nasjdasdashaksdsa")
+        Cuisine.objects.create(name="nasjdasdashaksdsa")
+        Cuisine.objects.create(name="nasjdasdashakssdsa")
+        Cuisine.objects.create(name="nasjdasdashaksddsa")
+        Cuisine.objects.create(name="nasjdasdashaksdasa")
+        Cuisine.objects.create(name="nasjdasdashaksdsa")
+        Cuisine.objects.create(name="nasjdasdashaksdasa")
+        Cuisine.objects.create(name="nasjdasdashaksdsdsa")
+        Cuisine.objects.create(name="nasjdasdashaksdsa")
+        Cuisine.objects.create(name="nasjdasdashakshgdsa")
+        Cuisine.objects.create(name="nasjdasdashaksdsa")
+        Cuisine.objects.create(name="nasjdasdashaksdfsa")
+        Cuisine.objects.create(name="nasjdasdashaksddsa")
+        Cuisine.objects.create(name="nasjdasdashakdssdsa")
+        Cuisine.objects.create(name="nasjdasdashaksvdsa")
+        Cuisine.objects.create(name="nasjdasdashaks2dsa")
+        Cuisine.objects.create(name="nasjdasdashaks3dsa")
+        Cuisine.objects.create(name="nasjdasdashaks32dsa")
+        Cuisine.objects.create(name="nasjdasdashaksd2sa")
+        Cuisine.objects.create(name="nasjdasdashaksd23sa")
+        Cuisine.objects.create(name="nasjdasdashaksd2sa")
+        Cuisine.objects.create(name="nasjdasdashaksdsa")
+        Cuisine.objects.create(name="nasjdasdashaksd521sa")
+        Cuisine.objects.create(name="nasjdasdashaksdsa")
+        cuisine = Cuisine.objects.create(name="nasjdhaksdsa")
         r.save()
 
         params = {
             'name': 'alksjdlas',
             'address': 'laksdlkasd',
-            'cuisines': [self.cuisine.pk,],
+            'cuisines': cuisine.pk,
             'catering': True,
             'delivery': True,
             'alcoholFree': True,
@@ -257,16 +290,17 @@ class TestVenuess(TestCaseVenue):
             'menu': 1,
             'city': 'kalsjd',
             'country': 'RU',
+            'website': 'http://site.ru/',
         }
 
         self.can_get("venues.views.venuess.update_restaurant", pargs=[r.pk])
-        self.redirect_on_post("venues.views.venuess.update_restaurant", pargs=[r.pk], params=params)
+        response = self.redirect_on_post("venues.views.venuess.update_restaurant", pargs=[r.pk], params=params)
 
         r = Restaurant.objects.get(pk=r.pk)
 
         for key in params.keys():
             if key == 'cuisines':
-                self.assertEqual(r.cuisines.all()[0].pk, self.cuisine.pk)
+                self.assertEqual(r.cuisines.all()[0].pk, cuisine.pk)
             else:
                 self.assertEqual(getattr(r, key), params[key])
 

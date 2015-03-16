@@ -13,19 +13,21 @@
             </tr>
             <tr>
                 <td><span class="formTitle">Name</span></td>
-                <td><input value="{{ form.name.value }}" type="text" name="name" class="form-control input-sm"
-                           placeholder="Name of the Restaurant" required/>
+                <td>
+                    {%  render_field form.name class="form-control input-sm" placeholder="Name of the Restaurant" required="" %}
                 </td>
             </tr>
             <tr>
                 <td><span class="formTitle">Address</span></td>
-                <td><input value="{{ form.address.value }}" id="id_address" class="form-control input-sm" type="text" name="address"
-                           placeholder="21 Baklava Street :)" required/></td>
+                <td>
+                    {%  render_field form.address class="form-control input-sm" placeholder="21 Baklava Street :)" required="" %}
+                </td>
             </tr>
             <tr>
                 <td><span class="formTitle">Suburb,City & State </span></td>
-                <td><input value="{{ form.city.value }}" id="id_city" class="form-control input-sm" type="text" name="city"
-                           placeholder="Braddon Canberra ACT" required/></td>
+                <td>
+                    {%  render_field form.city class="form-control input-sm" placeholder="Braddon Canberra ACT" required="" %}
+                </td>
             </tr>
             <tr>
                 <td>Country</td>
@@ -41,7 +43,9 @@
             {#                        </tr>#}
             <tr>
                 <td><span class="formTitle">Phone</span></td>
-                <td><input value="{{ form.phone.value }}" type="text" name="phone" class="form-control input-sm" required/></td>
+                <td>
+                    {%  render_field form.phone class="form-control input-sm" %}
+                </td>
             </tr>
             <tr>
                 <td>Cuisine</td>
@@ -130,7 +134,10 @@
             </tr>
             <tr>
                 <td><span class="formTitle">Website</span></td>
-                <td><input value="{{ form.website.value }}" type="text" name="website" class="form-control input-sm"/></td>
+                <td>
+{#                    {%  render_field form.website class="form-control input-sm" %}#}
+                    <input value="{{ form.website.value }}" type="text" name="website" class="form-control input-sm"/>
+                </td>
             </tr>
         </table>
     </div>

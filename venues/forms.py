@@ -33,6 +33,11 @@ class CommonForm(forms.ModelForm):
 
 
 class RestaurantForm(CommonForm):
+    def clean(self):
+        cleaned_data = super(RestaurantForm, self).clean()
+        cuisines = cleaned_data.get('cuisines')
+        return cleaned_data
+
     class Meta:
         model = Restaurant
         fields = ['name', 'address', 'phone', 'cuisines', 'catering', 'delivery', 'alcoholFree',
@@ -50,7 +55,7 @@ class RestaurantForm(CommonForm):
 
 class AddressForm(forms.Form):
     address = forms.CharField(required=False)
-    category = forms.CharField(required=False)
+    cuisine = forms.CharField(required=False)
 
 
 class ReviewForm(CommonForm):
