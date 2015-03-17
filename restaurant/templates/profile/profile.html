@@ -41,10 +41,20 @@
 
                     <div class="listview icon-list">
                         <div class="media">
-                            <i class="icon pull-left">&#61744</i>
+                            <i class="icon pull-left">&#61753</i>
 
-                            <div class="media-body">Software Developer at Google</div>
+                            <div class="media-body">{{ user.venueuser.get_sex_display }}</div>
                         </div>
+
+                        {% if user.venueuser.favourite_food %}
+                            <div class="media">
+                                <i class="icon pull-left">&#61742</i>
+
+                                <div class="media-body">
+                                        {{ user.venueuser.favourite_food }}
+                                </div>
+                            </div>
+                        {% endif %}
 
                         <div class="media">
                             <i class="icon pull-left">&#61753</i>
@@ -57,22 +67,6 @@
 
                             <div class="media-body">Lives in {{ user.venueuser.location }}</div>
                         </div>
-
-                        <div class="media">
-                            <i class="icon pull-left">&#61742</i>
-
-                            <div class="media-body">From Titan, Jupitor</div>
-                        </div>
-
-                        {% if user.venueuser.favourite_food %}
-                            <div class="media">
-                                <i class="icon pull-left">&#61742</i>
-
-                                <div class="media-body">
-                                        {{ user.venueuser.favourite_food }}
-                                </div>
-                            </div>
-                        {% endif %}
 
                         {% if user.venueuser.website %}
                             <div class="media">
