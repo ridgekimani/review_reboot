@@ -77,6 +77,12 @@ class ReportForm(CommonForm):
 
 
 class VenueUserForm(CommonForm):
+    username = forms.RegexField(max_length=30,
+        regex=r'^[\w.@+-]+$',
+        error_messages={
+            'invalid': 'This value may contain only letters, numbers and '
+                         '@/./+/-/_ characters.'})
+
     class Meta:
         model = VenueUser
         exclude = ('user', 'social_profile')

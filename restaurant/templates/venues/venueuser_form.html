@@ -17,6 +17,12 @@
                             <th colspan="2">{{ action_title }}</th>
                         </tr>
                         <tr>
+                            <td><span class="formTitle">Username</span></td>
+                            <td>
+                                {%  render_field form.username class="form-control input-sm" required="" %}
+                            </td>
+                        </tr>
+                        <tr>
                             <td><span class="formTitle">University</span></td>
                             <td>
                                 {%  render_field form.university class="form-control input-sm" placeholder="Name of the University" required="" %}

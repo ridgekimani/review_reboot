@@ -72,3 +72,13 @@ class ProfileUpdateView(UpdateView):
     model = VenueUser
     form_class = VenueUserForm
     success_url = '/profile/'
+
+    def get_initial(self):
+        return {'username': self.request.user.username}
+
+    def form_valid(self, form):
+        user = self.request.user
+        user.username = form.cleaned_data['username']
+        user.save()
+        return super(ProfileUpdateView, self).form_valid(form)
+
