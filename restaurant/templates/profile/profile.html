@@ -43,7 +43,7 @@
                         <div class="media">
                             <i class="icon pull-left">&#61753</i>
 
-                            <div class="media-body">{{ user.venueuser.get_sex_display }}</div>
+                            <div class="media-body">{{ user.venueuser.get_sex_display|capfirst }}</div>
                         </div>
 
                         {% if user.venueuser.favourite_food %}
@@ -51,7 +51,7 @@
                                 <i class="icon pull-left">&#61742</i>
 
                                 <div class="media-body">
-                                        {{ user.venueuser.favourite_food }}
+                                    Favourite food: {{ user.venueuser.favourite_food }}
                                 </div>
                             </div>
                         {% endif %}
