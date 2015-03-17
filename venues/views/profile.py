@@ -1,4 +1,4 @@
-from account.decorators import login_required
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from venues.models import Note
 from venues.models import Review
