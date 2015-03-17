@@ -21,7 +21,7 @@ class VenueUser(models.Model):
     website = models.URLField(null=True, blank=True)
     location = models.CharField(max_length=255, null=True, blank=True)
     sex = models.PositiveSmallIntegerField(
-        choices=((0, 'Male'), (1, 'Female'), (2, '-')), default=2
+        choices=((0, 'Male'), (1, 'Female')), default=0
     )
     social_profile = models.URLField(null=True, blank=True)
     venue_moderator = models.BooleanField(default=False,
