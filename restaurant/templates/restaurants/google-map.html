@@ -35,11 +35,36 @@
                 return false;
             }
         });
+
         //map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
         var searchBox = new google.maps.places.SearchBox(input);
+        var autocomplete = new google.maps.places.AutocompleteService();
 
+        var fromblur = false;
+        $(input).on('blur', function(){
+            autocomplete.getPlacePredictions({input: this.value}, function(predictions, status) {
+                    var googlePlacesService = new google.maps.places.PlacesService($("<input id='q'/>")[0]);
+                    if (status === google.maps.places.PlacesServiceStatus.OK) {
+                        googlePlacesService.getDetails({
+                            reference: predictions[0].reference
+                        }, function(details, status){
+                            if(details){
+                                fromblur = [details];
+                                google.maps.event.trigger(searchBox, 'places_changed');
+                            }
+                        });
+                    }
+                });
+        });
         google.maps.event.addListener(searchBox, 'places_changed', function () {
-            var places = searchBox.getPlaces();
+            if (fromblur) {
+                var places = fromblur;
+            } else {
+                var places = searchBox.getPlaces();
+            }
+            fromblur = false;
+
+
 
             if (places.length == 0) {
                 return
