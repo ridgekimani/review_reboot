@@ -61,7 +61,11 @@
             <!-- Profile Menu -->
             <div class="text-center s-widget m-b-25 dropdown" id="profile-menu">
                 <a href="" data-toggle="dropdown">
-                    <img class="profile-pic animated" src="{% static "img/profile-pic.jpg" %}" alt="">
+                    {% if user.venueuser.sex == 1 %}
+                        <img class="profile-pic animated" src="{% static "img/loadinfo.gif" %}" alt="">
+                    {% else %}
+                        <img class="profile-pic animated" src="{% static "img/profile-pic.jpg" %}" alt="">
+                    {% endif %}
                 </a>
                 <ul class="dropdown-menu profile-menu">
                     {% include "user_menu.html" %}

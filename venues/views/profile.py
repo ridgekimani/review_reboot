@@ -1,7 +1,10 @@
-from django.contrib.auth.decorators import login_required
-from django.shortcuts import render
+from account.decorators import login_required
+from django.shortcuts import render, redirect
+from django.views.generic import UpdateView
+from venues.forms import VenueUserForm
 from venues.models import Note
 from venues.models import Review
+from venues.models import VenueUser
 from venues.models.report import Report
 from venues.models.restaurant import Restaurant
 from venues.models.venue import Venue
@@ -63,3 +66,9 @@ def myprofile(request):
         'notes': user_notes,
         'restaurants': user_restaurants,
     })
+
+
+class ProfileUpdateView(UpdateView):
+    model = VenueUser
+    form_class = VenueUserForm
+    success_url = '/profile/'

@@ -15,6 +15,15 @@ User.venue_user = property(lambda u: VenueUser.objects.get_or_create(user=u)[0])
 
 class VenueUser(models.Model):
     user = models.OneToOneField(User)
+    university = models.CharField(max_length=255, null=True, blank=True)
+    info = models.TextField(max_length=400, null=True, blank=True)
+    favourite_food = models.CharField(max_length=255, null=True, blank=True)
+    website = models.URLField(null=True, blank=True)
+    location = models.CharField(max_length=255, null=True, blank=True)
+    sex = models.PositiveSmallIntegerField(
+        choices=((0, 'male'), (1, 'female'), (2, 'not defined')), default=2
+    )
+    social_profile = models.URLField(null=True, blank=True)
     venue_moderator = models.BooleanField(default=False,
                                           help_text="Is user can approve, remove, and see not approved venues")
 

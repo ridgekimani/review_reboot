@@ -1,7 +1,7 @@
 from django import forms
 from django_countries.widgets import CountrySelectWidget
 from restaurant.utils import get_client_ip
-from venues.models import Restaurant, Review, Note, Report
+from venues.models import Restaurant, Review, Note, Report, VenueUser
 
 
 class CommonForm(forms.ModelForm):
@@ -74,3 +74,9 @@ class ReportForm(CommonForm):
     class Meta:
         model = Report
         fields = ['type', 'note']
+
+
+class VenueUserForm(CommonForm):
+    class Meta:
+        model = VenueUser
+        exclude = ('user', 'social_profile')

@@ -84,6 +84,10 @@ def get_masjids(longitude, latitude, categories):
 
 
 def index(request):
+
+    if request.user.is_authenticated() and not request.user.venueuser.university:
+        return redirect('profile-form', pk=request.user.venueuser.pk)
+
     if 'lat' in request.GET and 'lon' in request.GET:
         return closest(request)
 

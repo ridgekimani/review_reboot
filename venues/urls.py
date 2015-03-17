@@ -1,5 +1,6 @@
 from django.conf.urls import url, patterns
 from django.conf.urls.i18n import i18n_patterns
+from venues.views.profile import ProfileUpdateView
 
 __author__ = 'm'
 
@@ -24,6 +25,7 @@ urlpatterns = patterns('venues.views',
     url(r'profile/notes/$', 'profile.mynotes'),
     url(r'profile/reports/$', 'profile.myreports'),
     url(r'profile/$', 'profile.myprofile'),
+    url(r'profile/form/(?P<pk>.+)/$', ProfileUpdateView.as_view(), name='profile-form'),
 
     # venues
     url(r'(?P<rest_pk>[0-9]+)/show-all-reviews/$', 'reviews.show_all_reviews'),

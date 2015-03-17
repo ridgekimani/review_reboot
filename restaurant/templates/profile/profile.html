@@ -10,7 +10,11 @@
                 <div class="tile-light p-5 m-b-15">
                     <div class="cover p-relative">
                         <img src="{% static "img/cover-bg.jpg" %}" class="w-100" alt="">
-                        <img class="profile-pic" src="{% static "img/profile-pic.jpg" %}" alt="">
+                        {% if user.venueuser.sex == 1 %}
+                            <img class="profile-pic" src="{% static "img/loadinfo.gif" %}" alt="">
+                        {% else %}
+                            <img class="profile-pic" src="{% static "img/profile-pic.jpg" %}" alt="">
+                        {% endif %}
 
                         <div class="profile-btn">
                             <button class="btn btn-alt btn-sm"><i class="icon-bubble"></i> <span>Message</span></button>
@@ -18,14 +22,7 @@
                         </div>
                     </div>
                     <div class="p-5 m-t-15">
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis eget risus rhoncus, cursus purus
-                        vitae, venenatis eros. Phasellus at tincidunt risus. Integer sed massa fermentum, feugiat arcu
-                        quis,
-                        ultrices nisi. Quisque commodo nisi scelerisque, tempus diam ac, dignissim tellus. Mauris
-                        adipiscing
-                        elit tortor, dignissim auctor diam mollis sed. Nulla eu dui non velit accumsan scelerisque eget
-                        et
-                        felis.
+                        {{ user.venueuser.info }}
                     </div>
                 </div>
             </div>
@@ -37,7 +34,7 @@
                         <a data-toggle="dropdown" href="" class="tooltips tile-menu" title=""
                            data-original-title="Options"></a>
                         <ul class="dropdown-menu pull-right text-right">
-                            <li><a href="">Edit</a></li>
+                            <li><a href="{% url 'profile-form' user.venueuser.pk %}">Edit</a></li>
                             <li><a href="">Delete</a></li>
                         </ul>
                     </div>
@@ -52,13 +49,13 @@
                         <div class="media">
                             <i class="icon pull-left">&#61753</i>
 
-                            <div class="media-body">Studied at Oxford University</div>
+                            <div class="media-body">Studied at {{ user.venueuser.university }}</div>
                         </div>
 
                         <div class="media">
                             <i class="icon pull-left">&#61713</i>
 
-                            <div class="media-body">Lives in Saturn, Milkyway</div>
+                            <div class="media-body">Lives in {{ user.venueuser.location }}</div>
                         </div>
 
                         <div class="media">
@@ -66,6 +63,39 @@
 
                             <div class="media-body">From Titan, Jupitor</div>
                         </div>
+
+                        {% if user.venueuser.favourite_food %}
+                            <div class="media">
+                                <i class="icon pull-left">&#61742</i>
+
+                                <div class="media-body">
+                                        {{ user.venueuser.favourite_food }}
+                                </div>
+                            </div>
+                        {% endif %}
+
+                        {% if user.venueuser.website %}
+                            <div class="media">
+                                <i class="icon pull-left">&#61742</i>
+
+                                <div class="media-body">
+                                    <a href="{{ user.venueuser.website }}" target="_blank">
+                                        {{ user.venueuser.website }}
+                                    </a>
+                                </div>
+                            </div>
+                        {% endif %}
+
+                        <div class="media">
+                            <i class="icon pull-left">&#61742</i>
+
+                            <div class="media-body">
+                                <a href="{{ user.venueuser.social_profile }}" target="_blank">
+                                    {{ user.venueuser.social_profile }}
+                                </a>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
             </div>

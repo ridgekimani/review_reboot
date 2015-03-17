@@ -17,6 +17,18 @@ AUTHENTICATION_BACKENDS = (
 SOCIAL_AUTH_ADMIN_USER_SEARCH_FIELDS = ['username', 'first_name']
 
 
+SOCIAL_AUTH_PIPELINE = (
+    'social.pipeline.social_auth.social_details',
+    'social.pipeline.social_auth.social_uid',
+    'social.pipeline.social_auth.auth_allowed',
+    'social.pipeline.social_auth.social_user',
+    'social.pipeline.social_auth.associate_user',
+    'social.pipeline.social_auth.load_extra_data',
+    'social.pipeline.user.user_details',
+    'venues.pipeline.social_profile_link'
+)
+
+
 # EMAIL_HOST = 'smtp.gmail.com'
 # EMAIL_HOST_USER = 'redkovich@gmail.com'
 # EMAIL_HOST_PASSWORD = 'vkiofcumunkmixrj'
