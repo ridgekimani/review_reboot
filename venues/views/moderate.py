@@ -13,6 +13,9 @@ from venues.models.report import Report
 def index(request):
     # approved items paginator
     list = Restaurant.objects.order_by("approved", "name")
+    
+    approved_count = list.filter(approved=False).count()
+
     paginatorApproved = Paginator(list, 10)
     page = request.GET.get("page")
     try:
@@ -64,6 +67,7 @@ def index(request):
         'restaurants': restaurants,
         'recently_update_restaurants': recently_update_restaurants,
         'recently_added_reviews': recently_added_reviews,
+        'approved_count':approved_count
     }
     return render(request, "moderate/index.html", context)
 
