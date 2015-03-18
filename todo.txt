@@ -1,17 +1,21 @@
 
 Todo:
 
-Fix moderator page (show stats first then allow user to select what they want to do)
-Show these: needs approval, reported, updated
-put filters: Today, this week, this month.
 
-create two rows, one for restaurants one for masjids
+On moderator page, create two rows, one for restaurants one for masjids
 
 Restaurant approval page: seperate columns for: "Needs Approval", "Suspended"
+
 Fix bug in add venue page
 
 Add masjid page, add this on moderator page
 
+put filters: Today, this week, this month.
+
+Done:
+
+Fix moderator page (show stats first then allow user to select what they want to do)
+Show these: needs approval, reported, updated
 
 
 
@@ -29,3 +33,4 @@ moderators will have special page where they can approve new restaurants submitt
 any user can submit restaurants. New restaurants will need to be approved by moderators. Once approved they will be available on the restaurant search page and the json api.
 
 Moderator can suspend any restaurant. In that case restaurant will remain in db, but won’t be shown on search page.
+
