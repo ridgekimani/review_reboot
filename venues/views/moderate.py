@@ -63,11 +63,16 @@ def index(request):
     except EmptyPage:
         recently_added_reviews = paginatorApproved.page(paginatorApproved.num_pages)
 
+    #counters
+    report_counter = Report.objects.all().count()
+
+
     context = {
         'restaurants': restaurants,
         'recently_update_restaurants': recently_update_restaurants,
         'recently_added_reviews': recently_added_reviews,
-        'approved_count':approved_count
+        'approved_count':approved_count,
+        'report_counter':report_counter
     }
     return render(request, "moderate/index.html", context)
 
