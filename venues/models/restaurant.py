@@ -10,13 +10,13 @@ __author__ = 'm'
 # not a parent class (Venue)
 class Restaurant(Venue):
     MENU_TYPES = (
-        (0, "-"),
+        (0, "?"),
         (1, "Partially Halal"),
         (2, "Full Halal"),
     )
 
     CHOICES = (
-        (None, "-"),
+        (None, "?"),
         (False, "No"),
         (True, "Yes"),
     )

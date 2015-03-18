@@ -27,16 +27,20 @@
                         <th colspan="2">{{ restaurant.name }} - profile</th>
                     </tr>
                     <tr>
-                        <td>Menu:</td>
+                        <td>Menu</td>
                         <td>{{ restaurant.get_menu_display }}</td>
                     </tr>
                     <tr>
-                        <td>Alcohol:</td>
+                        <td>Alcohol Free</td>
                         <td>{{ restaurant.get_alcoholFree_display }}</td>
                     </tr>
                     <tr>
-                        <td>Pork free:</td>
+                        <td>Pork Free</td>
                         <td>{{ restaurant.get_porkFree_display }}</td>
+                    </tr>
+                    <tr>
+                        <td>Muslim Owner</td>
+                        <td>{{ restaurant.get_muslimOwner_display }}</td>
                     </tr>
                 </table>
 
@@ -45,15 +49,15 @@
                         <th colspan="2">More info</th>
                     </tr>
                     <tr>
-                        <td>Catering:</td>
+                        <td>Catering</td>
                         <td>{{ restaurant.get_catering_display }}</td>
                     </tr>
                     <tr>
-                        <td>Delivery:</td>
+                        <td>Delivery</td>
                         <td>{{ restaurant.get_delivery_display }}</td>
                     </tr>
                     <tr>
-                        <td>Web site:</td>
+                        <td>Website</td>
                         <td>{{ restaurant.website }}</td>
                     </tr>
                 </table>
