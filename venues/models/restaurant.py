@@ -25,7 +25,7 @@ class Restaurant(Venue):
 
     menu = models.IntegerField(default=0, choices=MENU_TYPES)
 
-    website = models.URLField(default="")
+    website = models.URLField(default="", blank=True)
     google_reviews_url = models.URLField(default="")
     yelp_url = models.URLField(default="")
     foursquare_url = models.URLField(default="")
