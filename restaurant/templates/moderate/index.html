@@ -4,6 +4,52 @@
 {% block body %}
     <h4 class="page-title">Moderate</h4>
     <div class="block-area">
+
+       <div class="row">
+            <div class="col-md-4 col-xs-6">
+                <a href="{% url "venues.views.profile.myreviews" %}">
+                    <div class="tile quick-stats media">
+                        <div id="stats-line-3" class="pull-left"></div>
+                        <div class="media-body">
+                            <h2 data-value="{{ reviews.count }}">0</h2>
+                            <small>Restaurants Needs Approval</small>
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+
+            <div class="col-md-4 col-xs-6">
+                <a href="{% url "venues.views.profile.myreviews" %}">
+                    <div class="tile quick-stats media">
+                        <div id="stats-line-4" class="pull-left"></div>
+                        <div class="media-body">
+                            <h2 data-value="{{ reviews.count }}">0</h2>
+                            <small>Restaurants Reported</small>
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+
+            <div class="col-md-4 col-xs-6">
+                <a href="{% url "venues.views.profile.myreviews" %}">
+                    <div class="tile quick-stats media">
+                        <div id="stats-line-5" class="pull-left"></div>
+                        <div class="media-body">
+                            <h2 data-value="{{ reviews.count }}">0</h2>
+                            <small> Restaurants Updated</small>
+                        </div>
+                    </div>
+                </a>
+            </div>
+    </div>
+
+
+
+
+    <div class="block-area">
+
         <div class="row">
             <div class="col-md-4">
                 <div class="list-group">
