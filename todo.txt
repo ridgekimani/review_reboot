@@ -1,6 +1,7 @@
 
 Todo:
 
+On every restaurant add button for moderators, they can remove restaurant and write a note for removing.
 
 On moderator page, create two rows, one for restaurants one for masjids
 
