@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% load bootstrap3 sekizai_tags %}
+{% block title %}Restaurants moderation{% endblock %}
+{% block body %}
+    <h4 class="page-title">Restaurants under need to approve </h4>
+    <div class="block-area">
+        <div class="row">
+            <div class="col-md-6">
+                {% if user_restaurants %}
+                    <div class="list-group">{% for r in user_restaurants %}
+                        <div class="list-group-item {{ r.approved|yesno:'list-group-item-success,list-group-item-warning' }}">
+                            <div class="row">
+                                <div class="col-md-12">
+
+                                    <div class="pull-right" style="padding-left: 1em">
+                                        <button class="btn btn-sm btn-danger btn-remove pull-right"
+                                                style="margin-left: 1em"
+                                                data-href="{% url "venues.views.venuess.remove_restaurant" r.pk %}">
+                                            <span class=" glyphicon glyphicon-remove"></span>
+                                        </button>
+
+                                        <div class="btn-group btn-group-sm pull-right">
+                                            <a class="btn btn-success"
+                                               href="{% url "venues.views.venuess.update_restaurant" r.pk %}">
+                                                <span class="glyphicon glyphicon-edit"></span>
+                                            </a>
+
+                                            <button class="btn btn-approve {{ r.approved|yesno:"btn-info,btn-default" }}"
+                                                    data-approved="{{ r.approved|yesno:"true,false" }}"
+                                                    data-href="{% url "venues.views.moderate.approve_restaurant" r.pk %}">
+                                                <span class="glyphicon glyphicon-ok"></span>
+                                            </button>
+                                        </div>
+
+                                    </div>
+                                    <a href="{{ r.show_url }}">{{ r.name }}</a>
+
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                    </div>
+                    <div class="text-center">
+                        {% bootstrap_pagination restaurants parameter_name="page" %}
+                    </div>
+                {% else %}
+                    no items
+                {% endif %}
+            </div>
+            <!--<div class="col-md-6">
+                <h2>Restaurants modified by me</h2>
+                {% if modified_by_user_restaurants %}
+                    <div class="list-group">
+                        {% for restaurant in modified_by_user_restaurants %}
+                            <div class="list-group-item">
+                                <a href="{{ restaurant.show_url }}">{{ restaurant }}</a>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    no items
+                {% endif %}
+            </div>-->
+        </div>
+    </div>
+
+
+{% endblock %}

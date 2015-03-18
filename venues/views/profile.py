@@ -9,6 +9,9 @@ from venues.models.report import Report
 from venues.models.restaurant import Restaurant
 from venues.models.venue import Venue
 
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
+
+
 __author__ = 'm'
 
 
@@ -24,6 +27,27 @@ def myrestaurants(request):
         'reviews': modified_by_user_restaurants,
         'notes': modified_by_user_restaurants,
         'reports': modified_by_user_restaurants,
+    })
+
+@login_required
+def approvedrestaurants(request):
+    user_restaurants = Restaurant.objects.filter(approved=False)
+
+    paginatorApproved = Paginator(user_restaurants, 10)
+    page = request.GET.get("page")
+    try:
+        restaurants = paginatorApproved.page(page)
+    except PageNotAnInteger:
+        restaurants = paginatorApproved.page(1)
+    except EmptyPage:
+        restaurants = paginatorApproved.page(paginatorApproved.num_pages)
+
+    return render(request, "profile/approved.html", {
+        'user_restaurants': user_restaurants,
+        'restaurants': restaurants,
+        #'reviews': modified_by_user_restaurants,
+        #'notes': modified_by_user_restaurants,
+        #'reports': modified_by_user_restaurants,
     })
 
 

@@ -32,7 +32,8 @@
             <tr>
                 <td>Country</td>
                 <td>
-                    {{ form.country|add_class:'select' }}
+                    <!--{{ form.country|add_class:'select' }}-->
+                    {%  render_field form.country class="form-control input-sm" placeholder="Australia" required="" %}
                 </td>
             </tr>
             {#                        <tr>#}

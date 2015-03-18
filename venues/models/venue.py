@@ -22,7 +22,7 @@ class Venue(CommonModel):
 
     address = models.CharField(max_length=150)
     city = models.CharField(max_length=150)
-    country = CountryField()
+    country = models.CharField(max_length=150)
 
     phone = models.CharField(
         max_length=12,

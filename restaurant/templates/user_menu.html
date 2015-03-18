@@ -48,6 +48,12 @@
             My reports
         </a>
     </li>
+
+    <li>
+        <a role="menuitem" href="{% url "venues.views.profile.approvedrestaurants" %}">
+            Need to aprove
+        </a>
+    </li>
     <li>
         <a role="menuitem" href="{% url "django.contrib.auth.views.logout" %}?next={{ request.path }}">
             Logout

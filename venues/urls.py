@@ -21,6 +21,7 @@ urlpatterns = patterns('venues.views',
 
     #profile
     url(r'profile/restaurants/$', 'profile.myrestaurants'),
+    url(r'profile/approved/$', 'profile.approvedrestaurants'),
     url(r'profile/reviews/$', 'profile.myreviews'),
     url(r'profile/notes/$', 'profile.mynotes'),
     url(r'profile/reports/$', 'profile.myreports'),

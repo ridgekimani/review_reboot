@@ -12,9 +12,9 @@ from venues.models.report import Report
 @user_passes_test(lambda u: u.is_venue_moderator())
 def index(request):
     # approved items paginator
-    list = Restaurant.objects.order_by("approved", "name")
+    list = Restaurant.objects.order_by("approved", "name").filter(approved=False)
     
-    approved_count = list.filter(approved=False).count()
+    
 
     paginatorApproved = Paginator(list, 10)
     page = request.GET.get("page")
@@ -65,6 +65,7 @@ def index(request):
 
     #counters
     report_counter = Report.objects.all().count()
+    approved_count = Restaurant.objects.filter(approved=False).count()
 
 
     context = {
