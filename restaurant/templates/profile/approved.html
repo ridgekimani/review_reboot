@@ -13,19 +13,14 @@
                                 <div class="col-md-12">
 
                                     <div class="pull-right" style="padding-left: 1em">
-                                        <button class="btn btn-sm btn-danger btn-remove pull-right"
-                                                style="margin-left: 1em"
-                                                data-href="{% url "venues.views.venuess.remove_restaurant" r.pk %}">
-                                            <span class=" glyphicon glyphicon-remove"></span>
-                                        </button>
 
                                         <div class="btn-group btn-group-sm pull-right">
-                                            <a class="btn btn-success"
+                                            <a class="btn btn-success btn-alt"
                                                href="{% url "venues.views.venuess.update_restaurant" r.pk %}">
                                                 <span class="glyphicon glyphicon-edit"></span>
                                             </a>
 
-                                            <button class="btn btn-approve {{ r.approved|yesno:"btn-info,btn-default" }}"
+                                            <button class="btn btn-approve btn-alt {{ r.approved|yesno:"btn-info,btn-default" }}"
                                                     data-approved="{{ r.approved|yesno:"true,false" }}"
                                                     data-href="{% url "venues.views.moderate.approve_restaurant" r.pk %}">
                                                 <span class="glyphicon glyphicon-ok"></span>
