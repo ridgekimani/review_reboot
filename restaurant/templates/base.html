@@ -17,7 +17,6 @@
     {% assets "core-js" %}
         <script src="{{ ASSET_URL }}"></script>
     {% endassets %}
-
 </head>
 <body id="skin-blur-violate" class="restaurant addVenue">
 <header id="header" class="media">
@@ -34,7 +33,7 @@
                   class="navbar-form search-form pull-left"
                   id="restaurant-form">
                   {% csrf_token %}
-                <input type="text" id="pac-input" name="address" class="form-control" placeholder="Address"/>
+                <input type="text" id="location" name="address" class="form-control" placeholder="Address"/>
 
                 <!--<input type="text" id="pac-input" name="cuisine" class="form-control" placeholder="Cuisine"/>-->
                 <input class="btn btn-sm btn-alt" type="submit" value="Search"/>
@@ -178,6 +177,9 @@
     <section id="content" class="container">
         {% block body %}
         {% endblock %}
+    {% addtoblock "js" %}
+        {% include "restaurants/google-map.html" %}
+    {% endaddtoblock %}
         {#        <hr class="whiter m-t-20"/>#}
     </section>
 </section>
