@@ -92,6 +92,40 @@ def myprofile(request):
     })
 
 
+@login_required
+def updated_restaurants(request):
+    # updated restaurants
+    list = Restaurant.objects.order_by("-modified_on")
+    paginatorApproved = Paginator(list, 10)
+    page = request.GET.get("pageUpdated")
+    try:
+        recently_update_restaurants = paginatorApproved.page(page)
+    except PageNotAnInteger:
+        recently_update_restaurants = paginatorApproved.page(1)
+    except EmptyPage:
+        recently_update_restaurants = paginatorApproved.page(paginatorApproved.num_pages)
+
+    # checking for restaurant changed fields
+    # which can be accessed via changed_fields property
+    for rest in recently_update_restaurants.object_list:
+        items = rest.history_link.filter(id=rest.id).order_by("-history_date")
+        changed_fields = []
+        if items.count() > 1:
+            previous = items[1]
+            if previous:
+                for field in rest._meta.get_all_field_names():
+                    if field not in ['cuisines', 'modified_by', 'created_by', 'modified_by_id', 'created_by_id',
+                                     'modified_on', 'slug'] and getattr(rest, field) != getattr(previous, field):
+                        changed_fields.append(field)
+        else:
+            changed_fields.append("created")
+        rest.changed_fields = changed_fields
+    context = {
+        'recently_update_restaurants': recently_update_restaurants
+    }
+    return render(request, "profile/updated.html", context)
+
+
 class ProfileUpdateView(UpdateView):
     model = VenueUser
     form_class = VenueUserForm

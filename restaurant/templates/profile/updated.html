@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% load bootstrap3 sekizai_tags %}
+{% block title %}Restaurants moderation{% endblock %}
+{% block body %}
+    <h4 class="page-title">Recently updated restaurants</h4>
+    <div class="block-area">
+        <div class="row">
+            <div class="col-md-6">
+                {% if recently_update_restaurants %}
+                    
+                    <div class="list-group">
+                        {% for item in recently_update_restaurants %}
+                            <div class="list-group-item">
+                                <a href="{% url "venues.views.venuess.restaurant_by_slug" item.slug %}">{{ item.name }}</a><br/>
+                                changes: <i>{% for f in  item.changed_fields %}
+                                {{ f }}
+                            {% endfor %}</i> <br>modified by: <i>{{item.modified_by}}</i>
+                            </div>
+                        {% endfor %}
+                        {% if recently_update_restaurants.paginator.num_pages > 1 %}
+                            <div class="text-center">
+                                {% bootstrap_pagination recently_update_restaurants parameter_name="pageUpdated" %}
+                            </div>
+                        {% endif %}
+                    </div>
+                {% else %}
+                    no items
+                {% endif %}
+            </div>
+            <!--<div class="col-md-6">
+                <h2>Restaurants modified by me</h2>
+                {% if modified_by_user_restaurants %}
+                    <div class="list-group">
+                        {% for restaurant in modified_by_user_restaurants %}
+                            <div class="list-group-item">
+                                <a href="{{ restaurant.show_url }}">{{ restaurant }}</a>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    no items
+                {% endif %}
+            </div>-->
+        </div>
+    </div>
+    
+    {% addtoblock "js" %}
+        <script>
+            $(".btn-approve").click(function (e) {
+                var target = $(e.currentTarget);
+                var href = target.data("href");
+                $.post(href, {
+                    csrfmiddlewaretoken: '{{csrf_token}}',
+                    approved: !target.data("approved")
+                }).done(function () {
+                    location.reload();
+                });
+            });
+            $(".btn-remove").click(function (e) {
+                var target = $(e.currentTarget);
+                var href = target.data("href");
+                $.post(href, {
+                    csrfmiddlewaretoken: '{{csrf_token}}'
+                }).done(function () {
+                    location.reload();
+                });
+            })
+        </script>
+    {% endaddtoblock %}
+
+
+{% endblock %}
