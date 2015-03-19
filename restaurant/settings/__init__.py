@@ -24,14 +24,12 @@ from restaurant.settings.database import *
 from restaurant.settings.dirs import *
 from restaurant.settings.middleware import *
 from restaurant.settings.social import *
-from restaurant.settings.logging import *
-from restaurant.settings.tests import *
-from restaurant.settings.assets import *
 
 ROOT_URLCONF = 'restaurant.urls'
 
 WSGI_APPLICATION = 'restaurant.wsgi.application'
 
+LOGIN_URL = '/login/facebook/'
 
 LANGUAGE_CODE = 'en-us'
 

@@ -1,7 +1,7 @@
 from django import forms
 from django_countries.widgets import CountrySelectWidget
 from restaurant.utils import get_client_ip
-from venues.models import Restaurant, Review, Note, Report, VenueUser
+from venues.models import Restaurant, Comment, Note, Report
 
 
 class CommonForm(forms.ModelForm):
@@ -9,7 +9,6 @@ class CommonForm(forms.ModelForm):
     this is CommonForm for CommonModel,
     make sure to provide request argument to make it work
     """
-
     def __init__(self, *args, **kwargs):
         """
         make sure to provide request argument when contruction form
@@ -33,34 +32,23 @@ class CommonForm(forms.ModelForm):
 
 
 class RestaurantForm(CommonForm):
-    def clean(self):
-        cleaned_data = super(RestaurantForm, self).clean()
-        cuisines = cleaned_data.get('cuisines')
-        return cleaned_data
-
     class Meta:
         model = Restaurant
         fields = ['name', 'address', 'phone', 'cuisines', 'catering', 'delivery', 'alcoholFree',
-                  'porkFree', 'muslimOwner', 'location', 'menu', 'city', 'country', 'website']
+                  'porkFree', 'muslimOwner', 'location', 'menu', 'city', 'country']
         widgets = {
-            'menu': forms.RadioSelect(),
-            'alcoholFree': forms.RadioSelect(),
-            'porkFree': forms.RadioSelect(),
-            'muslimOwner': forms.RadioSelect(),
-            'catering': forms.RadioSelect(),
-            'delivery': forms.RadioSelect(),
-            'cuisines': forms.Select(),
+            'cuisines': forms.CheckboxSelectMultiple(),
         }
 
 
 class AddressForm(forms.Form):
     address = forms.CharField(required=False)
-    cuisine = forms.CharField(required=False)
+    category = forms.CharField(required=False)
 
 
-class ReviewForm(CommonForm):
+class CommentForm(CommonForm):
     class Meta:
-        model = Review
+        model = Comment
         fields = ['rating', 'text']
 
 
@@ -74,15 +62,3 @@ class ReportForm(CommonForm):
     class Meta:
         model = Report
         fields = ['type', 'note']
-
-
-class VenueUserForm(CommonForm):
-    username = forms.RegexField(max_length=30,
-        regex=r'^[\w.@+-]+$',
-        error_messages={
-            'invalid': 'This value may contain only letters, numbers and '
-                         '@/./+/-/_ characters.'})
-
-    class Meta:
-        model = VenueUser
-        exclude = ('user', 'social_profile')

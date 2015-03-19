@@ -10,22 +10,22 @@ __author__ = 'm'
 # not a parent class (Venue)
 class Restaurant(Venue):
     MENU_TYPES = (
-        (0, "?"),
+        (0, "-"),
         (1, "Partially Halal"),
         (2, "Full Halal"),
     )
 
     CHOICES = (
-        (None, "?"),
-        (False, "No"),
-        (True, "Yes"),
+        (None, "-"),
+        (False, "Yes"),
+        (True, "No"),
     )
 
     history_link = HistoricalRecords()
 
     menu = models.IntegerField(default=0, choices=MENU_TYPES)
 
-    website = models.URLField(default="", blank=True)
+    website = models.URLField(default="")
     google_reviews_url = models.URLField(default="")
     yelp_url = models.URLField(default="")
     foursquare_url = models.URLField(default="")
@@ -36,7 +36,7 @@ class Restaurant(Venue):
     porkFree = models.NullBooleanField(null=True, blank=True, choices=CHOICES)
     muslimOwner = models.NullBooleanField(null=True, blank=True, choices=CHOICES)
 
-    cuisines = models.ManyToManyField(Cuisine, null=True, default=None)
+    cuisines = models.ManyToManyField(Cuisine, null=True)
 
 
     @property

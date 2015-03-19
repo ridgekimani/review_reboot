@@ -7,8 +7,8 @@ import venues.views
 import venues.views.reports
 import venues.views.venuess
 
-admin.autodiscover()
 
+admin.autodiscover()
 
 urlpatterns = patterns('',
 
@@ -18,19 +18,25 @@ urlpatterns = patterns('',
 
     #python-social-login urls
     url(r'', include('social.apps.django_app.urls', namespace='social')),
-    # url(r'^register-by-token/(?P<backend>[^/]+)/$', venues.views.register_by_access_token),
+    url(r'^register-by-token/(?P<backend>[^/]+)/$', venues.views.register_by_access_token),
 
-    url(r'^accounts/login/$', 'django.contrib.auth.views.login', name="account_login"),
-    url(r'^accounts/logout/$', 'django.contrib.auth.views.logout', name="account_logout"),
+    # pinax accounts urls
+    url(r"^owner/$", TemplateView.as_view(template_name="homepage.html"), name="home"),
+    url(r"^owner/account/", include("account.urls")),
+
+    url(r'^accounts/login/$', 'django.contrib.auth.views.login'),
+    url(r'^accounts/logout/$', 'django.contrib.auth.views.logout'),
 
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^social/', include('social.apps.django_app.urls', namespace='social')),
     url(r'^', include(venues.urls)),
+    url(r'^$', venues.views.venuess.closest),
+
+    # url(r'^logout/$', views.log_out),
 )
 
 if settings.DEBUG:
-    urlpatterns += patterns('',
+    urlpatterns = patterns('',
         url(r'^media/(?P<path>.*)$', 'django.views.static.serve',
             {'document_root': settings.MEDIA_ROOT, 'show_indexes': True}),
         url(r'', include('django.contrib.staticfiles.urls')),
-    )
+    ) + urlpatterns

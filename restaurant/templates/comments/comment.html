@@ -1,0 +1,29 @@
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h4>Review by <strong>{{ comment.created_by }}</strong>
+
+            <div class="pull-right">
+                {{ comment.rating }} / 5
+                {% if user.is_authenticated %}
+                    <div class="pull-right">
+                        <div class="btn-group btn-group-sm">
+                            <a class="btn btn-success" href="{% url "venues.views.comments.update_comment" comment.pk %}">
+                                <span class="glyphicon glyphicon-edit"></span>
+                            </a>
+                            {% if user.is_superuser %}
+                                <a class="btn btn-danger note-remove"
+                                   href="{% url "venues.views.comments.remove_comment" comment.pk %}">
+                                    <span class="glyphicon glyphicon-remove"></span>
+                                </a>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+
+        </h4>
+    </div>
+    <div class="panel-body">
+        {{ comment.text }}
+    </div>
+</div>

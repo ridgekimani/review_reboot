@@ -1,21 +1,17 @@
-from django.contrib.auth.decorators import user_passes_test, login_required
+from account.decorators import login_required
+from django.contrib.auth.decorators import user_passes_test
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
-from django.core.urlresolvers import reverse
 from django.http.response import HttpResponse, HttpResponseBadRequest
 from django.shortcuts import render, render_to_response, get_object_or_404, redirect
 from venues.models import Restaurant
-from venues.models import Review
+from venues.models.comment import Comment
 from venues.models.report import Report
 
 
-@login_required
 @user_passes_test(lambda u: u.is_venue_moderator())
 def index(request):
     # approved items paginator
-    list = Restaurant.objects.order_by("approved", "name").filter(approved=False)
-    
-    
-
+    list = Restaurant.objects.order_by("approved", "name")
     paginatorApproved = Paginator(list, 10)
     page = request.GET.get("page")
     try:
@@ -53,7 +49,7 @@ def index(request):
         rest.changed_fields = changed_fields
 
     # added reviews
-    list = Review.objects.order_by("-approved", "-modified_on")
+    list = Comment.objects.order_by("-approved", "-modified_on")
     paginatorApproved = Paginator(list, 10)
     page = request.GET.get("pageReview")
     try:
@@ -63,17 +59,10 @@ def index(request):
     except EmptyPage:
         recently_added_reviews = paginatorApproved.page(paginatorApproved.num_pages)
 
-    #counters
-    report_counter = Report.objects.all().count()
-    approved_count = Restaurant.objects.filter(approved=False).count()
-
-
     context = {
         'restaurants': restaurants,
         'recently_update_restaurants': recently_update_restaurants,
         'recently_added_reviews': recently_added_reviews,
-        'approved_count':approved_count,
-        'report_counter':report_counter
     }
     return render(request, "moderate/index.html", context)
 
@@ -100,30 +89,26 @@ def reports(request):
 @user_passes_test(lambda u: u.is_venue_moderator())
 def approve_restaurant(request, rest_pk):
     restaurant = get_object_or_404(Restaurant, pk=rest_pk)
-    restaurant.approved = request.POST['approved'].lower() == u'true'
+    restaurant.approved = request.POST['approved'] == u'true'
     restaurant.save()
 
     if request.is_ajax():
         return HttpResponse()
     else:
-        if "HTTP_REFERER" in request:
-            return redirect(request.META['HTTP_REFERER'])
-        return redirect(reverse("venues.views.venuess.index"))
+        return redirect(request.META['HTTP_REFERER'])
 
 
 @login_required
 @user_passes_test(lambda u: u.is_venue_moderator())
-def approve_review(request, review_pk):
-    review = get_object_or_404(Review, pk=review_pk)
-    review.approved = True
-    review.save()
+def approve_comment(request, comment_pk):
+    comment = get_object_or_404(Comment, pk=comment_pk)
+    comment.approved = True
+    comment.save()
 
     if request.is_ajax():
         return HttpResponse()
     else:
-        if "HTTP_REFERER" in request:
-            return redirect(request.META['HTTP_REFERER'])
-        return redirect(reverse("venues.views.venuess.index"))
+        return redirect(request.META['HTTP_REFERER'])
 
 
 @login_required
@@ -133,7 +118,7 @@ def resolve_report(request, id):
 
     if request.method == "POST":
         if 'moderator_note' in request.POST:
-            report.moderator_note = request.POST['moderator_note']
+            reports.moderator_note = request.POST['moderator_note']
 
     report.closed_by = request.user
     report.resolved = True
@@ -142,8 +127,6 @@ def resolve_report(request, id):
     if request.is_ajax():
         return HttpResponse()
     else:
-        if "HTTP_REFERER" in request:
-            return redirect(request.META['HTTP_REFERER'])
-        return redirect(reverse("venues.views.venuess.index"))
+        return redirect(request.META['HTTP_REFERER'])
 
 

@@ -1,34 +1,11 @@
 {% extends 'base.html' %}
 {% load static bootstrap3 sekizai_tags %}
 {% block body %}
-    <h4 class="page-title">Restaurant list</h4>
-
-    <div class="block-area">
-        <div class="row">
-            <div class="col-xs-12 col-md-6">
-                {% for restaurant in all_restaurants %}
-                    <div class="table table-bordered tile  mainTable">
-                        <div class="title">
-                            <a href="{% url "venues.views.venuess.restaurant" restaurant.pk %}">
-                                {{ restaurant.name }}
-                            </a>
-                        </div>
-                        <div class="cuisine">
-                            {% for cuisine in restaurant.cuisines.all %}{{ cuisine }}{% endfor %}</div>
-                        <div class="address">{{ restaurant.address }}</div>
-                        <div class="subText">
-                            <span class="reviews"><span>Reviews:</span><span>12</span></span>
-                            <span class="rating"><span>Rating:</span><span>5/5</span></span>
-                        </div>
-                    </div>
-                {% endfor %}
-            </div>
-            <div class="col-xs-12 col-md-6">
-                <div id="r-map" style="width: 100%; height: 300px"></div>
-            </div>
-
-        </div>
-
+    <div>
+        {% include "restaurants/restaurantlist.html" %}
+        {% if all_restaurants.paginator.num_pages > 1 %}
+            {% bootstrap_pagination all_restaurants %}
+        {% endif %}
     </div>
 
     {% addtoblock "js" %}
@@ -48,7 +25,7 @@
                         navigationControlOptions: {style: google.maps.NavigationControlStyle.SMALL},
                         mapTypeId: google.maps.MapTypeId.ROADMAP
                     };
-                    map = new google.maps.Map($('#r-map')[0], mapOptions);
+                    map = new google.maps.Map($('.map')[0], mapOptions);
 
                     {% for restaurant in all_restaurants %}
                         {% if restaurant.location %}

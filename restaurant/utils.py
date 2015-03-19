@@ -1,7 +1,5 @@
-from urlparse import urlsplit
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
-from django.http.response import HttpResponseBadRequest
 from django.test import TestCase
 
 __author__ = 'm'
@@ -84,9 +82,12 @@ class TestCaseEx(TestCase):
         return _wrapper
 
     @staticmethod
-    def login(fn):
+    def login(fn, user=None):
         def _wrapper(self=None):
-            self.client.login(username=self.user.username, password=self.password)
+            if user:
+                self.client.login(username=user.username, password=user.password)
+            else:
+                self.client.login(username=self.user.username, password=self.password)
             fn(self)
             self.client.logout()
 
@@ -106,9 +107,8 @@ class TestCaseEx(TestCase):
             HTTP_X_REQUESTED_WITH='XMLHttpRequest' if ajax else None
         )
         self.assertEqual(response.status_code, 302)
-        url = response.url.split("?")[0]
-        scheme, netloc, path, query, fragment = urlsplit(url)
-        self.assertEqual(path, reverse("django.contrib.auth.views.login"))
+        self.assertRedirects(response,
+                             reverse("django.contrib.auth.views.login") + '?next=%s' % reverse(view_name, args=pargs))
         return response
 
     def redirect_to_login_on_get(self, view_name, params=None, pargs=None, ajax=False):
@@ -125,9 +125,8 @@ class TestCaseEx(TestCase):
             HTTP_X_REQUESTED_WITH='XMLHttpRequest' if ajax else None
         )
         self.assertEqual(response.status_code, 302)
-        url = response.url.split("?")[0]
-        scheme, netloc, path, query, fragment = urlsplit(url)
-        self.assertEqual(path, reverse("django.contrib.auth.views.login"))
+        self.assertRedirects(response,
+                             reverse("django.contrib.auth.views.login") + '?next=%s' % reverse(view_name, args=pargs))
         return response
 
     def redirect_on_post(self, view_name, params=None, pargs=None, ajax=False):

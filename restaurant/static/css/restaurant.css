@@ -10,21 +10,12 @@
     padding: 0 13px; }
     .navbar-super-top form input {
       float: left; }
-      .navbar-super-top form input[name=search] {
-        margin-right: 8px; }
-    .navbar-super-top form input.btn-alt[type=submit] {
-      background: rgba(0, 0, 0, 0.35) !important; }
-      .navbar-super-top form input.btn-alt[type=submit]:hover {
-        background: rgba(255, 255, 255, 0.35) !important; }
 
 .search-form input.form-control {
   width: 267px; }
 
 #header .navbar-form {
   padding: 0 7px; }
-
-#content .page-title {
-  font-size: 30px; }
 
 .fieldWysiwye button[type=submit] {
   float: right;
@@ -66,13 +57,6 @@ body.restaurant .mainTable {
   body.restaurant .mainTable .phone {
     font-size: 11px;
     font-weight: bold; }
-  body.restaurant .mainTable .subText span {
-    font-size: 11px;
-    font-weight: bold; }
-  body.restaurant .mainTable .subText > span {
-    margin-right: 13px; }
-    body.restaurant .mainTable .subText > span > span:first-of-type {
-      margin-right: 5px; }
 body.restaurant .navbar-brand {
   width: 233px; }
 
@@ -93,5 +77,3 @@ body.restaurant .navbar-brand {
   margin-right: 14px; }
 .addVenue .theForm button[type=submit] {
   min-width: 89px; }
-
-/*# sourceMappingURL=restaurant.css.map */
