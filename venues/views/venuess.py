@@ -108,7 +108,7 @@ def index(request):
         if form.is_valid():
             address = form.cleaned_data['address']
             if not address:
-                restaurants = Restaurant.objects.all()
+                restaurants = Restaurant.objects.filter(approved=True)
                 try:
                     longitude, latitude = restaurants[0].location
                 except IndexError:
@@ -125,19 +125,19 @@ def index(request):
                     latitude = location.latitude
                     longitude = location.longitude
                     currentPoint = geos.GEOSGeometry('POINT(%s %s)' % (longitude, latitude))
-                    distance_m = {'km': 15}
-                    restaurants = Restaurant.gis.filter(
+                    distance_m = {'km': 30}
+                    restaurants = Restaurant.gis.filter(approved=True,
                             location__distance_lte=(currentPoint, measure.D(**distance_m))).distance(currentPoint)
     else:
         page = request.GET.get('page')
-        restaurants = Restaurant.objects.all()
+        restaurants = Restaurant.objects.filter(approved=True)
 
     if hasattr(request.user, 'is_venue_moderator') and request.user.is_venue_moderator():
         pass
     else:
         restaurants = Restaurant.objects.filter(approved=True)
 
-    paginator = Paginator(restaurants, 5)
+    paginator = Paginator(restaurants, 20)
     page = request.GET.get("page")
     try:
         restaurants = paginator.page(page)

@@ -30,6 +30,7 @@ for row in sq_curs.execute("SELECT * FROM Restaurant;"):
         location=geos.GEOSGeometry('POINT(%s %s)' % (row[10], row[9])),
         yelp_url=row[6] or '',
         foursquare_url=row[8] or '',
+        approved=True,
     )
     rest.save()
     counter += 1

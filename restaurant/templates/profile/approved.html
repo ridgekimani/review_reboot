@@ -31,6 +31,7 @@
                                                     data-href="{% url "venues.views.moderate.approve_restaurant" r.pk %}">
                                                     approve
                                             </button>
+
                                         </div>
 
                                     </div>
@@ -68,6 +69,30 @@
             </div>-->
         </div>
     </div>
+    
+    {% addtoblock "js" %}
+        <script>
+            $(".btn-approve").click(function (e) {
+                var target = $(e.currentTarget);
+                var href = target.data("href");
+                $.post(href, {
+                    csrfmiddlewaretoken: '{{csrf_token}}',
+                    approved: !target.data("approved")
+                }).done(function () {
+                    location.reload();
+                });
+            });
+            $(".btn-remove").click(function (e) {
+                var target = $(e.currentTarget);
+                var href = target.data("href");
+                $.post(href, {
+                    csrfmiddlewaretoken: '{{csrf_token}}'
+                }).done(function () {
+                    location.reload();
+                });
+            })
+        </script>
+    {% endaddtoblock %}
 
 
 {% endblock %}
