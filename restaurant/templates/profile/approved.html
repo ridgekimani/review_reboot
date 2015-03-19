@@ -34,7 +34,11 @@
                                         </div>
 
                                     </div>
-                                    <a href="{{ r.show_url }}">{{ r.name }}</a>
+                                    <a href="{{ r.show_url }}">{{ r.name }}</a><br>
+                                    {{r.address}}<br>
+                                    Cuisines: {% for c in r.cuisines.all %}
+                                    {{c}}
+                                    {% endfor %}
 
                                 </div>
                             </div>
