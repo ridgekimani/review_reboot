@@ -40,14 +40,14 @@
 
                     <div class="listview icon-list">
                         <div class="media">
-                            <i class="icon pull-left">&#61753</i>
+                            <i class="icon pull-left">&#61782</i>
 
                             <div class="media-body">{{ user.venueuser.get_sex_display }}</div>
                         </div>
 
                         {% if user.venueuser.favourite_food %}
                             <div class="media">
-                                <i class="icon pull-left">&#61742</i>
+                                <i class="icon pull-left">&#61796</i>
 
                                 <div class="media-body">
                                     Favourite Food : {{ user.venueuser.favourite_food }}
@@ -56,7 +56,7 @@
                         {% endif %}
 
                         <div class="media">
-                            <i class="icon pull-left">&#61753</i>
+                            <i class="icon pull-left">&#61840</i>
 
                             <div class="media-body">Studied at {{ user.venueuser.university }}</div>
                         </div>
@@ -69,7 +69,7 @@
 
                         {% if user.venueuser.website %}
                             <div class="media">
-                                <i class="icon pull-left">&#61742</i>
+                                <i class="icon pull-left">&#61838</i>
 
                                 <div class="media-body">
                                     <a href="{{ user.venueuser.website }}" target="_blank">
@@ -78,16 +78,6 @@
                                 </div>
                             </div>
                         {% endif %}
-
-                        <div class="media">
-                            <i class="icon pull-left">&#61742</i>
-
-                            <div class="media-body">
-                                <a href="{{ user.venueuser.social_profile }}" target="_blank">
-                                    {{ user.venueuser.social_profile }}
-                                </a>
-                            </div>
-                        </div>
 
                     </div>
                 </div>

@@ -19,7 +19,7 @@
                                         <button class="btn btn-sm btn-danger btn-remove btn-alt pull-right"
                                                 style="margin-left: 1em"
                                                 data-href="{% url "venues.views.venuess.remove_restaurant" r.pk %}">
-                                            remove
+                                            reject
                                         </button>
                                             <a class="btn btn-success btn-alt"
                                                href="{% url "venues.views.venuess.update_restaurant" r.pk %}">
@@ -29,7 +29,7 @@
                                             <button class="btn btn-approve btn-alt {{ r.approved|yesno:"btn-info,btn-default" }}"
                                                     data-approved="{{ r.approved|yesno:"true,false" }}"
                                                     data-href="{% url "venues.views.moderate.approve_restaurant" r.pk %}">
-                                                    accept
+                                                    approve
                                             </button>
                                         </div>
 
