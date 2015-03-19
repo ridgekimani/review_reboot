@@ -82,11 +82,18 @@ def get_masjids(longitude, latitude, categories):
 
     return data
 
+def search_view(request):
+    if 'lat' in request.GET and 'lon' in request.GET:
+        #return closest(request)
+        return closest(request)
+    else:
+        return HttpResponse("qwe")
 
 def index(request):
 
     if request.user.is_authenticated() and not request.user.venueuser.university:
         return redirect('profile-form', pk=request.user.venueuser.pk)
+
 
     if 'lat' in request.GET and 'lon' in request.GET:
         return closest(request)
@@ -100,23 +107,8 @@ def index(request):
         form = forms.AddressForm(request.POST)
         if form.is_valid():
             address = form.cleaned_data['address']
-            cuisine = form.cleaned_data['cuisine']
-
-            list_of_cats = []
-            if cuisine:
-                try:
-                    list_of_cats.append(Cuisine.objects.get(name__icontains=cuisine))
-                except (MultipleObjectsReturned):
-                    length = Cuisine.objects.filter(name__icontains=cuisine).__len__()
-                    for l in range(length):
-                        list_of_cats.append(Cuisine.objects.filter(name__icontains=cuisine)[l])
-                except (ObjectDoesNotExist):
-                    pass
             if not address:
-                if list_of_cats:
-                    restaurants = Restaurant.objects.filter(cuisines__in=list_of_cats)
-                else:
-                    restaurants = Restaurant.objects.all()
+                restaurants = Restaurant.objects.all()
                 try:
                     longitude, latitude = restaurants[0].location
                 except IndexError:
@@ -134,13 +126,7 @@ def index(request):
                     longitude = location.longitude
                     currentPoint = geos.GEOSGeometry('POINT(%s %s)' % (longitude, latitude))
                     distance_m = {'km': 15}
-                    if list_of_cats:
-                        restaurants = Restaurant.gis.filter(
-                            location__distance_lte=(currentPoint, measure.D(**distance_m)),
-                            categories__in=list_of_cats
-                        ).distance(currentPoint)
-                    else:
-                        restaurants = Restaurant.gis.filter(
+                    restaurants = Restaurant.gis.filter(
                             location__distance_lte=(currentPoint, measure.D(**distance_m))).distance(currentPoint)
     else:
         page = request.GET.get('page')

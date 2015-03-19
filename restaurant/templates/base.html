@@ -30,11 +30,13 @@
     {% endif %}
     <div class="media-body">
         <div class="media" id="top-menu">
-            <form method="post" action="{% url "venues.views.venuess.index" %}"
+            <form method="post" action="/"
                   class="navbar-form search-form pull-left"
                   id="restaurant-form">
-                {% csrf_token %}
-                <input type="text" id="pac-input" name="search" class="form-control" placeholder="Enter address"/>
+                  {% csrf_token %}
+                <input type="text" id="pac-input" name="address" class="form-control" placeholder="Address"/>
+
+                <!--<input type="text" id="pac-input" name="cuisine" class="form-control" placeholder="Cuisine"/>-->
                 <input class="btn btn-sm btn-alt" type="submit" value="Search"/>
             </form>
             <div id="time" class="pull-right">

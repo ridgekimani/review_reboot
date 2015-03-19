@@ -44,6 +44,9 @@ urlpatterns = patterns('venues.views',
     url(r'get_category/', 'get_category', name='get_drugs'),
     url(r'new$', 'venuess.add_restaurant'),
 
+    #search
+    #url(r'search/', 'venuess.search_view', name='search'),
+
     # restautant by slug
     url(r'(?P<slug>[\w-]+)/$', 'venuess.restaurant_by_slug'),
     # index page
