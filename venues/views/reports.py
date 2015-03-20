@@ -80,5 +80,5 @@ def moderate_report(request, pk):
         if 'moderator_note' in request.POST:
             report.moderator_note = request.POST['moderator_note']
         report.save()
-        postfix = "?page=%d" % request.POST['page_num'] if 'page_num' in request.POST else ''
-        return redirect(reverse("venues.views.reports.moderate_reports") + postfix)
+        #postfix = "?page=%d" % request.POST['page_num'] if 'page_num' in request.POST else ''
+        return redirect(reverse("venues.views.reports.moderate_reports")) #+ postfix)

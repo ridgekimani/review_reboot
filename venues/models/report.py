@@ -4,7 +4,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.db import models
 import venues.models.restaurant
 import venues.models.venue
-
+from venues.models.restaurant import Restaurant
 
 class Report(models.Model):
     '''
@@ -60,7 +60,7 @@ class Report(models.Model):
 
     def __unicode__(self):
         return u' '.join([
-            venues.Restaurant.objects.get(id=self.venue_id).name, '\n'
+            Restaurant.objects.get(id=self.venue_id).name, '\n'
                                                            'report:', self.get_type_display(), '\n'
                                                                                                  'note:', self.note
         ])
