@@ -26,6 +26,8 @@ from venues.models.note import Note
 from venues.models.report import Report
 
 
+
+
 def get_masjids(longitude, latitude, categories):
     '''
     Returns objects at given point that satisfy set of categories,
@@ -102,6 +104,7 @@ def index(request):
     restaurants = []
     latitude = ""
     longitude = ""
+    address = ""
     if request.POST:
         page = request.POST.get('page')
         form = forms.AddressForm(request.POST)
@@ -146,7 +149,7 @@ def index(request):
     except EmptyPage:
         restaurants = paginator.page(paginator.num_pages)
 
-    context = {'all_restaurants': restaurants, 'form': form, 'longitude': longitude, 'latitude': latitude}
+    context = {'all_restaurants': restaurants, 'form': form, 'longitude': longitude, 'latitude': latitude, 'address':address}
     return render(request, 'restaurants/restaurants.html', context)
     # else:
     # context = {'all_restaurants': restaurants, 'form': form, 'longitude': longitude, 'latitude': latitude}
@@ -260,16 +263,21 @@ def closest(request):
 
 def restaurant(request, rest_pk):
     _restaurant = get_object_or_404(Restaurant, pk=rest_pk)
-
+    note_form = forms.NoteForm()
     if not _restaurant.approved and \
             not (hasattr(request.user, 'is_venue_moderator') and request.user.is_venue_moderator()):
         raise Http404
 
+    reviews = Review.objects.filter(venue_id = _restaurant.pk).order_by('-created_on')
+    notes = Note.objects.filter(venue_id = _restaurant.pk).order_by('-created_on')
     return render(request, 'restaurants/item.html', {
         'restaurant': _restaurant,
         'reviews': Review.list_for_venue(_restaurant).order_by('-modified_on'),
         'notes': Note.list_for_venue(_restaurant).order_by('-modified_on'),
         'reports': Report.list_for_venue(_restaurant),
+        'note_form' : note_form,
+        'reviews' : reviews,
+        'notes' : notes
     })
 
 

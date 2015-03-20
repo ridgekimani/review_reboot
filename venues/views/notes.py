@@ -48,7 +48,7 @@ def add_note(request, rest_pk):
 
     note = Note(
         venue_id=_restaurant.pk,
-        content_type=related_object_type,
+        content_type=related_object_type
     )
 
     form = NoteForm(request.POST, instance=note, request=request)

@@ -91,20 +91,75 @@
         {#            </div>#}
         {#        </div>#}
         <div class="row fieldWysiwye">
-            <form action="#">
-                <div class="col-xs-12 col-md-6">
+            <div class="col-xs-12 col-md-6">
+            <form action="{% url 'venues.views.reviews.add_review' restaurant.pk %}" method="post">
                     <div class="tile-title"><span class="panel-title">Write review</span></div>
-                    <div class="wysiwye-editor"></div>
-                    <button class="btn btn-sm" type="submit" name="submit_review" value="true">Submit</button>
-                </div>
+                    {% include "reviews/review-form.html" %}
             </form>
-            <form action="#">
-                <div class="col-xs-12 col-md-6">
+
+
+                <h4 class="page-title">Reviews</h4>
+                <div class="block-area">
+                    <div class="list-group">
+                        {% for review in reviews %}
+                            <div class="list-group-item {{ review.approved|yesno:"list-group-item-success, list-group-item-danger" }}">
+                                <a class="btn btn-default pull-right"
+                                   href="{% url "venues.views.reviews.update_review" review.id %}">
+                                    <span class="glyphicon glyphicon-edit"></span>
+                                </a>
+                                <a href="{{ review.content_object.show_url }}">{{ review.created_by }}</a> |
+                                <strong>{{ review.rating }}</strong> of 5
+                                <div>
+                                   <p>{{ review.text }}</p> 
+                                </div>
+                                <div>
+                                   <p>{{ review.created_on }}</p> 
+                                </div>
+                            </div>
+                        {% empty %}
+                            <div class="list-group-item">
+                                You didn't write any reviews
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+            
+            </div>
+            
+            <div class="col-xs-12 col-md-6">
+            <form action="{% url 'venues.views.notes.add_note' restaurant.pk %}" method="post">
+            {% csrf_token %}
                     <div class="tile-title"><span class="panel-title">Write note</span></div>
-                    <div class="wysiwye-editor"></div>
-                    <button class="btn btn-sm" type="submit" name="submit_note" value="true">Submit</button>
-                </div>
+                    {% include "notes/note-form.html" %}
             </form>
+
+                <h4 class="page-title">Notes</h4>
+                <div class="block-area">
+                    <div class="list-group">
+                        {% for note in notes %}
+                            <div class="list-group-item {{ review.approved|yesno:"list-group-item-success, list-group-item-danger" }}">
+                                <a class="btn btn-default pull-right"
+                                   href="#">
+                                    <span class="glyphicon glyphicon-edit"></span>
+                                </a>
+                                <a href="{{ review.content_object.show_url }}">{{ note.created_by }}</a> 
+                                <div>
+                                   <p>{{ note.text }}</p> 
+                                </div>
+                                <div>
+                                   <p>{{ note.created_on }}</p> 
+                                </div>
+                            </div>
+                        {% empty %}
+                            <div class="list-group-item">
+                                You didn't write any reviews
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+            </div>
         </div>
 
     </div>

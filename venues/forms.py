@@ -68,6 +68,7 @@ class NoteForm(CommonForm):
     class Meta:
         model = Note
         fields = ['text']
+        attrs = {'class' : 'form-control overflow'}
 
 
 class ReportForm(CommonForm):
