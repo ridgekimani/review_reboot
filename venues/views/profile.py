@@ -8,6 +8,7 @@ from venues.models import VenueUser
 from venues.models.report import Report
 from venues.models.restaurant import Restaurant
 from venues.models.venue import Venue
+from django.contrib.auth.models import User
 
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 
@@ -81,15 +82,83 @@ def myreports(request):
 @login_required
 def myprofile(request):
     user_reports = Report.objects.filter(created_by=request.user)
-    user_notes = Note.objects.filter(created_by=request.user)
-    user_reviews = Review.objects.filter(created_by=request.user)
+    user_notes = Note.objects.filter(created_by=request.user).order_by('-created_on')
+    user_reviews = Review.objects.filter(created_by=request.user).order_by('-created_on')
     user_restaurants = Restaurant.objects.filter(created_by=request.user)
+    list = Restaurant.objects.filter(modified_by=request.user)
+
+
+    paginatorApproved = Paginator(list, 10)
+    page = request.GET.get("pageUpdated")
+    try:
+        user_updates = paginatorApproved.page(page)
+    except PageNotAnInteger:
+        user_updates = paginatorApproved.page(1)
+    except EmptyPage:
+        user_updates = paginatorApproved.page(paginatorApproved.num_pages)
+
+    for rest in user_updates.object_list:
+        items = rest.history_link.filter(id=rest.id).order_by("-history_date")
+        changed_fields = []
+        if items.count() > 1:
+            previous = items[1]
+            if previous:
+                for field in rest._meta.get_all_field_names():
+                    if field not in ['cuisines', 'modified_by', 'created_by', 'modified_by_id', 'created_by_id',
+                                     'modified_on', 'slug'] and getattr(rest, field) != getattr(previous, field):
+                        changed_fields.append(field)
+        else:
+            changed_fields.append("created")
+        rest.changed_fields = changed_fields
+
 
     return render(request, "profile/profile.html", {
         'reviews': user_reviews,
         'notes': user_notes,
         'restaurants': user_restaurants,
+        'updates': user_updates
     })
+
+@login_required
+def user_profile(request, pk):
+    user = User.objects.get(pk=pk)
+    user_reports = Report.objects.filter(created_by=user)
+    user_notes = Note.objects.filter(created_by=user).order_by('-created_on')
+    user_reviews = Review.objects.filter(created_by=user).order_by('-created_on')
+    list = Restaurant.objects.filter(modified_by=user)
+
+
+    paginatorApproved = Paginator(list, 10)
+    page = request.GET.get("pageUpdated")
+    try:
+        user_updates = paginatorApproved.page(page)
+    except PageNotAnInteger:
+        user_updates = paginatorApproved.page(1)
+    except EmptyPage:
+        user_updates = paginatorApproved.page(paginatorApproved.num_pages)
+
+    for rest in user_updates.object_list:
+        items = rest.history_link.filter(id=rest.id).order_by("-history_date")
+        changed_fields = []
+        if items.count() > 1:
+            previous = items[1]
+            if previous:
+                for field in rest._meta.get_all_field_names():
+                    if field not in ['cuisines', 'modified_by', 'created_by', 'modified_by_id', 'created_by_id',
+                                     'modified_on', 'slug'] and getattr(rest, field) != getattr(previous, field):
+                        changed_fields.append(field)
+        else:
+            changed_fields.append("created")
+        rest.changed_fields = changed_fields
+
+
+    return render(request, "profile/user_profile.html", {
+        'reviews': user_reviews,
+        'notes': user_notes,
+        'updates': user_updates,
+        'user': user
+    })
+
 
 
 @login_required

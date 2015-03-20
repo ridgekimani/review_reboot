@@ -107,7 +107,7 @@
                                    href="{% url "venues.views.reviews.update_review" review.id %}">
                                     <span class="glyphicon glyphicon-edit"></span>
                                 </a>
-                                <a href="{{ review.content_object.show_url }}">{{ review.created_by }}</a> |
+                                <a href="{% url 'venues.views.profile.user_profile' review.created_by.pk %}">{{ review.created_by }}</a> |
                                 <strong>{{ review.rating }}</strong> of 5
                                 <div>
                                    <p>{{ review.text }}</p> 
