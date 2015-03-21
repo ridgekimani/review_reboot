@@ -85,6 +85,8 @@ def add_review(request, rest_pk):
     form = ReviewForm(request.POST, instance=review, request=request)
     if form.is_valid():
         form.save()
+    _restaurant.update_avg_rating()
+    _restaurant.update_review_counter()
 
     return redirect(request.META['HTTP_REFERER'])
 

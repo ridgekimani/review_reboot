@@ -17,8 +17,8 @@
                             {% for cuisine in restaurant.cuisines.all %}{{ cuisine }}{% endfor %}</div>
                         <div class="address">{{ restaurant.address }}</div>
                         <div class="subText">
-                            <span class="reviews"><span>Reviews:</span><span>12</span></span>
-                            <span class="rating"><span>Rating:</span><span>5/5</span></span>
+                            <span class="reviews"><span>Reviews:</span><span>{{restaurant.review_count}}</span></span>
+                            <span class="rating"><span>Rating:</span><span>{{restaurant.avg_rating}}</span></span>
                         </div>
                     </div>
                 {% endfor %}

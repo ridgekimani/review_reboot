@@ -130,7 +130,7 @@ def index(request):
                     currentPoint = geos.GEOSGeometry('POINT(%s %s)' % (longitude, latitude))
                     distance_m = {'km': 30}
                     restaurants = Restaurant.gis.filter(approved=True,
-                            location__distance_lte=(currentPoint, measure.D(**distance_m))).distance(currentPoint)
+                            location__distance_lte=(currentPoint, measure.D(**distance_m))).distance(currentPoint).order_by('distance')
     else:
         page = request.GET.get('page')
         restaurants = Restaurant.objects.filter(approved=True)
@@ -148,7 +148,7 @@ def index(request):
         restaurants = paginator.page(1)
     except EmptyPage:
         restaurants = paginator.page(paginator.num_pages)
-
+    
     context = {'all_restaurants': restaurants, 'form': form, 'longitude': longitude, 'latitude': latitude, 'address':address}
     return render(request, 'restaurants/restaurants.html', context)
     # else:

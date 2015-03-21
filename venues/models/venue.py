@@ -43,10 +43,10 @@ class Venue(CommonModel):
     )
 
     avg_rating = models.DecimalField(max_digits=3, decimal_places=2, null=True, blank=True)
-
+    
     is_closed = models.BooleanField(default=False)
     approved = models.BooleanField(default=False, help_text=u"Is this venue approved by moderator")
-
+    review_count = models.IntegerField(default=0)
     # Query Manager
     gis = gis_models.GeoManager()
     objects = models.Manager()
@@ -68,6 +68,14 @@ class Venue(CommonModel):
         for review in self_reviews:
             avg_rating += review.rating / num_of_reviews
         self.avg_rating = avg_rating
+        self.save()
+
+    def update_review_counter(self):
+        from venues.models import Review
+        self_reviews_count = Review.objects.filter(venue_id=self.id).count()
+        if self_reviews_count == 0:
+            return
+        self.review_count = self_reviews_count
         self.save()
 
     def update_close_state(self):
