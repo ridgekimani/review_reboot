@@ -24,7 +24,7 @@
             <div class="col-md-8">
                 <table class="table table-bordered table-hover tile tile">
                     <tr>
-                        <th colspan="2">{{ restaurant.name }} - profile</th>
+                        <th colspan="2">Halal-ness Profile</th>
                     </tr>
                     <tr>
                         <td>Menu</td>
@@ -130,7 +130,7 @@
             <div class="col-xs-12 col-md-6">
             <form action="{% url 'venues.views.notes.add_note' restaurant.pk %}" method="post">
             {% csrf_token %}
-                    <div class="tile-title"><span class="panel-title">Write note</span></div>
+                    <div class="tile-title"><span class="panel-title">Write note on Halal-ness</span></div>
                     {% include "notes/note-form.html" %}
             </form>
 
