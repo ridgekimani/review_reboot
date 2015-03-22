@@ -19,9 +19,9 @@
                     <button type="submit" class="btn btn-primary pull-left">Login</button>
                 </form>
                 <div class="pull-right">
-                    <a class="btn btn-social btn-google-plus disabled" data-toggle="modal"
-                       href="{% url 'social:begin' 'google-openidconnect' %}?next={{ request.path }}">
-                        <i class="fa fa-google"></i>
+                    <a class="btn btn-social btn-google-plus" data-toggle="modal"
+                       href="{% url 'social:begin' 'google-oauth2' %}?next={{ request.path }}">
+                        <i class="fa fa-google-plus"></i>
                         Login wih Google
                     </a>
                     <a class="btn btn-social btn-facebook" data-toggle="modal"
