@@ -93,7 +93,7 @@
         <div class="row fieldWysiwye">
             <div class="col-xs-12 col-md-6">
             <form action="{% url 'venues.views.reviews.add_review' restaurant.pk %}" method="post">
-                    <div class="tile-title"><span class="panel-title">Write review</span></div>
+                    <div class="tile-title"><span class="panel-title">Write a review</span></div>
                     {% include "reviews/review-form.html" %}
             </form>
 
@@ -130,7 +130,7 @@
             <div class="col-xs-12 col-md-6">
             <form action="{% url 'venues.views.notes.add_note' restaurant.pk %}" method="post">
             {% csrf_token %}
-                    <div class="tile-title"><span class="panel-title">Write note on Halal-ness</span></div>
+                    <div class="tile-title"><span class="panel-title">Write a note on Halal-ness</span></div>
                     {% include "notes/note-form.html" %}
             </form>
 
