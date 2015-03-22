@@ -5,3 +5,7 @@ staticfiles
 .idea
 credentials.json
 upload.db
+
+restAus.db
+
+*.db
