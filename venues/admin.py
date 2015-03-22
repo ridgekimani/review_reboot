@@ -10,6 +10,7 @@ from venues.models.note import Note
 from venues.models.report import Report
 from venues.models.venue_user import VenueUser
 
+from venues.forms import ProfileForm
 
 class VenueUserInline(admin.StackedInline):
     model = VenueUser
@@ -60,6 +61,35 @@ class RestaurantAdmin(SimpleHistoryAdmin):
 
 class CuisineAdmin(admin.ModelAdmin):
     list_display = ('name', 'id')
+
+class AdminProfileForm(ProfileForm):
+
+    def __init__(self, *args, **kwargs):
+        super(ProfileForm, self).__init__(*args, **kwargs)
+        if self.instance.pk:
+            self.fields['username'].initial = self.instance.user.username
+            self.fields['first_name'].initial = self.instance.user.first_name
+            self.fields['last_name'].initial = self.instance.user.last_name
+
+
+class ProfileAdmin(admin.ModelAdmin):
+    list_display = ('user', 'first_name', 'last_name', 'sex')
+    search_fields = (
+        'user__username', 'user__first_name', 'user__last_name',
+    )
+    list_filter = ('sex',)
+    raw_id_fields = ('user',)
+    exclude = ('user',)
+    form = AdminProfileForm
+
+    def first_name(self, instance):
+        return instance.user.first_name
+
+    def last_name(self, instance):
+        return instance.user.last_name
+
+
+admin.site.register(VenueUser, ProfileAdmin)
 
 # Register your models here.
 admin.site.register(Restaurant, RestaurantAdmin)

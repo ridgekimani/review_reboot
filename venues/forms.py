@@ -86,3 +86,23 @@ class VenueUserForm(CommonForm):
     class Meta:
         model = VenueUser
         exclude = ('user', 'social_profile')
+
+class ProfileForm(forms.ModelForm):
+
+    username = forms.RegexField(label='Username', max_length=30,
+        regex=r'^[\w.@+-]+$',
+        help_text='Required. 30 characters or fewer. Letters, digits and '
+                    '@/./+/-/_ only.',
+        error_messages={
+            'invalid': 'This value may contain only letters, numbers and '
+                         '@/./+/-/_ characters.'})
+    first_name = forms.CharField(max_length=30)
+    last_name = forms.CharField(max_length=30)
+
+    class Meta:
+        model = VenueUser
+        fields = (
+            'username', 'first_name', 'last_name',
+            'sex', 'university', 'info',
+        )
+        exclude = ('user',)
