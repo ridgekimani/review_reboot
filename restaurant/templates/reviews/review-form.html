@@ -4,7 +4,7 @@
         <h3>{{ venue_name }}</h3>
 
         <form autocomplete="off" action="{% url "venues.views.reviews.add_review" restaurant.pk %}" method="post">{% csrf_token %}
-            <label>Rating: </label>
+            <label>Rating : </label>
 
             {% for i in 12345|make_list %}
                 <div class="radio-inline">
@@ -16,7 +16,8 @@
             {% endfor %}
 
             <div class="form-group">
-                <textarea class="form-control" id="reviewArea" name="text"
+            <br>
+                <textarea class="form-control auto-size m-b-10" id="reviewArea" name="text"
                           placeholder="Type your review here" required>{{ text }}</textarea>
                 <br>
                 <button type="submit" class="btn btn-default">Submit</button>
