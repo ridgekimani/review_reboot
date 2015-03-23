@@ -1,7 +1,7 @@
 {% load static %}
 <div class="panel panel-default">
     <div class="panel-body">
-        <h3>{{ venue_name }}</h3>
+        <div class="tile-title"><span class="panel-title"></span>
 
         <form autocomplete="off" action="{% url "venues.views.reviews.add_review" restaurant.pk %}" method="post">{% csrf_token %}
             <label>Rating : </label>
@@ -14,7 +14,7 @@
                     </label>
                 </div>
             {% endfor %}
-
+        </div>
             <div class="form-group">
             <br>
                 <textarea class="form-control auto-size m-b-10" id="reviewArea" name="text"

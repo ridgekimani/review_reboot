@@ -70,33 +70,41 @@
             <!-- END GOOGLE MAP -->
         </div>
 
-                <div class="tab-container tile">
-                    <ul class="nav tab nav-tabs">
-                        <li class="active"><a href="#home">About</a></li>
-                    </ul>
-                    <div class="tab-content">
-                        <div class="tab-pane active" id="home">
-                            <p>Duis eleifend sapien nec nisl semper, vitae accumsan arcu feugiat. Suspendisse potenti. Aenean
-                                vestibulum massa ut congue accumsan. Donec sapien nulla, sollicitudin eu odio fringilla,
-                                vulputate ornare quam. Morbi congue in sem non congue. Vivamus diam velit, lacinia eu lorem ac,
-                                pellentesque lobortis arcu. Morbi congue dolor sed arcu imperdiet posuere.</p>
+        <div class="tab-container tile">
+            <ul class="nav tab nav-tabs">
+                <li class="active"><a href="#home">About</a></li>
+            </ul>
+            <div class="tab-content">
+                <div class="tab-pane active" id="home">
+                    <p>Duis eleifend sapien nec nisl semper, vitae accumsan arcu feugiat. Suspendisse potenti. Aenean
+                        vestibulum massa ut congue accumsan. Donec sapien nulla, sollicitudin eu odio fringilla,
+                        vulputate ornare quam. Morbi congue in sem non congue. Vivamus diam velit, lacinia eu lorem ac,
+                        pellentesque lobortis arcu. Morbi congue dolor sed arcu imperdiet posuere.</p>
 
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. In vel enim non dui fermentum
-                                sollicitudin. In id metus dolor. Suspendisse dapibus, metus vitae posuere gravida, odio orci
-                                dictum purus, vitae lobortis elit lacus id sem. Vestibulum ut rhoncus dui. Sed congue vestibulum
-                                fermentum. Nulla imperdiet quam et ipsum lobortis laoreet. Phasellus in lectus ligula.
-                                Suspendisse potenti. Aliquam massa nulla, congue ut quam sed, scelerisque laoreet massa. Ut
-                                ultrices aliquet suscipit.</p>
-                        </div>
-                    </div>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. In vel enim non dui fermentum
+                        sollicitudin. In id metus dolor. Suspendisse dapibus, metus vitae posuere gravida, odio orci
+                        dictum purus, vitae lobortis elit lacus id sem. Vestibulum ut rhoncus dui. Sed congue vestibulum
+                        fermentum. Nulla imperdiet quam et ipsum lobortis laoreet. Phasellus in lectus ligula.
+                        Suspendisse potenti. Aliquam massa nulla, congue ut quam sed, scelerisque laoreet massa. Ut
+                        ultrices aliquet suscipit.</p>
                 </div>
+            </div>
+        </div>
 
         <div class="row fieldWysiwye">
             <div class="col-xs-12 col-md-6">
             <form action="{% url 'venues.views.reviews.add_review' restaurant.pk %}" method="post">
-                    <div class="tile-title"><span class="panel-title">Write a review</span>
-                    {% include "reviews/review-form.html" %}
-                    </div>
+
+        <div class="tab-container tile">
+            <ul class="nav tab nav-tabs">
+                <li class="active"><a href="#home">Write a Review</a></li>
+            </ul>
+            <div class="tab-content">
+                <div class="tab-pane active" id="home">
+                    <p> {% include "reviews/review-form.html" %} </p>
+                </div>
+            </div>
+        </div>
 
             </form>
 
@@ -130,14 +138,24 @@
             
             </div>
             
-            <div class="col-xs-12 col-md-6">
-            <form action="{% url 'venues.views.notes.add_note' restaurant.pk %}" method="post">
-            {% csrf_token %}
-                    <div class="tile-title"><span class="panel-title">Write a note on Halal-ness</span>
+        <div class="col-xs-12 col-md-6">
+        <form action="{% url 'venues.views.notes.add_note' restaurant.pk %}" method="post">
+        {% csrf_token %}
 
-                        {% include "notes/note-form.html" %}
-                    </div>
-            </form>
+        <div class="tab-container tile">
+            <ul class="nav tab nav-tabs">
+                <li class="active"><a href="#home">Write a note on Halal-ness</a></li>
+            </ul>
+            <div class="tab-content">
+                <div class="tab-pane active" id="home">
+
+                    <p> {% include "notes/note-form.html" %} </p>
+
+                </div>
+            </div>
+        </div>
+
+        </form>
 
                 <h4 class="page-title">Notes</h4>
                 <div class="block-area">
