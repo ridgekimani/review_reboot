@@ -270,7 +270,7 @@ def restaurant(request, rest_pk):
 
     reviews = Review.objects.filter(venue_id = _restaurant.pk).order_by('-created_on')
     notes = Note.objects.filter(venue_id = _restaurant.pk).order_by('-created_on')
-    return render(request, 'restaurants/item.html', {
+    return render(request, 'restaurants/restaurantProfile.html', {
         'restaurant': _restaurant,
         'reviews': Review.list_for_venue(_restaurant).order_by('-modified_on'),
         'notes': Note.list_for_venue(_restaurant).order_by('-modified_on'),
