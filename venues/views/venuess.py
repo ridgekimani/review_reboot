@@ -300,7 +300,7 @@ def remove_restaurant(request, rest_pk):
 def add_restaurant(request):
     if request.method == "GET":
         form = RestaurantForm(request=request)
-        return render(request, "restaurants/new.html", {
+        return render(request, "restaurants/addRestaurant.html", {
             "form": form,
             "categories": Cuisine.objects.all()
         })
@@ -312,7 +312,7 @@ def add_restaurant(request):
             new_restaurant = form.save()
             return redirect(reverse('venues.views.venuess.restaurant_by_slug', args=[new_restaurant.slug]))
         elif not request.is_ajax():
-            return render(request, "restaurants/new.html", {
+            return render(request, "restaurants/addRestaurant.html", {
                 "form": form,
                 "categories": Cuisine.objects.all()
             })
