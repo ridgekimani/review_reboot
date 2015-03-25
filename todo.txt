@@ -1,22 +1,31 @@
 
 Todo:
 
-On every restaurant add button for moderators, they can remove restaurant and write a note for removing.
+Add update, report and review page for mobile sites (high priority)
+
+Show confirmation  after review is submitted.
+
+After new restaurant is submitted, show message "Submitted for review" - this will be a new page.
+
+Allow multiple selection for cuisine.
+
+On every restaurant, add button for moderators, they can remove restaurant and write a note for removing.
 
 On moderator page, create two rows, one for restaurants one for masjids
 
-Restaurant approval page: seperate columns for: "Needs Approval", "Suspended"
+Restaurant approval page: separate columns for: "Needs Approval", "Suspended"
 
-Fix bug in add venue page
+
 
 Add masjid page, add this on moderator page
 
-put filters: Today, this week, this month.
+put filters: Today, this week, this month on moderator page.
 
 Done:
 
 Fix moderator page (show stats first then allow user to select what they want to do)
 Show these: needs approval, reported, updated
+Fix bug in add venue page
 
 
 
