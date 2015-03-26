@@ -1,7 +1,7 @@
 from django import forms
 from django_countries.widgets import CountrySelectWidget
 from restaurant.utils import get_client_ip
-from venues.models import Restaurant, Review, Note, Report, VenueUser, ReportType
+from venues.models import Restaurant, Review, Note, Report, VenueUser, ReportType, Cuisine
 
 
 class CommonForm(forms.ModelForm):
@@ -37,6 +37,9 @@ class RestaurantForm(CommonForm):
         cleaned_data = super(RestaurantForm, self).clean()
         cuisines = cleaned_data.get('cuisines')
         return cleaned_data
+
+    cuisines = forms.ModelMultipleChoiceField(widget=forms.CheckboxSelectMultiple(),required=True,
+        queryset=Cuisine.objects.all())
 
     class Meta:
         model = Restaurant

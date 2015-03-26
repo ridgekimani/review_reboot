@@ -27,7 +27,7 @@
                     </small>
                 {% endif %}
             </div>
-            <div class="cuisine">{% for cuisine in restaurant.cuisines.all %}{{ cuisine }}{% endfor %}</div>
+            <div class="cuisine">{% for cuisine in restaurant.cuisines.all %}{{ cuisine }},{% endfor %}</div>
             <div class="address">{{ restaurant.address }}</div>
             <div class="phone">{{ restaurant.phone }}</div>
         </div>

@@ -50,7 +50,9 @@
             </tr>
             <tr>
                 <td>Cuisine</td>
-                <td>{{ form.cuisines|add_class:"select" }}</td>
+                <td>{% for i in form.cuisines %}
+                {{i}}
+                {%endfor%}</td>
             </tr>
         </table>
     </div>

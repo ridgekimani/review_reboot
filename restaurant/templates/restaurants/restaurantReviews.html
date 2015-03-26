@@ -11,7 +11,7 @@
                         {% endif %}
                     {% endfor %}
                 {% endif %}
-                
+
     <h4 class="page-title">
     <a href="{% url 'venues.views.venuess.restaurant' restaurant.pk %}"><-</a>Restaurant reviews</h4>
     <div class="block-area">
@@ -27,7 +27,7 @@
                     </small>
                 {% endif %}
             </div>
-            <div class="cuisine">{% for cuisine in restaurant.cuisines.all %}{{ cuisine }}{% endfor %}</div>
+            <div class="cuisine">{% for cuisine in restaurant.cuisines.all %}{{ cuisine }},{% endfor %}</div>
             <div class="address">{{ restaurant.address }}</div>
             <div class="phone">{{ restaurant.phone }}</div>
         </div>

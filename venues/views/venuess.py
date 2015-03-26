@@ -25,7 +25,7 @@ from venues.models.cuisine import Cuisine
 from venues.models.note import Note
 from venues.models.report import Report
 
-from django.contrib import messages
+from django.contrib import messages 
 
 
 
@@ -328,7 +328,7 @@ def add_restaurant(request):
         })
     elif request.method == "POST":
         rest_data = request.POST.copy()
-        rest_data['cuisines'] = [int(rest_data['cuisines']), ]
+        #rest_data['cuisines'] = [int(rest_data['cuisines']), ]
         form = RestaurantForm(rest_data, request=request)
         if form.is_valid():
             new_restaurant = form.save()
