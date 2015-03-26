@@ -3,7 +3,7 @@
     <div class="panel-body">
         <div class="tile-title"><span class="panel-title"></span>
 
-        <form autocomplete="off" action="{% url "venues.views.reviews.add_review" restaurant.pk %}" method="post">{% csrf_token %}
+        <form autocomplete="off" action="{% url 'venues.views.reviews.add_review' restaurant.pk %}" method="post">{% csrf_token %}
             <label>Rating : </label>
 
             {% for i in 12345|make_list %}

@@ -39,8 +39,8 @@ urlpatterns = patterns('venues.views',
     url(r'(?P<rest_pk>[0-9]+)/approve/$', 'moderate.approve_restaurant'),
     url(r'(?P<rest_pk>[0-9]+)/profile$', 'venuess.restaurant'),
     url(r'(?P<rest_pk>[0-9]+)/note/new/$', 'notes.add_note'),
-    url(r'(?P<rest_pk>[0-9]+)/review/new/', 'reviews.add_review'),
-    url(r'(?P<rest_pk>[0-9]+)/review/$', 'reviews.review'),
+    url(r'(?P<rest_pk>[0-9]+)/review/new', 'reviews.add_review'),
+    url(r'(?P<rest_pk>[0-9]+)/reviews/$', 'venuess.reviews_view'),
 
     # common
     url(r'get_category/', 'get_category', name='get_drugs'),

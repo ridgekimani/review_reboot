@@ -3,7 +3,7 @@ from django.contrib.gis.geos import Point
 
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.http.response import HttpResponseBadRequest
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404, render_to_response
 from django.http import HttpResponse, Http404
 from django.core import serializers
 from django.core.urlresolvers import reverse
@@ -280,6 +280,26 @@ def restaurant(request, rest_pk):
         'notes' : notes
     })
 
+@login_required
+@require_GET
+def reviews_view(request,rest_pk):
+    _restaurant = get_object_or_404(Restaurant, pk=rest_pk)
+    note_form = forms.NoteForm()
+    if not _restaurant.approved and \
+            not (hasattr(request.user, 'is_venue_moderator') and request.user.is_venue_moderator()):
+        raise Http404
+
+    reviews = Review.objects.filter(venue_id = _restaurant.pk).order_by('-created_on')
+    notes = Note.objects.filter(venue_id = _restaurant.pk).order_by('-created_on')
+    return render(request, 'restaurants/restaurantReviews.html', {
+        'restaurant': _restaurant,
+        'reviews': Review.list_for_venue(_restaurant).order_by('-modified_on'),
+        'notes': Note.list_for_venue(_restaurant).order_by('-modified_on'),
+        'reports': Report.list_for_venue(_restaurant),
+        'note_form' : note_form,
+        'reviews' : reviews,
+        'notes' : notes
+    })
 
 @login_required
 def remove_restaurant(request, rest_pk):

@@ -6,7 +6,7 @@
                 {% if user.is_authenticated %}
                     <div class="pull-right">
                         <div class="btn-group btn-group-sm">
-                            <a class="btn btn-success" href="{% url "venues.views.reviews.update_review" review.pk %}">
+                            <a class="btn btn-success" href="{% url 'venues.views.reviews.update_review' review.pk %}">
                                 <span class="glyphicon glyphicon-edit"></span>
                             </a>
                             {% if user.venue_moderator %}

@@ -1,0 +1,115 @@
+{% extends 'base.html' %}
+{% load sekizai_tags static %}
+{% block body %}
+    <h4 class="page-title">
+    <a href="{% url 'venues.views.venuess.restaurant' restaurant.pk %}"><-</a>Restaurant reviews</h4>
+    <div class="block-area">
+        <div class="table table-bordered tile  mainTable">
+            <div class="title">
+                {{ restaurant.name }}
+                {% if user.is_authenticated %}
+                    <small>
+                        | <a href="{% url "venues.views.venuess.update_restaurant" restaurant.pk %}">edit</a>
+                        {% if user.is_venue_moderator %}
+                            | <a href="{% url "venues.views.venuess.remove_restaurant" restaurant.pk %}">remove</a>
+                        {% endif %}
+                    </small>
+                {% endif %}
+            </div>
+            <div class="cuisine">{% for cuisine in restaurant.cuisines.all %}{{ cuisine }}{% endfor %}</div>
+            <div class="address">{{ restaurant.address }}</div>
+            <div class="phone">{{ restaurant.phone }}</div>
+        </div>
+
+
+        <div class="row fieldWysiwye">
+            <div class="col-xs-12 col-md-12">
+
+
+                <h4 class="page-title">Reviews</h4>
+                <div class="block-area">
+                    <div class="list-group">
+                        {% for review in reviews %}
+                            <div class="list-group-item {{ review.approved|yesno:"list-group-item-success, list-group-item-danger" }}">
+                                <a class="btn btn-default pull-right"
+                                   href="{% url "venues.views.reviews.update_review" review.id %}">
+                                    <span class="glyphicon glyphicon-edit"></span>
+                                </a>
+                                <a href="{% url 'venues.views.profile.user_profile' review.created_by.pk %}">{{ review.created_by }}</a> |
+                                <strong>{{ review.rating }}</strong> of 5
+                                <div>
+                                   <p>{{ review.text }}</p> 
+                                </div>
+                                <div>
+                                   <p>{{ review.created_on }}</p> 
+                                </div>
+                            </div>
+                        {% empty %}
+                            <div class="list-group-item">
+                                You didn't write any reviews
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+            
+            </div>
+
+            
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <form action="{% url 'venues.views.reviews.add_review' restaurant.pk %}" method="post">
+
+                    <div class="tab-container tile">
+                        <ul class="nav tab nav-tabs">
+                            <li class="active"><a href="#home">Write a Review</a></li>
+                        </ul>
+                        <div class="tab-content">
+                            <div class="tab-pane active" id="home">
+                                <p> {% include "reviews/review-form.html" %} </p>
+                            </div>
+                        </div>
+                    </div>
+
+                </form>
+
+            </div>
+        </div>
+
+    </div>
+
+    {% addtoblock "js" %}
+        <!-- google-maps scripts -->
+        <script src="https://maps.googleapis.com/maps/api/js"></script>
+        <script>
+            function initialize() {
+                var mapCanvas = document.getElementById('map-canvas');
+                latlng = new google.maps.LatLng({{restaurant.location.y}}, {{restaurant.location.x}});
+                var mapOptions = {
+                    center: latlng,
+                    zoom: 16,
+                    mapTypeId: google.maps.MapTypeId.ROADMAP,
+                    mapTypeControl: false
+                };
+                var map = new google.maps.Map(mapCanvas, mapOptions);
+                var marker = new google.maps.Marker({
+                    position: latlng,
+                    map: map,
+                    title: '{{ restaurant.name }} | {{ restaurant.address }}'
+                });
+            }
+            google.maps.event.addDomListener(window, 'load', initialize);
+        </script>
+        <script>
+            $(function () {
+                console.log($(".note-remove"));
+                $(".note-remove").click(function (event) {
+                    if (!confirm("Are you sure?")) {
+                        return false;
+                    }
+                })
+            });
+        </script>
+    {% endaddtoblock %}
+{% endblock %}

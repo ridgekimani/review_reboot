@@ -24,12 +24,13 @@ def review(request, rest_pk):
     rest = get_object_or_404(Restaurant, id=rest_pk)
 
     context = {
-        'venue_name': rest.name
+        'venue_name': rest.name,
+        'restaurant': rest
     }
 
     if request.method == u'GET':
         try:
-            filterargs = {'venue_id': rest_pk, 'user': request.user}
+            filterargs = {'venue_id': rest_pk, 'created_by': request.user}
             review = Review.objects.get(**filterargs)
             context['text'] = review.text
             context['rating'] = review.rating
