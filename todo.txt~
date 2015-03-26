@@ -3,7 +3,7 @@ Todo:
 
 Add update, report and review page for mobile sites (high priority)
 
-
+Show confirmation  after review is submitted.
 
 After new restaurant is submitted, show message "Submitted for review" - this will be a new page.
 
@@ -22,8 +22,6 @@ Add masjid page, add this on moderator page
 put filters: Today, this week, this month on moderator page.
 
 Done:
-
-Show confirmation  after review is submitted.
 
 Fix moderator page (show stats first then allow user to select what they want to do)
 Show these: needs approval, reported, updated

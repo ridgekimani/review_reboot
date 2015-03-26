@@ -11,6 +11,8 @@ from venues.forms import NoteForm
 from venues.models import Restaurant
 from venues.models.note import Note
 
+from django.contrib import messages
+
 
 def show_all_notes(request, rest_pk):
     notes = Note.objects.filter(venue_id=rest_pk)
@@ -54,6 +56,7 @@ def add_note(request, rest_pk):
     form = NoteForm(request.POST, instance=note, request=request)
     if form.is_valid():
         form.save()
+        messages.add_message(request, messages.INFO, "Note is added!")
 
     if request.is_ajax():
         return HttpResponse()

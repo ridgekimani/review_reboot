@@ -1,6 +1,17 @@
 {% extends 'base.html' %}
 {% load sekizai_tags static %}
 {% block body %}
+                {% if messages %}
+                    {% for message in messages %}
+                        {% if message.tags  %}
+                            <div class="alert alert-success alert-dismissable fade in">
+                                <button class="close" aria-hidden="true" data-dismiss="alert" type="button">x</button>
+                                {{message}}
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+                
     <h4 class="page-title">
     <a href="{% url 'venues.views.venuess.restaurant' restaurant.pk %}"><-</a>Restaurant reviews</h4>
     <div class="block-area">

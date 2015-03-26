@@ -25,6 +25,8 @@ from venues.models.cuisine import Cuisine
 from venues.models.note import Note
 from venues.models.report import Report
 
+from django.contrib import messages
+
 
 
 

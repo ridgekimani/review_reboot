@@ -14,6 +14,8 @@ from venues.forms import ReviewForm
 from venues.models import Restaurant
 from venues.models import Review
 
+from django.contrib import messages
+
 
 @login_required
 def review(request, rest_pk):
@@ -89,6 +91,8 @@ def add_review(request, rest_pk):
     _restaurant.update_avg_rating()
     _restaurant.update_review_counter()
 
+    
+    messages.add_message(request, messages.INFO, "Review is added!")
     return redirect(request.META['HTTP_REFERER'])
 
 
@@ -117,6 +121,6 @@ def update_review(request, review_pk):
                 return redirect(reverse('venues.views.venuess.restaurant', args=[rest_pk]))
         else:
             context['form'] = form
-
+    
     return render(request, 'reviews/update.html', context)
 
