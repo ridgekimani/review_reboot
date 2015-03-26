@@ -332,7 +332,10 @@ def add_restaurant(request):
         form = RestaurantForm(rest_data, request=request)
         if form.is_valid():
             new_restaurant = form.save()
-            return redirect(reverse('venues.views.venuess.restaurant_by_slug', args=[new_restaurant.slug]))
+            return render(request, 'restaurants/submitted.html',{
+                "restaurant_slug":new_restaurant.slug
+                })
+            #return redirect(reverse('venues.views.venuess.restaurant_by_slug', args=[new_restaurant.slug]))
         elif not request.is_ajax():
             return render(request, "restaurants/addRestaurant.html", {
                 "form": form,
