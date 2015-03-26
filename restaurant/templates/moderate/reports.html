@@ -8,7 +8,9 @@
             {% for report in reports %}
 
                 <div class="list-group-item {{ report.closed_by|yesno:"list-group-item-success, list-group-item-warning" }}">
-                    <i> {{ report.get_type_display }}</i> |
+                    <i>{% for i in report.report_type.all %} 
+                    {{ i.report_type }},
+                    {% endfor %}</i> |
                     <a href="{{ report.content_object.show_url }}">{{ report.content_object.name }}</a> |
                     {{ report.note }}
 

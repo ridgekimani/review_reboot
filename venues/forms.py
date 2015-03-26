@@ -1,7 +1,7 @@
 from django import forms
 from django_countries.widgets import CountrySelectWidget
 from restaurant.utils import get_client_ip
-from venues.models import Restaurant, Review, Note, Report, VenueUser
+from venues.models import Restaurant, Review, Note, Report, VenueUser, ReportType
 
 
 class CommonForm(forms.ModelForm):
@@ -71,9 +71,11 @@ class NoteForm(CommonForm):
 
 
 class ReportForm(CommonForm):
+    report_type = forms.ModelMultipleChoiceField(widget=forms.CheckboxSelectMultiple(),required=True,
+        queryset=ReportType.objects.all())
     class Meta:
         model = Report
-        fields = ['type', 'note']
+        fields = ['report_type', 'note']
 
 
 class VenueUserForm(CommonForm):

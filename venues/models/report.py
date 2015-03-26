@@ -6,6 +6,11 @@ import venues.models.restaurant
 import venues.models.venue
 from venues.models.restaurant import Restaurant
 
+class ReportType(models.Model):
+    report_type = models.CharField(max_length=200)
+    def __unicode__(self):
+        return self.report_type
+
 class Report(models.Model):
     '''
     Represents table row with user report for venue
@@ -46,6 +51,7 @@ class Report(models.Model):
     content_object = generic.GenericForeignKey('content_type', 'venue_id')
 
     type = models.IntegerField(choices=REPORTS, default=4)
+    report_type = models.ManyToManyField(ReportType)
     note = models.TextField(blank=True)
 
     moderator_note = models.TextField(null=True)
