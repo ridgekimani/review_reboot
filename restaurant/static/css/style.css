@@ -2267,4 +2267,10 @@ a.list-group-item.active > .badge,
     }
 }
 
+@media(max-width: 480px) {
+    .search-form{
+        display: none;
+    }
+}
+
 
