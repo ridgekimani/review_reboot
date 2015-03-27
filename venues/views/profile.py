@@ -152,7 +152,7 @@ def user_profile(request, pk):
         rest.changed_fields = changed_fields
 
 
-    return render(request, "profile/user_profile.html", {
+    return render(request, "profile/profile.html", {
         'reviews': user_reviews,
         'notes': user_notes,
         'updates': user_updates,

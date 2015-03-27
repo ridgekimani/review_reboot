@@ -16,6 +16,7 @@ from venues.models import Review
 
 from django.contrib import messages
 
+from venues.functions.get_ip import get_client_ip
 
 @login_required
 def review(request, rest_pk):
@@ -74,16 +75,20 @@ def remove_review(request, review_pk):
     return redirect(request.META['HTTP_REFERER'])
 
 
+
 @login_required
 @require_POST
 def add_review(request, rest_pk):
     _restaurant = Restaurant.objects.get(pk=rest_pk)
     related_object_type = ContentType.objects.get_for_model(_restaurant)
 
+    ip=get_client_ip(request)
+
     review = Review(
         venue_id=_restaurant.pk,
         content_type=related_object_type,
-        created_by=request.user
+        created_by=request.user,
+        created_by_ip=ip
     )
 
     form = ReviewForm(request.POST, instance=review, request=request)

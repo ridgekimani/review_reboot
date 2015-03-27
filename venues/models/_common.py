@@ -15,6 +15,8 @@ class CommonModel(Model):
     created_by = models.ForeignKey(User, related_name="%(class)s_created_by",
                                    default=None, null=True, blank=True, editable=False)
 
+    created_by_ip = models.CharField(blank=True, max_length=30)
+
     modified_on = models.DateTimeField(auto_now=True)
     modified_by = models.ForeignKey(User, related_name="%(class)s_modified_by",
                                    default=None, null=True, blank=True, editable=False)

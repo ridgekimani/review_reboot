@@ -13,6 +13,7 @@ from venues.models.note import Note
 
 from django.contrib import messages
 
+from venues.functions.get_ip import get_client_ip
 
 def show_all_notes(request, rest_pk):
     notes = Note.objects.filter(venue_id=rest_pk)
@@ -47,10 +48,11 @@ def add_note(request, rest_pk):
         return redirect(reverse("account_login"))
 
     related_object_type = ContentType.objects.get_for_model(_restaurant)
-
+    ip = get_client_ip(request)
     note = Note(
         venue_id=_restaurant.pk,
-        content_type=related_object_type
+        content_type=related_object_type,
+        created_by_ip = ip
     )
 
     form = NoteForm(request.POST, instance=note, request=request)
