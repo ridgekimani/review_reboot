@@ -37,7 +37,9 @@
             {% for report in reports %}
             <tr>
                 <td>{{report.content_object.name}}</td>
-                <td>{{report.get_report_display}}</td>
+                <td>{% for i in report.report_type.all %}
+                {{i}}<br>
+                {% endfor %}</td>
                 <td>{{report.note}}</td>
                 <td>
                     <form class="form-inline" method="POST" action="/reports/{{report.id}}/moderate/">{% csrf_token %}

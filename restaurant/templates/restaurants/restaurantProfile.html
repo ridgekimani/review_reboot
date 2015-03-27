@@ -107,14 +107,36 @@
             <form action="{% url 'venues.views.reviews.add_review' restaurant.pk %}" method="post">
 
         <div class="tab-container tile">
+            
+            {% if not reveiw_by_user %}
             <ul class="nav tab nav-tabs">
                 <li class="active"><a href="#home">Write a Review</a></li>
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="home">
+                            <p> {% include "reviews/review-form.html" %} </p>
+                        </div>
+                    </div>
+                
+            </ul>
+            
+            {% else %}
+
+            <div class="col-md-12">
+
+            <ul class="nav tab nav-tabs">
+                <li class="active"><a href="#home">You have already write review for this restaurant.</a>
+                </li>
+
+                
             </ul>
             <div class="tab-content">
-                <div class="tab-pane active" id="home">
-                    <p> {% include "reviews/review-form.html" %} </p>
-                </div>
+                <a class="btn btn-alt" style="z-index: 999999999;" 
+                    href="{% url "venues.views.reviews.update_review" reveiw_by_user.0.id %}">
+                    <span class="glyphicon glyphicon-edit"></span> Edit your review
+                </a>
             </div>
+            </div>
+            {% endif %}
         </div>
 
             </form>
@@ -145,7 +167,7 @@
                         {% endfor %}
                     </div>
 
-                <a href="{% url 'venues.views.venuess.reviews_view' restaurant.pk %}" class="btn btn-default pull-right">All reviews</a>
+                
                 </div>
                 
             

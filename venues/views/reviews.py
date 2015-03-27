@@ -83,6 +83,7 @@ def add_review(request, rest_pk):
     review = Review(
         venue_id=_restaurant.pk,
         content_type=related_object_type,
+        created_by=request.user
     )
 
     form = ReviewForm(request.POST, instance=review, request=request)
@@ -115,6 +116,7 @@ def update_review(request, review_pk):
         form = ReviewForm(request.POST, instance=review, request=request)
         if form.is_valid():
             form.save()
+            messages.add_message(request, messages.INFO, "Review is updated!")
             if rest.slug:
                 return redirect(reverse('venues.views.venuess.restaurant_by_slug', args=[rest.slug]))
             else:

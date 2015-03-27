@@ -18,15 +18,6 @@ class Report(models.Model):
     class Meta:
         ordering = ['resolved', '-created_on']
 
-    REPORTS = (
-        (1, 'No longer Halal :('),
-        (2, 'Address is Da`eef'),
-        (3, 'Incorrect address'),
-        (4, 'Incorrect Map Pin'),
-        (5, 'Out of business'),
-        (6, 'Other')
-    )
-
     created_on = models.DateTimeField(auto_now_add=True)
     modified_on = models.DateTimeField(auto_now=True)
 
@@ -50,7 +41,6 @@ class Report(models.Model):
     venue_id = models.PositiveIntegerField(editable=False)
     content_object = generic.GenericForeignKey('content_type', 'venue_id')
 
-    type = models.IntegerField(choices=REPORTS, default=4)
     report_type = models.ManyToManyField(ReportType)
     note = models.TextField(blank=True)
 

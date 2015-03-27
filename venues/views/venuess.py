@@ -269,7 +269,10 @@ def restaurant(request, rest_pk):
     if not _restaurant.approved and \
             not (hasattr(request.user, 'is_venue_moderator') and request.user.is_venue_moderator()):
         raise Http404
-
+    
+    reveiw_by_user = Review.objects.filter(venue_id = rest_pk, created_by = request.user)
+    
+    
     reviews = Review.objects.filter(venue_id = _restaurant.pk).order_by('-created_on')
     notes = Note.objects.filter(venue_id = _restaurant.pk).order_by('-created_on')
     return render(request, 'restaurants/restaurantProfile.html', {
@@ -279,7 +282,8 @@ def restaurant(request, rest_pk):
         'reports': Report.list_for_venue(_restaurant),
         'note_form' : note_form,
         'reviews' : reviews,
-        'notes' : notes
+        'notes' : notes,
+        'reveiw_by_user' : reveiw_by_user
     })
 
 @login_required
@@ -291,16 +295,10 @@ def reviews_view(request,rest_pk):
             not (hasattr(request.user, 'is_venue_moderator') and request.user.is_venue_moderator()):
         raise Http404
 
-    reviews = Review.objects.filter(venue_id = _restaurant.pk).order_by('-created_on')
-    notes = Note.objects.filter(venue_id = _restaurant.pk).order_by('-created_on')
+    reveiw_by_user = Review.objects.filter(venue_id = rest_pk, created_by = request.user)
     return render(request, 'restaurants/restaurantReviews.html', {
         'restaurant': _restaurant,
-        'reviews': Review.list_for_venue(_restaurant).order_by('-modified_on'),
-        'notes': Note.list_for_venue(_restaurant).order_by('-modified_on'),
-        'reports': Report.list_for_venue(_restaurant),
-        'note_form' : note_form,
-        'reviews' : reviews,
-        'notes' : notes
+        'reveiw_by_user' : reveiw_by_user,
     })
 
 @login_required

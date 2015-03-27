@@ -13,62 +13,18 @@
                 {% endif %}
 
     <h4 class="page-title">
-    <a href="{% url 'venues.views.venuess.restaurant' restaurant.pk %}"><-</a>Restaurant reviews</h4>
+    <a href="{% url 'venues.views.venuess.restaurant' restaurant.pk %}"><-</a>Restaurant review</h4>
     <div class="block-area">
         <div class="table table-bordered tile  mainTable">
             <div class="title">
                 {{ restaurant.name }}
-                {% if user.is_authenticated %}
-                    <small>
-                        | <a href="{% url "venues.views.venuess.update_restaurant" restaurant.pk %}">edit</a>
-                        {% if user.is_venue_moderator %}
-                            | <a href="{% url "venues.views.venuess.remove_restaurant" restaurant.pk %}">remove</a>
-                        {% endif %}
-                    </small>
-                {% endif %}
             </div>
-            <div class="cuisine">{% for cuisine in restaurant.cuisines.all %}{{ cuisine }},{% endfor %}</div>
-            <div class="address">{{ restaurant.address }}</div>
-            <div class="phone">{{ restaurant.phone }}</div>
         </div>
 
 
-        <div class="row fieldWysiwye">
-            <div class="col-xs-12 col-md-12">
 
-
-                <h4 class="page-title">Reviews</h4>
-                <div class="block-area">
-                    <div class="list-group">
-                        {% for review in reviews %}
-                            <div class="list-group-item {{ review.approved|yesno:"list-group-item-success, list-group-item-danger" }}">
-                                <a class="btn btn-default pull-right"
-                                   href="{% url "venues.views.reviews.update_review" review.id %}">
-                                    <span class="glyphicon glyphicon-edit"></span>
-                                </a>
-                                <a href="{% url 'venues.views.profile.user_profile' review.created_by.pk %}">{{ review.created_by }}</a> |
-                                <strong>{{ review.rating }}</strong> of 5
-                                <div>
-                                   <p>{{ review.text }}</p> 
-                                </div>
-                                <div>
-                                   <p>{{ review.created_on }}</p> 
-                                </div>
-                            </div>
-                        {% empty %}
-                            <div class="list-group-item">
-                                You didn't write any reviews
-                            </div>
-                        {% endfor %}
-                    </div>
-                </div>
-
-            
-            </div>
-
-            
-        </div>
         <div class="row">
+            {% if not reveiw_by_user %}
             <div class="col-md-12">
                 <form action="{% url 'venues.views.reviews.add_review' restaurant.pk %}" method="post">
 
@@ -86,6 +42,17 @@
                 </form>
 
             </div>
+            {% else %}
+
+            <div class="col-md-12">
+            <h4>You have already write review for this restaurant.</h4>
+                <a class="btn btn-alt "
+                    href="{% url "venues.views.reviews.update_review" reveiw_by_user.0.pk %}">
+                    <span class="glyphicon glyphicon-edit"></span>
+                    Edit your review
+                </a>
+            </div>
+            {% endif %}
         </div>
 
     </div>
