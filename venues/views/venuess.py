@@ -27,64 +27,10 @@ from venues.models.report import Report
 
 from django.contrib import messages 
 
+from venues.jsonAPI.restaurants import __get_restaurants,closest
+from venues.jsonAPI.masjid import get_masjids
 
 
-
-def get_masjids(longitude, latitude, categories):
-    '''
-    Returns objects at given point that satisfy set of categories,
-    or all of them if categories is empty.
-    input:
-        str longitude
-        str latitude
-        list categories
-    output:
-        list of dicts
-    '''
-    currentPoint = geos.GEOSGeometry('POINT(%s %s)' % (longitude, latitude))
-    distance_m = 15000
-    list_of_cats = []
-    for c in categories:
-        list_of_cats.append(Cuisine.objects.get(name=c))
-    if list_of_cats:
-        masjids = Masjid.gis.filter(
-            location__distance_lte=(currentPoint, distance_m),
-            categories__in=list_of_cats
-        )
-    else:
-        masjids = Masjid.gis.filter(location__distance_lte=(currentPoint, distance_m))
-
-    # String based JSON
-    data = serializers.serialize('json', masjids)
-    # Actual JSON object to be edited
-    data = json.loads(data)
-
-    # if venue has multiple categories and some of them
-    # are in list_of_cats than venue will appear in data that some times
-    # so we will uniqify venues in data
-    if len(list_of_cats) > 1:
-        data = {v['pk']: v for v in data}.values()
-
-    for masjid in data:
-        d = geopy_distance(currentPoint, masjid['fields']['location']).kilometers
-        masjid['fields']['distance'] = round(d, 1)
-
-        # Fancy splitting on POINT(lon, lat)
-        lng = masjid['fields']['location'].split()[1][1:]
-        lat = masjid['fields']['location'].split()[2][:-1]
-
-        del masjid['fields']['location']
-        masjid['fields']['lng'] = lng
-        masjid['fields']['lat'] = lat
-
-        # Replace category ids with names
-        cat_names = []
-        for cat_id in masjid['fields']['cuisines']:
-            cat = Cuisine.objects.get(id=cat_id)
-            cat_names.append(cat.name)
-        masjid['fields']['cuisines'] = cat_names
-
-    return data
 
 def search_view(request):
     if 'lat' in request.GET and 'lon' in request.GET:
@@ -156,111 +102,6 @@ def index(request):
     # else:
     # context = {'all_restaurants': restaurants, 'form': form, 'longitude': longitude, 'latitude': latitude}
     # return render(request, 'restaurants/restaurants.html', context)
-
-
-def __get_restaurants(request, longitude, latitude, categories, limit=20):
-    '''
-    Returns objects at given point that satisfy set of categories,
-    or all of them if categories is empty.
-    input:
-        str longitude
-        str latitude
-        list categories
-    output:
-        list of dicts
-    '''
-    currentPoint = Point(float(longitude), float(latitude))  # geos.GEOSGeometry('POINT(%s %s)' % (longitude, latitude))
-    distance_m = 15000
-    list_of_cats = []
-    for c in categories:
-        list_of_cats.append(Cuisine.objects.get(name=c))
-    if list_of_cats:
-        restaurants = Restaurant.gis.filter(
-            location__distance_lte=(currentPoint, distance_m),
-            cuisines__in=list_of_cats,
-            is_closed=False
-        )
-    else:
-        restaurants = Restaurant.gis.filter(
-            location__distance_lte=(currentPoint, distance_m),
-            is_closed=False
-        )
-
-    if hasattr(request.user, 'is_venue_moderator') and request.user.is_venue_moderator():
-        pass
-    else:
-        restaurants = restaurants.filter(approved=True)
-
-    # seems that this thing doesn't actually order objects by distance
-    # btw at this step there is no distance property in objects or rows in table
-    # restaurants = restaurants.distance(currentPoint).order_by('distance')
-    restaurants = restaurants[:limit]
-    # String based JSON
-    data = serializers.serialize('json', restaurants)
-    # Actual JSON object to be edited
-    data = json.loads(data)
-
-    # if venue has multiple categories and some of them
-    # are in list_of_cats than venue will appear in data that some times
-    # so we will uniqify venues in data
-    if len(list_of_cats) > 1:
-        data = {v['pk']: v for v in data}.values()
-
-    for restaurant in data:
-        d = geopy_distance(currentPoint, restaurant['fields']['location']).kilometers
-        restaurant['fields']['distance'] = round(d, 1)
-
-        # Fancy splitting on POINT(lon, lat)
-        lng = restaurant['fields']['location'].split()[1][1:]
-        lat = restaurant['fields']['location'].split()[2][:-1]
-
-        del restaurant['fields']['location']
-        restaurant['fields']['lng'] = lng
-        restaurant['fields']['lat'] = lat
-
-        # Replace cuisine ids with names
-        cat_names = []
-        for cat_id in restaurant['fields']['cuisines']:
-            cat = Cuisine.objects.get(id=cat_id)
-            cat_names.append(cat.name)
-        restaurant['fields']['cuisines'] = cat_names
-
-    return data
-
-
-@require_GET
-def closest(request):
-    lat = float(request.GET['lat'])
-    lon = float(request.GET['lon'])
-    if 'category' in request.GET:
-        categories = request.GET['category'].split('+')
-    else:
-        categories = []
-
-    response_message = ''
-
-    if request.GET.has_key('masjids'):
-        venues = get_masjids(lon, lat, categories)
-        if not venues:
-            venues = get_masjids(lon, lat, categories=[])
-            response_message = "No venues for this categories, here are some other ones you might like"
-    else:
-        venues = __get_restaurants(request, lon, lat, categories)
-        if not venues:
-            venues = __get_restaurants(request, lon, lat, categories=[])
-            response_message = "No venues for this categories, here are some other ones you might like"
-
-    return HttpResponse(
-        json.dumps({
-            "response": {
-                "total": len(venues),
-                "venues": sorted(venues, key=lambda venue: venue['fields']['distance']),
-                "message": response_message
-            }
-        }),
-        content_type='application/json'
-    )
-        # return redirect(reverse('venues.views.venuess.index'))
 
 
 def restaurant(request, rest_pk):

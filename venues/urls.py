@@ -20,12 +20,9 @@ urlpatterns = patterns('venues.views',
     url(r'moderate/reports/(?P<id>[0-9]+)/close$', 'moderate.resolve_report'),
 
     #profile
-    url(r'profile/restaurants/$', 'profile.myrestaurants'),
     url(r'profile/approved/$', 'profile.approvedrestaurants'),
     url(r'profile/updated/$', 'profile.updated_restaurants'),
     url(r'profile/reviews/$', 'profile.myreviews'),
-    url(r'profile/notes/$', 'profile.mynotes'),
-    url(r'profile/reports/$', 'profile.myreports'),
     url(r'profile/$', 'profile.myprofile'),
     url(r'profile/user/(?P<pk>.+)/$', 'profile.user_profile'),
     url(r'profile/form/(?P<pk>.+)/$', ProfileUpdateView.as_view(), name='profile-form'),
