@@ -308,7 +308,8 @@ def remove_restaurant(request, rest_pk):
         if not (rest.created_by == request.user and not rest.approved):
             return redirect(reverse('django.contrib.auth.views.login') + "?next=%s" % request.path)
 
-    rest.delete()
+    rest.is_suspended = True
+    rest.save()
 
     if request.is_ajax():
         return HttpResponse()

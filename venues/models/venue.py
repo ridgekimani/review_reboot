@@ -47,6 +47,8 @@ class Venue(CommonModel):
     is_closed = models.BooleanField(default=False)
     approved = models.BooleanField(default=False, help_text=u"Is this venue approved by moderator")
     review_count = models.IntegerField(default=0)
+
+    is_suspended = models.BooleanField(default=False)
     # Query Manager
     gis = gis_models.GeoManager()
     objects = models.Manager()

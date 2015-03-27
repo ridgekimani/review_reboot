@@ -32,8 +32,8 @@ def myrestaurants(request):
 
 @login_required
 def approvedrestaurants(request):
-    user_restaurants = Restaurant.objects.filter(approved=False)
-
+    user_restaurants = Restaurant.objects.filter(approved=False).exclude(is_suspended=True)
+    suspended = Restaurant.objects.filter(is_suspended=True)
     paginatorApproved = Paginator(user_restaurants, 10)
     page = request.GET.get("page")
     try:
@@ -43,12 +43,20 @@ def approvedrestaurants(request):
     except EmptyPage:
         restaurants = paginatorApproved.page(paginatorApproved.num_pages)
 
+
+    paginatorApproved = Paginator(list(suspended), 10)
+    page = request.GET.get("pageSuspended")
+    try:
+        suspended = paginatorApproved.page(page)
+    except PageNotAnInteger:
+        suspended = paginatorApproved.page(1)
+    except EmptyPage:
+        suspended = paginatorApproved.page(paginatorApproved.num_pages)
+
     return render(request, "profile/approved.html", {
         'user_restaurants': user_restaurants,
         'restaurants': restaurants,
-        #'reviews': modified_by_user_restaurants,
-        #'notes': modified_by_user_restaurants,
-        #'reports': modified_by_user_restaurants,
+        'suspended':suspended
     })
 
 

@@ -120,6 +120,7 @@ def reports(request):
 def approve_restaurant(request, rest_pk):
     restaurant = get_object_or_404(Restaurant, pk=rest_pk)
     restaurant.approved = request.POST['approved'].lower() == u'true'
+    restaurant.is_suspended = False
     restaurant.save()
 
     if request.is_ajax():
