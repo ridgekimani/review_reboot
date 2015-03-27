@@ -4,10 +4,6 @@ Todo:
 
 After new restaurant is submitted, show message "Submitted for review" - this will be a new page.
 
-
-
-test if users ip address is getting recorded - need this for hunting trolls
-
 On every restaurant, add button for moderators, they can remove restaurant and write a note for removing.
 
 On moderator page, create two rows, one for restaurants one for masjids
@@ -18,9 +14,12 @@ Restaurant approval page: separate columns for: "Needs Approval", "Suspended"
 
 Add masjid page, add this on moderator page
 
-put filters: Today, this week, this month on moderator page.
 
 Done:
+
+put filters: Today, this week, this month on moderator page.
+
+test if users ip address is getting recorded - need this for hunting trolls
 
 Show confirmation  after review is submitted.
 Allow multiple selection for cuisine.

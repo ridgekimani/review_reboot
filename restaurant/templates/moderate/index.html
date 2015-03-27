@@ -2,9 +2,14 @@
 {% load bootstrap3 sekizai_tags %}
 {% block title %}Restaurants moderation{% endblock %}
 {% block body %}
-    <h4 class="page-title">Moderate</h4>
+    <h4 class="page-title">Moderate
+        <div class="pull-right">
+        <span style="font-size: 16px;;">Filter:</span>
+        <a href="?filter=today" class="btn btn-alt">Today</a>
+        <a href="?filter=weekly" class="btn btn-alt">This Week</a>
+        <a href="?filter=mounthly" class="btn btn-alt">This Mounth</a>
+        </div></h4>
     <div class="block-area">
-
        <div class="row">
             <div class="col-md-4 col-xs-6">
                 <a href="{% url "venues.views.profile.approvedrestaurants" %}">
@@ -51,48 +56,6 @@
     <div class="block-area">
 
         <div class="row">
-            <!-- <div class="col-md-4">
-                <div class="list-group">
-                    <div class="list-group-item">
-                        Restaurants under need to approve:
-                    </div>
-                    {% for r in restaurants %}
-                        <div class="list-group-item {{ r.approved|yesno:'list-group-item-success,list-group-item-warning' }}">
-                            <div class="row">
-                                <div class="col-md-12">
-
-                                    <div class="pull-right" style="padding-left: 1em">
-                                        <button class="btn btn-sm btn-danger btn-remove btn-alt pull-right"
-                                                style="margin-left: 1em"
-                                                data-href="{% url "venues.views.venuess.remove_restaurant" r.pk %}">
-                                            <span class=" glyphicon glyphicon-remove"></span>
-                                        </button>
-
-                                        <div class="btn-group btn-group-sm pull-right">
-                                            <a class="btn btn-success btn-alt"
-                                               href="{% url "venues.views.venuess.update_restaurant" r.pk %}">
-                                                <span class="glyphicon glyphicon-edit"></span>
-                                            </a>
-
-                                            <button class="btn btn-approve btn-alt {{ r.approved|yesno:"btn-info,btn-default" }}"
-                                                    data-approved="{{ r.approved|yesno:"true,false" }}"
-                                                    data-href="{% url "venues.views.moderate.approve_restaurant" r.pk %}">
-                                                <span class="glyphicon glyphicon-ok"></span>
-                                            </button>
-                                        </div>
-
-                                    </div>
-                                    <a href="{{ r.show_url }}">{{ r.name }}</a>
-
-                                </div>
-                            </div>
-                        </div>
-                    {% endfor %}
-                    <div class="text-center">
-                        {% bootstrap_pagination restaurants parameter_name="page" %}
-                    </div>
-                </div>
-            </div> -->
             <div class="col-md-8">
                 <div class="col-md-7">
                     <div class="list-group">

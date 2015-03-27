@@ -1,13 +1,8 @@
 
 Todo:
 
-Add update, report and review page for mobile sites (high priority)
-
-
 
 After new restaurant is submitted, show message "Submitted for review" - this will be a new page.
-
-
 
 On every restaurant, add button for moderators, they can remove restaurant and write a note for removing.
 
@@ -22,6 +17,8 @@ Add masjid page, add this on moderator page
 put filters: Today, this week, this month on moderator page.
 
 Done:
+
+test if users ip address is getting recorded - need this for hunting trolls
 
 Show confirmation  after review is submitted.
 Allow multiple selection for cuisine.
@@ -47,3 +44,25 @@ any user can submit restaurants. New restaurants will need to be approved by mod
 
 Moderator can suspend any restaurant. In that case restaurant will remain in db, but won’t be shown on search page.
 
+
+Old stuff:
+
+
+add in restaurant model:
+
+catering: yes or no
+delivery: yes or no
+menu: (return: “Partially Halal” or “Full Halal”)
+alcoholFree: yes or no
+porkFree: yes or no
+muslimOwner: yes or no
+
+
+two typses of users: regular and moderator (i will set this from admin panel)
+moderators will have special page where they can approve new restaurants submitted by regular user. Moderators will also have a page where they can see which restaurants has been recently updated or reviewed.
+
+
+
+any user can submit restaurants. New restaurants will need to be approved by moderators. Once approved they will be available on the restaurant search page and the son api.
+
+Moderator can suspend any restaurant. In that case restaurant will remain in db, but won’t be shown on search page.

@@ -6,14 +6,31 @@ from django.shortcuts import render, render_to_response, get_object_or_404, redi
 from venues.models import Restaurant
 from venues.models import Review
 from venues.models.report import Report
-
+from datetime import datetime, timedelta, time
 
 @login_required
 @user_passes_test(lambda u: u.is_venue_moderator())
 def index(request):
+
+    #show all restaurants by default
+    start_time = Restaurant.objects.all().order_by('created_on')[0].created_on
+
+    interval = request.GET.get("filter")
+
+    if interval:
+        if interval == 'today':
+            today = datetime.now().date()
+            start_time = today - timedelta(1)
+        elif interval == 'weekly':
+            today = datetime.now().date()
+            start_time = today - timedelta(7)
+        elif interval == 'mounthly':
+            today = datetime.now().date()
+            start_time = today - timedelta(30)
+
+
     # approved items paginator
-    list = Restaurant.objects.order_by("approved", "name").filter(approved=False)
-    
+    list = Restaurant.objects.order_by("approved", "name").filter(approved=False,created_on__gte=start_time)
     
 
     paginatorApproved = Paginator(list, 10)
@@ -25,8 +42,10 @@ def index(request):
     except EmptyPage:
         restaurants = paginatorApproved.page(paginatorApproved.num_pages)
 
+
+
     # updated restaurants
-    list = Restaurant.objects.order_by("-modified_on")
+    list = Restaurant.objects.filter(created_on__gte=start_time).order_by("-modified_on")
     paginatorApproved = Paginator(list, 10)
     page = request.GET.get("pageUpdated")
     try:
@@ -53,7 +72,7 @@ def index(request):
         rest.changed_fields = changed_fields
 
     # added reviews
-    list = Review.objects.order_by("-approved", "-modified_on")
+    list = Review.objects.filter(created_on__gte=start_time).order_by("-approved", "-modified_on")
     paginatorApproved = Paginator(list, 10)
     page = request.GET.get("pageReview")
     try:
@@ -64,8 +83,8 @@ def index(request):
         recently_added_reviews = paginatorApproved.page(paginatorApproved.num_pages)
 
     #counters
-    report_counter = Report.objects.all().count()
-    approved_count = Restaurant.objects.filter(approved=False).count()
+    report_counter = Report.objects.filter(created_on__gte=start_time).count()
+    approved_count = Restaurant.objects.filter(approved=False,created_on__gte=start_time).count()
 
 
     context = {
