@@ -4,8 +4,11 @@ from restaurant.settings import credentials
 SOCIAL_AUTH_FACEBOOK_KEY = credentials['SOCIAL_AUTH_FACEBOOK_KEY']
 SOCIAL_AUTH_FACEBOOK_SECRET = credentials['SOCIAL_AUTH_FACEBOOK_SECRET']
 
-SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '367907061378-gg521bdfualdo10ssqt6k22n7lbtdmsf.apps.googleusercontent.com'
-SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = 'lTrAse3L_EJNYLKICzlDQsjp'
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = credentials['SOCIAL_AUTH_GOOGLE_OAUTH2_KEY']
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = credentials['SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET']
+
+SOCIAL_AUTH_GOOGLE_OAUTH2_USE_DEPRECATED_API = True
+SOCIAL_AUTH_GOOGLE_PLUS_USE_DEPRECATED_API = True
 
 # SESSION_SERIALIZER = 'django.contrib.sessions.serializers.PickleSerializer'
 
@@ -21,7 +24,7 @@ AUTHENTICATION_BACKENDS = (
 SOCIAL_AUTH_ADMIN_USER_SEARCH_FIELDS = ['username', 'first_name']
 
 
-SOCIAL_AUTH_PIPELINE = (
+'''SOCIAL_AUTH_PIPELINE = (
     'social.pipeline.social_auth.social_details',
     'social.pipeline.social_auth.social_uid',
     'social.pipeline.social_auth.auth_allowed',
@@ -29,8 +32,21 @@ SOCIAL_AUTH_PIPELINE = (
     'social.pipeline.social_auth.associate_user',
     'social.pipeline.social_auth.load_extra_data',
     'social.pipeline.user.user_details',
-    'venues.pipeline.social_profile_link',
+    #'venues.pipeline.social_profile_link',
+)'''
+SOCIAL_AUTH_PIPELINE = (
+    'social.pipeline.social_auth.social_details',
+    'social.pipeline.social_auth.social_uid',
+    'social.pipeline.social_auth.auth_allowed',
+    'social.pipeline.social_auth.social_user',
+    'social.pipeline.user.get_username',
+    #'social.pipeline.social_auth.associate_by_email',
+    'social.pipeline.user.create_user',
+    'social.pipeline.social_auth.associate_user',
+    'social.pipeline.social_auth.load_extra_data',
+    'social.pipeline.user.user_details'
 )
+
 
 
 # EMAIL_HOST = 'smtp.gmail.com'
