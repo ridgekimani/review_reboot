@@ -25,7 +25,7 @@ class VenueUser(models.Model):
     )
     social_profile = models.URLField(null=True, blank=True)
     venue_moderator = models.BooleanField(default=False,
-                                          help_text="Is user can approve, remove, and see not approved venues")
+                                          help_text="User can approve, remove, and see suspended venues")
 
 
 # signal for creating venue_user info for each new user

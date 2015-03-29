@@ -20,20 +20,20 @@
             <tr>
                 <td><span class="formTitle">Address</span></td>
                 <td>
-                    {%  render_field form.address class="form-control input-sm" placeholder="21 Baklava Street :)" required="" %}
+                    {%  render_field form.address class="form-control input-sm" placeholder="Enter the street name e.g. 21 Baklava Street :)" required="" %}
                 </td>
             </tr>
             <tr>
                 <td><span class="formTitle">Suburb,City & State </span></td>
                 <td>
-                    {%  render_field form.city class="form-control input-sm" placeholder="Braddon Canberra ACT" required="" %}
+                    {%  render_field form.city class="form-control input-sm" placeholder="e.g. Braddon Canberra ACT" required="" %}
                 </td>
             </tr>
             <tr>
                 <td>Country</td>
                 <td>
                     <!--{{ form.country|add_class:'select' }}-->
-                    {%  render_field form.country class="form-control input-sm" placeholder="Australia" required="" %}
+                    {%  render_field form.country class="form-control input-sm" placeholder="" required="" %}
                 </td>
             </tr>
             {#                        <tr>#}
@@ -48,18 +48,31 @@
                     {%  render_field form.phone class="form-control input-sm" %}
                 </td>
             </tr>
-            <tr>
-                <td>Cuisine</td>
-                <td>{% for i in form.cuisines %}
-                {{i}}
-                {%endfor%}</td>
-            </tr>
+
         </table>
     </div>
     <textarea name="location" id="id_location" cols="30" rows="10" hidden></textarea>
     <!-- END Firs Box -->
 
     <!-- Second Box -->
+
+    <div class="forTable tile">
+        <table>
+         <tr>
+                <th colspan="2">Select a Cuisine</th>
+         </tr>
+
+          <tr>
+
+                <td>{% for i in form.cuisines %}
+                {{i}}
+                {%endfor%}</td>
+            </tr>
+        </table>
+    </div>
+
+    <!-- Third Box -->
+
     <div class="forTable tile">
         <table>
             <tr>
@@ -107,9 +120,9 @@
             </tr>
         </table>
     </div>
-    <!-- END Second Box -->
+    <!-- END Third Box -->
 
-    <!-- Third Box -->
+    <!-- Fourth Box -->
     <div class="forTable tile">
         <table>
             <tr>
@@ -144,7 +157,7 @@
             </tr>
         </table>
     </div>
-    <!-- END Third Box -->
+    <!-- END Fourth Box -->
 
     <div>
         <button type="submit" class="btn btn-sm">Submit</button>
