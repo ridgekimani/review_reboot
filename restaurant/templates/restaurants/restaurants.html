@@ -14,7 +14,7 @@
                             </a>
                         </div>
                         <div class="cuisine">
-                            {% for cuisine in restaurant.cuisines.all %}{{ cuisine }}{% endfor %}</div>
+                            {% for cuisine in restaurant.cuisines.all %}{{ cuisine }} {% endfor %}</div>
                         <div class="address">{{ restaurant.address }}</div>
                         <div class="subText">
                             <span class="reviews"><span>Reviews:</span><span>{{restaurant.review_count}}</span></span>

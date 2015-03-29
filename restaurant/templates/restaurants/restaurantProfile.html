@@ -18,6 +18,16 @@
         <div class="table table-bordered tile  mainTable">
             <div class="title">
                 {{ restaurant.name }}
+            </div>
+            <div class="cuisine">{% for cuisine in restaurant.cuisines.all %}{{ cuisine }} {% endfor %}</div>
+            <div class="address">{{ restaurant.address }}</div>
+            <div class="phone">{{ restaurant.phone }}</div>
+        </div>
+
+
+        <div class="table table-bordered tile  mainTable">
+            <div class="title">
+
                 {% if user.is_authenticated %}
                     <small>
                         | <a href="{% url "venues.views.venuess.update_restaurant" restaurant.pk %}">edit</a>
@@ -27,10 +37,9 @@
                     </small>
                 {% endif %}
             </div>
-            <div class="cuisine">{% for cuisine in restaurant.cuisines.all %}{{ cuisine }},{% endfor %}</div>
-            <div class="address">{{ restaurant.address }}</div>
-            <div class="phone">{{ restaurant.phone }}</div>
         </div>
+
+
         <div class="row">
             <div class="col-md-8">
                 <table class="table table-bordered table-hover tile tile">

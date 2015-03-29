@@ -1,6 +1,12 @@
 
 Todo:
 
+Add about in restaurant model, link it with the restaurant profile.
+
+three buttons on restaurant profile: Update, Report, Moderate. The moderate page will open another page where we will have option to
+suspend restaurants.
+
+On search bar, add name and dropdown option for venue type
 
 After new restaurant is submitted, show message "Submitted for review" - this will be a new page.
 
