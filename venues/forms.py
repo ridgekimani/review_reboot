@@ -59,6 +59,7 @@ class RestaurantForm(CommonForm):
 class AddressForm(forms.Form):
     address = forms.CharField(required=False)
     cuisine = forms.CharField(required=False)
+    name = forms.CharField(required=False)
 
 
 class ReviewForm(CommonForm):

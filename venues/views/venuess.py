@@ -53,13 +53,15 @@ def index(request):
     latitude = ""
     longitude = ""
     address = ""
+    name = ""
     if request.POST:
         page = request.POST.get('page')
         form = forms.AddressForm(request.POST)
         if form.is_valid():
             address = form.cleaned_data['address']
+            name = form.cleaned_data['name']
             if not address:
-                restaurants = Restaurant.objects.filter(approved=True, is_suspended=False)
+                restaurants = Restaurant.objects.filter(approved=True, is_suspended=False,name__icontains=name)
                 try:
                     longitude, latitude = restaurants[0].location
                 except IndexError:
@@ -78,7 +80,8 @@ def index(request):
                     currentPoint = geos.GEOSGeometry('POINT(%s %s)' % (longitude, latitude))
                     distance_m = {'km': 30}
                     restaurants = Restaurant.gis.filter(approved=True,
-                            location__distance_lte=(currentPoint, measure.D(**distance_m))).distance(currentPoint).order_by('distance')
+                            location__distance_lte=(currentPoint, measure.D(**distance_m)),
+                            name__icontains=name).distance(currentPoint).order_by('distance')
     else:
         page = request.GET.get('page')
         restaurants = Restaurant.objects.filter(approved=True, is_suspended=False)
@@ -97,7 +100,7 @@ def index(request):
     except EmptyPage:
         restaurants = paginator.page(paginator.num_pages)
     
-    context = {'all_restaurants': restaurants, 'form': form, 'longitude': longitude, 'latitude': latitude, 'address':address}
+    context = {'all_restaurants': restaurants, 'form': form, 'longitude': longitude, 'latitude': latitude, 'address':address, 'name':name}
     return render(request, 'restaurants/restaurants.html', context)
     # else:
     # context = {'all_restaurants': restaurants, 'form': form, 'longitude': longitude, 'latitude': latitude}

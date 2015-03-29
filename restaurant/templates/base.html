@@ -27,7 +27,8 @@
     //var data = $("#search_form").serialize();
     //console.log('blah')
     //show_submit_data(data);
-    document.getElementById('restaurant-form').submit();
+    
+    //document.getElementById('restaurant-form').submit();
 });
   }
   google.maps.event.addDomListener(window, 'load', initialize);
@@ -52,6 +53,7 @@
                   id="restaurant-form">
                   {% csrf_token %}
                 <input type="text" id="pac-input" name="address" class="form-control" placeholder="Address" value="{{address}}" />
+                <input type="text" id="pac-input" name="name" class="form-control" placeholder="Restaurant name" value="{{name}}" />
 
                 <!--<input type="text" id="pac-input" name="cuisine" class="form-control" placeholder="Cuisine"/>-->
                 <input class="btn btn-sm btn-alt" type="submit" value="Search"/>
