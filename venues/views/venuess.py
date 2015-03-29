@@ -59,7 +59,7 @@ def index(request):
         if form.is_valid():
             address = form.cleaned_data['address']
             if not address:
-                restaurants = Restaurant.objects.filter(approved=True)
+                restaurants = Restaurant.objects.filter(approved=True, is_suspended=False)
                 try:
                     longitude, latitude = restaurants[0].location
                 except IndexError:
@@ -81,12 +81,12 @@ def index(request):
                             location__distance_lte=(currentPoint, measure.D(**distance_m))).distance(currentPoint).order_by('distance')
     else:
         page = request.GET.get('page')
-        restaurants = Restaurant.objects.filter(approved=True)
+        restaurants = Restaurant.objects.filter(approved=True, is_suspended=False)
 
     if hasattr(request.user, 'is_venue_moderator') and request.user.is_venue_moderator():
         pass
     else:
-        restaurants = Restaurant.objects.filter(approved=True)
+        restaurants = Restaurant.objects.filter(approved=True, is_suspended=False)
 
     paginator = Paginator(restaurants, 20)
     page = request.GET.get("page")
@@ -145,20 +145,6 @@ def reviews_view(request,rest_pk):
         'reveiw_by_user' : reveiw_by_user,
     })
 
-@login_required
-def suspend_restaurant(request, rest_pk):
-    rest = get_object_or_404(Restaurant, pk=rest_pk)
-    if not request.user.is_venue_moderator():
-        if not (rest.created_by == request.user and not rest.approved):
-            return redirect(reverse('django.contrib.auth.views.login') + "?next=%s" % request.path)
-
-    rest.is_suspended = True
-    rest.save()
-
-    if request.is_ajax():
-        return HttpResponse()
-    else:
-        return redirect(reverse("venues.views.venuess.index"))
 
 
 @login_required

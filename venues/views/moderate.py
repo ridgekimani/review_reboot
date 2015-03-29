@@ -7,6 +7,9 @@ from venues.models import Restaurant
 from venues.models import Review
 from venues.models.report import Report
 from datetime import datetime, timedelta, time
+from django.views.decorators.http import require_POST, require_GET
+
+from django.contrib import messages
 
 @login_required
 @user_passes_test(lambda u: u.is_venue_moderator())
@@ -116,19 +119,69 @@ def reports(request):
 
 
 @login_required
+def moderate_restaurant(request, rest_pk):
+    rest = get_object_or_404(Restaurant, pk=rest_pk)
+    if not request.user.is_venue_moderator():
+        if not (rest.created_by == request.user and not rest.approved):
+            return redirect(reverse('django.contrib.auth.views.login') + "?next=%s" % request.path)
+
+    return render(request,'restaurants/moderateRestaurant.html',{
+        'restaurant':rest,
+        })
+
+@login_required
+@require_POST
+def suspend_restaurant(request, rest_pk):
+    rest = get_object_or_404(Restaurant, pk=rest_pk)
+    if not request.user.is_venue_moderator():
+        if not (rest.created_by == request.user and not rest.approved):
+            return redirect(reverse('django.contrib.auth.views.login') + "?next=%s" % request.path)
+
+    rest.is_suspended = True
+    rest.save()
+    messages.add_message(request, messages.INFO, "Restaurant suspended!")
+    if request.is_ajax():
+        return HttpResponse()
+    else:
+        if 'HTTP_REFERER' in request.META:
+            return redirect(request.META['HTTP_REFERER'])
+        else:
+            return redirect(reverse("venues.views.venuess.index"))
+
+@login_required
 @user_passes_test(lambda u: u.is_venue_moderator())
 def approve_restaurant(request, rest_pk):
     restaurant = get_object_or_404(Restaurant, pk=rest_pk)
     restaurant.approved = request.POST['approved'].lower() == u'true'
     restaurant.is_suspended = False
     restaurant.save()
+    messages.add_message(request, messages.INFO, "Restaurant approved!")
 
     if request.is_ajax():
         return HttpResponse()
     else:
-        if "HTTP_REFERER" in request:
+        if 'HTTP_REFERER' in request.META:
             return redirect(request.META['HTTP_REFERER'])
-        return redirect(reverse("venues.views.venuess.index"))
+        else:
+            return redirect(reverse("venues.views.venuess.index"))
+
+@login_required
+@user_passes_test(lambda u: u.is_venue_moderator())
+def unsuspend_restaurant(request, rest_pk):
+    restaurant = get_object_or_404(Restaurant, pk=rest_pk)
+    restaurant.is_suspended = False
+    restaurant.save()
+
+
+    messages.add_message(request, messages.INFO, "Restaurant unsuspended!")
+
+    if request.is_ajax():
+        return HttpResponse()
+    else:
+        if 'HTTP_REFERER' in request.META:
+            return redirect(request.META['HTTP_REFERER'])
+        else:
+            return redirect(reverse("venues.views.venuess.index"))
 
 
 @login_required

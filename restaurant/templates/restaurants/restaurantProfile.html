@@ -36,7 +36,7 @@
                         <a href="{% url "venues.views.reports.report_restaurant" restaurant.pk %}"
                         class="btn btn-alt">report</a>
                         {% if user.is_venue_moderator %}
-                             <a href="{% url "venues.views.venuess.suspend_restaurant" restaurant.pk %}"
+                             <a href="{% url "venues.views.moderate.moderate_restaurant" restaurant.pk %}"
                              class="btn btn-alt">moderate</a>
                         {% endif %}
                     </small>

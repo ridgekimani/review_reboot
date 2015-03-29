@@ -30,13 +30,16 @@ urlpatterns = patterns('venues.views',
     url(r'(?P<rest_pk>[0-9]+)/show-all-reviews/$', 'reviews.show_all_reviews'),
     url(r'(?P<rest_pk>[0-9]+)/show-all-tips/$', 'notes.show_all_notes'),
     url(r'(?P<rest_pk>[0-9]+)/report/$', 'reports.report_restaurant'),
-    url(r'(?P<rest_pk>[0-9]+)/remove', 'venuess.suspend_restaurant'),
     url(r'(?P<rest_pk>[0-9]+)/update/$', 'venuess.update_restaurant'),
     url(r'(?P<rest_pk>[0-9]+)/approve/$', 'moderate.approve_restaurant'),
     url(r'(?P<rest_pk>[0-9]+)/profile$', 'venuess.restaurant'),
     url(r'(?P<rest_pk>[0-9]+)/note/new/$', 'notes.add_note'),
     url(r'(?P<rest_pk>[0-9]+)/review/new', 'reviews.add_review'),
     url(r'(?P<rest_pk>[0-9]+)/reviews/$', 'venuess.reviews_view'),
+
+    url(r'(?P<rest_pk>[0-9]+)/moderate_rest/$', 'moderate.moderate_restaurant'),
+    url(r'(?P<rest_pk>[0-9]+)/unsuspend/$', 'moderate.unsuspend_restaurant'),
+    url(r'(?P<rest_pk>[0-9]+)/remove/$', 'moderate.suspend_restaurant'),
 
     # common
     url(r'get_category/', 'get_category', name='get_drugs'),
