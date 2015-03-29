@@ -30,9 +30,14 @@
 
                 {% if user.is_authenticated %}
                     <small>
-                        | <a href="{% url "venues.views.venuess.update_restaurant" restaurant.pk %}">edit</a>
+                        <a href="{% url "venues.views.venuess.update_restaurant" restaurant.pk %}"
+                        class="btn btn-alt">edit</a>
+
+                        <a href="{% url "venues.views.reports.report_restaurant" restaurant.pk %}"
+                        class="btn btn-alt">report</a>
                         {% if user.is_venue_moderator %}
-                            | <a href="{% url "venues.views.venuess.suspend_restaurant" restaurant.pk %}">remove</a>
+                             <a href="{% url "venues.views.venuess.suspend_restaurant" restaurant.pk %}"
+                             class="btn btn-alt">remove</a>
                         {% endif %}
                     </small>
                 {% endif %}
