@@ -18,3 +18,4 @@ django-simple-history>=1.5.4
 django-bootstrap3>=5.1.0
 django-sekizai
 django-widget-tweaks
+django-autoslug

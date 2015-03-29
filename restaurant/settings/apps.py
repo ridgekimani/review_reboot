@@ -14,4 +14,5 @@ INSTALLED_APPS = (
     'venues',
     "widget_tweaks", # for form add class
     'django_assets',
+    'autoslug'
 )

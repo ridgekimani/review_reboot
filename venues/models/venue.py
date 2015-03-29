@@ -8,6 +8,8 @@ from django_countries.fields import CountryField
 from simple_history.models import HistoricalRecords
 from venues.models._common import CommonModel
 
+from autoslug import AutoSlugField
+
 
 __author__ = 'm'
 
@@ -18,7 +20,7 @@ class Venue(CommonModel):
     '''
 
     name = models.CharField(max_length=100)
-    slug = models.SlugField()
+    slug = AutoSlugField(unique=True,populate_from='name')
 
     address = models.CharField(max_length=150)
     city = models.CharField(max_length=150)
@@ -90,10 +92,6 @@ class Venue(CommonModel):
         if len(close_reports) > 3:
             self.is_closed = True
         self.save()
-
-    def save(self, *args, **kwargs):
-        self.slug = slugify(self.name)
-        super(Venue, self).save(args, kwargs)
 
     @property
     def show_url(self):
