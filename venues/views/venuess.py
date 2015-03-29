@@ -110,8 +110,11 @@ def restaurant(request, rest_pk):
     if not _restaurant.approved and \
             not (hasattr(request.user, 'is_venue_moderator') and request.user.is_venue_moderator()):
         raise Http404
-    
-    reveiw_by_user = Review.objects.filter(venue_id = rest_pk, created_by = request.user)
+
+    if request.user.is_authenticated():
+        reveiw_by_user = Review.objects.filter(venue_id = rest_pk, created_by = request.user)
+    else:
+        reveiw_by_user = None
     
     
     reviews = Review.objects.filter(venue_id = _restaurant.pk).order_by('-created_on')

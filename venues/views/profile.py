@@ -47,14 +47,6 @@ def approvedrestaurants(request):
     })
 
 
-@login_required
-def myreviews(request):
-    user_reviews = Review.objects.filter(created_by=request.user)
-
-    return render(request, "profile/reviews.html", {
-        'reviews': user_reviews
-    })
-
 
 @login_required
 def myprofile(request):

@@ -22,7 +22,6 @@ urlpatterns = patterns('venues.views',
     #profile
     url(r'profile/approved/$', 'profile.approvedrestaurants'),
     url(r'profile/updated/$', 'profile.updated_restaurants'),
-    url(r'profile/reviews/$', 'profile.myreviews'),
     url(r'profile/$', 'profile.myprofile'),
     url(r'profile/user/(?P<pk>.+)/$', 'profile.user_profile'),
     url(r'profile/form/(?P<pk>.+)/$', ProfileUpdateView.as_view(), name='profile-form'),

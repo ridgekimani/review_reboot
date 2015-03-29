@@ -116,35 +116,46 @@
             <form action="{% url 'venues.views.reviews.add_review' restaurant.pk %}" method="post">
 
         <div class="tab-container tile">
-            
-            {% if not reveiw_by_user %}
-            <ul class="nav tab nav-tabs">
-                <li class="active"><a href="#home">Write a Review</a></li>
-                    <div class="tab-content">
-                        <div class="tab-pane active" id="home">
-                            <p> {% include "reviews/review-form.html" %} </p>
+            {% if user.is_authenticated %}
+                {% if not reveiw_by_user %}
+                <ul class="nav tab nav-tabs">
+                    <li class="active"><a href="#home">Write a Review</a></li>
+                        <div class="tab-content">
+                            <div class="tab-pane active" id="home">
+                                <p> {% include "reviews/review-form.html" %} </p>
+                            </div>
                         </div>
-                    </div>
+                    
+                </ul>
                 
-            </ul>
-            
+                {% else %}
+
+                <div class="col-md-12">
+
+                <ul class="nav tab nav-tabs">
+                    <li class="active"><a href="#home">You have already write review for this restaurant.</a>
+                    </li>
+
+                    
+                </ul>
+                <div class="tab-content">
+                    <a class="btn btn-alt" style="z-index: 999999999;" 
+                        href="{% url "venues.views.reviews.update_review" reveiw_by_user.0.id %}">
+                        <span class="glyphicon glyphicon-edit"></span> Edit your review
+                    </a>
+                </div>
+                </div>
+                {% endif %}
             {% else %}
-
-            <div class="col-md-12">
-
-            <ul class="nav tab nav-tabs">
-                <li class="active"><a href="#home">You have already write review for this restaurant.</a>
-                </li>
-
-                
-            </ul>
-            <div class="tab-content">
-                <a class="btn btn-alt" style="z-index: 999999999;" 
-                    href="{% url "venues.views.reviews.update_review" reveiw_by_user.0.id %}">
-                    <span class="glyphicon glyphicon-edit"></span> Edit your review
-                </a>
-            </div>
-            </div>
+                <ul class="nav tab nav-tabs">
+                    <li class="active"><a href="#home">Write a Review</a></li>
+                    
+                </ul>
+                        <div class="tab-content">
+                            <div class="tab-pane active" id="home">
+                                <p> Pleace login to write review. </p>
+                            </div>
+                        </div>
             {% endif %}
         </div>
 
@@ -190,11 +201,15 @@
             <ul class="nav tab nav-tabs">
                 <li class="active"><a href="#home">Write a note on Halal-ness</a></li>
             </ul>
+            
             <div class="tab-content">
                 <div class="tab-pane active" id="home">
-
-                    <p> {% include "notes/note-form.html" %} </p>
-
+                    {% if user.is_authenticated %}
+                        <p> {% include "notes/note-form.html" %} </p>
+                    
+                    {% else %}
+                        <p> Pleace login to write notes. </p>
+                    {% endif %}
                 </div>
             </div>
         </div>
