@@ -37,7 +37,7 @@
                         class="btn btn-alt">report</a>
                         {% if user.is_venue_moderator %}
                              <a href="{% url "venues.views.venuess.suspend_restaurant" restaurant.pk %}"
-                             class="btn btn-alt">remove</a>
+                             class="btn btn-alt">moderate</a>
                         {% endif %}
                     </small>
                 {% endif %}
@@ -204,12 +204,7 @@
             
             <div class="tab-content">
                 <div class="tab-pane active" id="home">
-                    {% if user.is_authenticated %}
                         <p> {% include "notes/note-form.html" %} </p>
-                    
-                    {% else %}
-                        <p> Pleace login to write notes. </p>
-                    {% endif %}
                 </div>
             </div>
         </div>
