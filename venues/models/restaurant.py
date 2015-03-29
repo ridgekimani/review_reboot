@@ -24,6 +24,7 @@ class Restaurant(Venue):
     history_link = HistoricalRecords()
 
     menu = models.IntegerField(default=0, choices=MENU_TYPES)
+    about = models.TextField(blank=True)
 
     website = models.URLField(default="", blank=True)
     google_reviews_url = models.URLField(default="")
@@ -54,7 +55,7 @@ class Restaurant(Venue):
         return reverse("venues.views.venuess.update_restaurant", args=[self.id])
 
     def remove_url(self):
-        return reverse("venues.views.venuess.remove_restaurant", args=[self.id])
+        return reverse("venues.views.venuess.suspend_restaurant", args=[self.id])
 
     def add_url(self):
         return reverse("venues.views.venuess.add_restaurant")

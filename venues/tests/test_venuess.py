@@ -141,25 +141,25 @@ class TestVenuess(TestCaseVenue):
     def test_guest_CANT_remove_restaurant(self):
         r = Restaurant(created_by=self.user, name='alskdlasdllasjdlk')
         r.save()
-        self.redirect_to_login_on_get("venues.views.venuess.remove_restaurant", pargs=[r.pk])
+        self.redirect_to_login_on_get("venues.views.venuess.suspend_restaurant", pargs=[r.pk])
 
     @TestCaseVenue.login
     def test_simple_user_CANT_remove_not_his_restaurant(self):
         r = Restaurant(name='alskdlasdllzxcaasjdlk')
         r.save()
-        self.redirect_to_login_on_get("venues.views.venuess.remove_restaurant", pargs=[r.pk])
+        self.redirect_to_login_on_get("venues.views.venuess.suspend_restaurant", pargs=[r.pk])
 
     @TestCaseVenue.login
     def test_simple_user_CANT_remove_his_approved_restaurant(self):
         r = Restaurant(created_by=self.user, approved=True, name='alskdasdzxlasdllasjdlk')
         r.save()
-        self.redirect_to_login_on_get("venues.views.venuess.remove_restaurant", pargs=[r.pk])
+        self.redirect_to_login_on_get("venues.views.venuess.suspend_restaurant", pargs=[r.pk])
 
     @TestCaseVenue.login
     def test_simple_user_CAN_remove_his_not_approved_restaurant(self):
         r = Restaurant(created_by=self.user, approved=False, name='alsasdkdlasdllasjdlk')
         r.save()
-        self.redirect_on_get("venues.views.venuess.remove_restaurant", pargs=[r.pk])
+        self.redirect_on_get("venues.views.venuess.suspend_restaurant", pargs=[r.pk])
 
         self.assertEqual(Restaurant.objects.filter(pk=r.pk).count(), 0)
 
@@ -167,7 +167,7 @@ class TestVenuess(TestCaseVenue):
     def test_moderator_CAN_remove_any_restaurant(self):
         r = Restaurant(created_by=self.user, approved=True, name='alskdlasdllasjdlk')
         r.save()
-        self.redirect_on_get("venues.views.venuess.remove_restaurant", pargs=[r.pk])
+        self.redirect_on_get("venues.views.venuess.suspend_restaurant", pargs=[r.pk])
 
         self.assertEqual(Restaurant.objects.filter(pk=r.pk).count(), 0)
 
@@ -175,7 +175,7 @@ class TestVenuess(TestCaseVenue):
     def test_superuser_CAN_remove_any_restaurant(self):
         r = Restaurant(created_by=self.user, approved=True, name='alskdlasdllasjdlk')
         r.save()
-        self.redirect_on_get("venues.views.venuess.remove_restaurant", pargs=[r.pk])
+        self.redirect_on_get("venues.views.venuess.suspend_restaurant", pargs=[r.pk])
 
         self.assertEqual(Restaurant.objects.filter(pk=r.pk).count(), 0)
 

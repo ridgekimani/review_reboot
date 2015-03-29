@@ -143,7 +143,7 @@ def reviews_view(request,rest_pk):
     })
 
 @login_required
-def remove_restaurant(request, rest_pk):
+def suspend_restaurant(request, rest_pk):
     rest = get_object_or_404(Restaurant, pk=rest_pk)
     if not request.user.is_venue_moderator():
         if not (rest.created_by == request.user and not rest.approved):
