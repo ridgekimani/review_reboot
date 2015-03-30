@@ -5,6 +5,8 @@ Test social auth.
 
 
 
+Bug: Search page map pin not working for regular users and users who are not logged in.
+
 Add shop number in restaurant model and form.
 
 Dont update address box with google api, just update city and country.
