@@ -13,7 +13,7 @@
                     {% endfor %}
                 {% endif %}
     <h4 class="page-title">Restaurant profile</h4>
-
+    
     <div class="block-area">
         <div class="table table-bordered tile  mainTable">
             <div class="title">
@@ -21,6 +21,9 @@
             </div>
             <div class="cuisine">{% for cuisine in restaurant.cuisines.all %}{{ cuisine }} {% endfor %}</div>
             <div class="address">{{ restaurant.address }}</div>
+            {% if restaurant.address_note %}
+                <div class="address_note">Address note: {{ restaurant.address_note }}</div>
+            {% endif %}
             <div class="phone">{{ restaurant.phone }}</div>
         </div>
 
@@ -39,6 +42,13 @@
                              <a href="{% url "venues.views.moderate.moderate_restaurant" restaurant.pk %}"
                              class="btn btn-alt">moderate</a>
                         {% endif %}
+                    </small>
+                {% else %}
+
+                    <small>
+                        <a id="edit-login" class="btn btn-alt" data-toggle="modal" href="#login_modal">edit</a>
+
+                        <a id="report-login" class="btn btn-alt" data-toggle="modal" href="#login_modal">report</a>
                     </small>
                 {% endif %}
             </div>
@@ -153,7 +163,7 @@
                 </ul>
                         <div class="tab-content">
                             <div class="tab-pane active" id="home">
-                                <p> Pleace login to write review. </p>
+                        <p><a  data-toggle="modal" class="btn btn-alt btn-xs" href="#login_modal">Login</a> to write reviews</p>
                             </div>
                         </div>
             {% endif %}
@@ -206,7 +216,11 @@
             
             <div class="tab-content">
                 <div class="tab-pane active" id="home">
+                    {% if user.is_authenticated %}
                         <p> {% include "notes/note-form.html" %} </p>
+                    {% else %}
+                        <p><a  data-toggle="modal" class="btn btn-alt btn-xs" href="#login_modal">Login</a> to write notes</p>
+                    {% endif %}
                 </div>
             </div>
         </div>
@@ -274,6 +288,23 @@
                     }
                 })
             });
+
+            $('#report-login').click(function(){
+                $('#modal-google-login').attr("href", "{% url 'social:begin' 'google-oauth2' %}?next={% url "venues.views.reports.report_restaurant" restaurant.pk %}");
+                $('#modal-facebook-login').attr("href", "{% url 'social:begin' 'google-oauth2' %}?next={% url "venues.views.reports.report_restaurant" restaurant.pk %}");
+                $('#main-login-modal').attr("action", "{% url "django.contrib.auth.views.login" %}?next={% url "venues.views.reports.report_restaurant" restaurant.pk %}");
+            })
+            $('#edit-login').click(function(){
+                $('#modal-google-login').attr("href", "{% url 'social:begin' 'google-oauth2' %}?next={% url "venues.views.venuess.update_restaurant" restaurant.pk %}");
+                $('#modal-facebook-login').attr("href", "{% url 'social:begin' 'google-oauth2' %}?next={% url "venues.views.venuess.update_restaurant" restaurant.pk %}");
+                $('#main-login-modal').attr("action", "{% url "django.contrib.auth.views.login" %}?next={% url "venues.views.venuess.update_restaurant" restaurant.pk %}");
+            })
+
+            $('#login-default-btn').click(function(){
+                $('#modal-google-login').attr("href", "{% url 'social:begin' 'google-oauth2' %}?next={{ request.path }}");
+                $('#modal-facebook-login').attr("href", "{% url 'social:begin' 'google-oauth2' %}?next={{ request.path }}");
+                $('#main-login-modal').attr("action", "{% url "django.contrib.auth.views.login" %}?next={{ request.path }}");
+            })
         </script>
     {% endaddtoblock %}
 {% endblock %}

@@ -1,12 +1,6 @@
 
 Todo:
 
-Test social auth.
-
-
-
-Bug: Search page map pin not working for regular users and users who are not logged in.
-
 Add shop number in restaurant model and form.
 
 Dont update address box with google api, just update city and country.
@@ -26,7 +20,9 @@ Add masjid page, add this on moderator page
 
 Done:
 
+Test social auth.
 Bug: At the moment any logged in user can update reviews. Fix: Only user who wrote the review can update it.
+Bug: Search page map pin not working for regular users and users who are not logged in.
 
 three buttons on restaurant profile: Update, Report, Moderate. The moderate page will open another page where we will have option to
 suspend restaurants.

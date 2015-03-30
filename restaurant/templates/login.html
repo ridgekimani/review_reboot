@@ -6,7 +6,7 @@
                 <h4 class="modal-title">Login</h4>
             </div>
             <div class="modal-body">
-                <form action="{% url "django.contrib.auth.views.login" %}?next={{ request.path }}" method="post"
+                <form id="main-login-modal" action="{% url "django.contrib.auth.views.login" %}?next={{ request.path }}" method="post"
                       role="form">
                     {% csrf_token %}
                     <div class="form-group">
@@ -19,12 +19,12 @@
                     <button type="submit" class="btn btn-primary pull-left">Login</button>
                 </form>
                 <div class="pull-right">
-                    <a class="btn btn-social btn-google-plus" data-toggle="modal"
+                    <a id="modal-google-login" class="btn btn-social btn-google-plus" data-toggle="modal"
                        href="{% url 'social:begin' 'google-oauth2' %}?next={{ request.path }}">
                         <i class="fa fa-google-plus"></i>
                         Login wih Google
                     </a>
-                    <a class="btn btn-social btn-facebook" data-toggle="modal"
+                    <a id="modal-google-login" class="btn btn-social btn-facebook" data-toggle="modal"
                        href="{% url 'social:begin' 'facebook' %}?next={{ request.path }}">
                         <i class="fa fa-facebook"></i>
                         Login with Facebook

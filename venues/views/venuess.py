@@ -86,10 +86,10 @@ def index(request):
         page = request.GET.get('page')
         restaurants = Restaurant.objects.filter(approved=True, is_suspended=False)
 
-    if hasattr(request.user, 'is_venue_moderator') and request.user.is_venue_moderator():
-        pass
-    else:
-        restaurants = Restaurant.objects.filter(approved=True, is_suspended=False)
+    #if hasattr(request.user, 'is_venue_moderator') and request.user.is_venue_moderator():
+    #    pass
+    #else:
+    #    restaurants = Restaurant.objects.filter(approved=True, is_suspended=False)
 
     paginator = Paginator(restaurants, 20)
     page = request.GET.get("page")
@@ -181,9 +181,9 @@ def add_restaurant(request):
 def update_restaurant(request, rest_pk):
     _restaurant = get_object_or_404(Restaurant, pk=rest_pk)
 
-    if not request.user.is_venue_moderator():
-        if not (_restaurant.created_by == request.user and not _restaurant.approved):
-            return redirect(reverse('django.contrib.auth.views.login') + "?next=%s" % request.path)
+    #if not request.user.is_venue_moderator():
+    #    if not (_restaurant.created_by == request.user and not _restaurant.approved):
+    #        return redirect(reverse('django.contrib.auth.views.login') + "?next=%s" % request.path)
 
     context = {
         'restaurant': _restaurant,
@@ -194,7 +194,7 @@ def update_restaurant(request, rest_pk):
 
     if request.method == 'POST':
         rest_data = request.POST.copy()
-        rest_data['cuisines'] = [int(rest_data['cuisines']), ]
+        #rest_data['cuisines'] = [int(rest_data['cuisines']), ]
         # rest_data['cuisines'] = list([int(i) for i in rest_data['cuisines']])
         form = forms.RestaurantForm(rest_data, instance=_restaurant, request=request)  # A form bound to the POST data
         if form.is_valid():

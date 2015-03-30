@@ -9,6 +9,7 @@ from simple_history.models import HistoricalRecords
 from venues.models._common import CommonModel
 
 from autoslug import AutoSlugField
+from django.core.validators import MaxLengthValidator
 
 
 __author__ = 'm'
@@ -25,6 +26,8 @@ class Venue(CommonModel):
     address = models.CharField(max_length=150)
     city = models.CharField(max_length=150)
     country = models.CharField(max_length=150)
+
+    address_note = models.TextField(validators=[MaxLengthValidator(200)], blank=True)
 
     phone = models.CharField(
         max_length=12,

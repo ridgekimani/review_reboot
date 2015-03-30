@@ -4,6 +4,8 @@ from simple_history.models import HistoricalRecords
 from venues.models import Venue
 from venues.models.cuisine import Cuisine
 
+from django.core.validators import MaxLengthValidator
+
 __author__ = 'm'
 
 # simple_history will add its tables to db only if field added to model class,

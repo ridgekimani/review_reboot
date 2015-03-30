@@ -44,7 +44,7 @@ class RestaurantForm(CommonForm):
     class Meta:
         model = Restaurant
         fields = ['name', 'address', 'phone', 'cuisines','about', 'catering', 'delivery', 'alcoholFree',
-                  'porkFree', 'muslimOwner', 'location', 'menu', 'city', 'country', 'website']
+                  'porkFree', 'muslimOwner', 'location', 'menu', 'city', 'country', 'website', 'address_note']
         widgets = {
             'menu': forms.RadioSelect(),
             'alcoholFree': forms.RadioSelect(),

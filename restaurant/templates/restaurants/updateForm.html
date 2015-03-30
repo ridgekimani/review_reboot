@@ -35,13 +35,13 @@
                     <!--{{ form.country|add_class:'select' }}-->
                     {%  render_field form.country class="form-control input-sm" placeholder="" required="" %}
                 </td>
+            
+            <tr>
+                <td>Address note</td>
+                <td>
+                    {%  render_field form.address_note class="form-control input-sm auto-size m-b-10" placeholder="Address note (max 300 chars)" required="" cols="40" rows="3" %}
+                </td>
             </tr>
-            {#                        <tr>#}
-            {#                            <td>Note</td>#}
-            {#                            <td><textarea class="form-control auto-size m-b-10"#}
-            {#                                          placeholder="This is an auto sizing Textarea..."></textarea>#}
-            {#                            </td>#}
-            {#                        </tr>#}
             <tr>
                 <td><span class="formTitle">Phone</span></td>
                 <td>

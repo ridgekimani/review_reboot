@@ -43,7 +43,7 @@
     <a class="logo pull-left" href="/">SUPER ADMIN 1.0</a>
     {% if not user.is_authenticated %}
         <form class="navbar-form pull-right">
-            <a class="btn btn-primary" data-toggle="modal" href="#login_modal">Login</a>
+            <a id='login-default-btn' class="btn btn-primary" data-toggle="modal" href="#login_modal">Login</a>
         </form>
     {% endif %}
     <div class="media-body">
