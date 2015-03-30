@@ -1,27 +1,39 @@
 
 Todo:
 
-Add about in restaurant model, link it with the restaurant profile.
+Test social auth.
 
-three buttons on restaurant profile: Update, Report, Moderate. The moderate page will open another page where we will have option to
-suspend restaurants.
+Bug: At the moment any logged in user can update reviews. Fix: Only user who wrote the review can update it.
 
-On search bar, add name and dropdown option for venue type
+Add shop number in restaurant model and form.
+
+Dont update address box with google api, just update city and country.
+
+Add note for address in model and form. (300 characters)
+
+
 
 After new restaurant is submitted, show message "Submitted for review" - this will be a new page.
 
-On every restaurant, add button for moderators, they can remove restaurant and write a note for removing.
+Do later:
 
 On moderator page, create two rows, one for restaurants one for masjids
-
-Restaurant approval page: separate columns for: "Needs Approval", "Suspended"
-
-
 
 Add masjid page, add this on moderator page
 
 
 Done:
+
+three buttons on restaurant profile: Update, Report, Moderate. The moderate page will open another page where we will have option to
+suspend restaurants.
+
+Add about in restaurant model, link it with the restaurant profile.
+
+Restaurant approval page: separate columns for: "Needs Approval", "Suspended"
+
+On every restaurant, add button for moderators, they can remove restaurant and write a note for removing.
+
+On search bar, add name and dropdown option for venue type
 
 put filters: Today, this week, this month on moderator page.
 
