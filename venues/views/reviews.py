@@ -71,6 +71,10 @@ def show_all_reviews(request, rest_pk):
 @login_required
 @require_GET
 def remove_review(request, review_pk):
+    review = get_object_or_404(Review, id = review_pk)
+    if not request.user.is_venue_moderator():
+        if not (review.created_by == request.user):
+            return redirect(reverse('django.contrib.auth.views.login') + "?next=%s" % request.path)
     Review.objects.get(pk=review_pk).delete()
     return redirect(request.META['HTTP_REFERER'])
 
@@ -116,18 +120,26 @@ def update_review(request, review_pk):
     }
 
     if request.method == 'GET':
-        context['form'] = ReviewForm(instance=review, request=request)
-    elif request.method == 'POST':
-        form = ReviewForm(request.POST, instance=review, request=request)
-        if form.is_valid():
-            form.save()
-            messages.add_message(request, messages.INFO, "Review is updated!")
-            if rest.slug:
-                return redirect(reverse('venues.views.venuess.restaurant_by_slug', args=[rest.slug]))
-            else:
-                return redirect(reverse('venues.views.venuess.restaurant', args=[rest_pk]))
+        if request.user.is_venue_moderator() or (review.created_by == request.user):
+            context['form'] = ReviewForm(instance=review, request=request)
         else:
-            context['form'] = form
+            return redirect(reverse('django.contrib.auth.views.login') + "?next=%s" % request.path)
+
+
+    elif request.method == 'POST':
+        if request.user.is_venue_moderator() or (review.created_by == request.user):
+            form = ReviewForm(request.POST, instance=review, request=request)
+            if form.is_valid():
+                form.save()
+                messages.add_message(request, messages.INFO, "Review is updated!")
+                if rest.slug:
+                    return redirect(reverse('venues.views.venuess.restaurant_by_slug', args=[rest.slug]))
+                else:
+                    return redirect(reverse('venues.views.venuess.restaurant', args=[rest_pk]))
+            else:
+                context['form'] = form
+        else:
+            return redirect(reverse('django.contrib.auth.views.login') + "?next=%s" % request.path)
     
     return render(request, 'reviews/update.html', context)
 
