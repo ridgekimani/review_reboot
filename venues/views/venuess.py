@@ -112,7 +112,9 @@ def restaurant(request, rest_pk):
     note_form = forms.NoteForm()
     if not _restaurant.approved and \
             not (hasattr(request.user, 'is_venue_moderator') and request.user.is_venue_moderator()):
-        raise Http404
+        return render(request, 'restaurants/submitted.html',{
+                "restaurant_slug":_restaurant.slug
+                })
 
     if request.user.is_authenticated():
         reveiw_by_user = Review.objects.filter(venue_id = rest_pk, created_by = request.user)
