@@ -1,0 +1,175 @@
+<script src="https://maps.googleapis.com/maps/api/js?libraries=places"></script>
+<script>
+    function initialize_map() {
+        var position;
+        {% if form.location.value %}
+            // TODO bad hack should be fixed with better way to get x,y value of location
+            re = /POINT\s*\((-?\d+(.\d+)?)\s+(-?\d+(.\d+)\))/i;
+            result = re.exec("{% spaceless %}{{ form.location.value }}{% endspaceless %}");
+            position = new google.maps.LatLng(parseFloat(result[3]), parseFloat(result[1]));
+        {% else %}
+            position = new google.maps.LatLng(-33.8902, 151.1759);
+        {% endif %}
+
+        var value = 'POINT (' + position.lng() + ' ' + position.lat() + ')';
+        $("#id_location").html(value);
+
+        map = new google.maps.Map(document.getElementById('map-canvas'), {
+            mapTypeId: google.maps.MapTypeId.ROADMAP,
+            center: position,
+            zoom: 16
+        });
+
+        var marker = new google.maps.Marker({
+            map: map,
+            title: "",
+            draggable: true,
+            position: position
+        });
+
+
+        function searchPlace(from_field, onlyfield){
+            var $address = $("#id_address"),
+                $city = $("#id_city"),
+                country = $("#id_country"),
+                search_str = [];
+
+            if (onlyfield===undefined) {
+                onlyfield = '';
+            }
+            if ((!onlyfield) || (onlyfield == 'id_address'))
+                search_str.push($address.val());
+            if ((!onlyfield) || (onlyfield == 'id_city'))
+                search_str.push($city.val());
+            if ((!onlyfield) || (onlyfield == 'id_country'))
+                search_str.push(country);
+
+            autocompleteSearch(search_str.join(', '), from_field);
+
+
+        }
+
+        function autocompleteSearch(str, from_field) {
+            autocomplete.getPlacePredictions({input: str}, function(predictions, status) {
+                    var googlePlacesService = new google.maps.places.PlacesService($("<input id='q'/>")[0]);
+                    if (status === google.maps.places.PlacesServiceStatus.OK) {
+                        googlePlacesService.getDetails({
+                            reference: predictions[0].reference
+                        }, function(details, status){
+                            if(details){
+                                fromblur = [details];
+                                google.maps.event.trigger(searchBox, 'places_changed');
+                            }
+                        });
+                    }else {
+                        if (from_field!==undefined) {
+                            searchPlace(from_field, from_field);
+                        }
+                    }
+                });
+        }
+
+
+        // Create the search box and link it to the UI element.
+        var input = document.getElementById('id_address');
+        $(input).on('keypress', function (event) {
+            if (event.keyCode == 13) {
+                searchPlace();
+                return false;
+            }
+        });
+
+        
+        //map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
+        var searchBox = new google.maps.places.SearchBox(input);
+
+        
+        var autocomplete = new google.maps.places.AutocompleteService();
+
+        var fromblur = false;
+        $(input).on('blur', function(){
+            searchPlace('id_address');
+        });
+
+        $("#id_city").change(function(){
+           searchPlace('id_city');
+        });
+
+        $("#id_city").blur(function(){
+           searchPlace('id_city');
+        });
+        $("#id_country").change(function(){
+           searchPlace('id_country');
+        });
+
+        google.maps.event.addListener(searchBox, 'places_changed', function () {
+            if (fromblur) {
+                var places = fromblur;
+            } else {
+                var places = searchBox.getPlaces();
+            }
+            fromblur = false;
+
+
+
+            if (places.length == 0) {
+                return
+            }
+
+            var place = places[0];
+
+            var address_str = [];
+            var city = '';
+            for(var item in place.address_components) {
+                var component = place.address_components[item];
+                if (component.types && component.types[1] == 'political') {
+                    if (component.types[0] == 'locality') {
+                        city = component.long_name;
+                    } else if (component.types[0] == 'administrative_area_level_1') {
+                        if (!city) {
+                           city = component.long_name;
+                        }
+                        city += ', '+component.short_name;
+                    } else  if (component.types[0] == 'country') {
+                        //$("#id_country option[value="+component.short_name+"]").prop('selected', true);
+                        //$("#id_country").selectpicker('refresh');
+                        country = component.long_name
+                    }
+                } else if ($.inArray(component.types[0], ['street_number', 'route']) != -1) {
+                    address_str.push(component.long_name)
+                }
+            }
+            $("#id_city").val(city);
+            $("#id_country").val(country)
+            $("#id_address").val(address_str.join(' '));
+
+            marker.title = place.name;
+            marker.setPosition(place.geometry.location);
+            map.setCenter(marker.position);
+
+            var value = 'POINT (' + marker.position.lng() + ' ' + marker.position.lat() + ')';
+            $("#id_location").html(value);
+        });
+
+        google.maps.event.addListener(map, 'click', function(event) {
+            marker.setPosition(event.latLng);
+            var value = 'POINT (' + event.latLng.lng() + ' ' + event.latLng.lat() + ')';
+            $("#id_location").html(value);
+        });
+
+        google.maps.event.addListener(map, 'bounds_changed', function () {
+            var bounds = map.getBounds();
+            searchBox.setBounds(bounds);
+        });
+
+        google.maps.event.addListener(marker, 'dragend', function (event) {
+            console.log(event);
+            var value = 'POINT (' + event.latLng.lng() + ' ' + event.latLng.lat() + ')';
+            $("#id_location").html(value);
+        });
+    }
+    $(function () {
+        initialize_map();
+    });
+
+</script>
