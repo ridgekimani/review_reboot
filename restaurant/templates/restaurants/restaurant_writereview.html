@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+{% load sekizai_tags static %}
+{% block body %}
+                {% if messages %}
+                    {% for message in messages %}
+                        {% if message.tags  %}
+                            <div class="alert alert-success alert-dismissable fade in">
+                                <button class="close" aria-hidden="true" data-dismiss="alert" type="button">x</button>
+                                {{message}}
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+
+    <h4 class="page-title">
+    Write review for {{ restaurant.name }}
+    <p>
+    <a href="{% url 'venues.views.venuess.restaurant' restaurant.pk %}" class="btn btn-alt"><< Back to the restaurant profile</a>
+    <a href="{% url 'restaurant_allreviews' restaurant.pk %}" class="btn btn-alt">All reviews</a>
+    </p></h4>
+    
+    <div class="block-area">
+
+
+
+        <div class="row">
+            {% if not reveiw_by_user %}
+            <div class="col-md-12">
+                <form action="{% url 'venues.views.reviews.add_review' restaurant.pk %}" method="post">
+
+                    <div class="tab-container tile">
+                        <ul class="nav tab nav-tabs">
+                            <li class="active"><a href="#home">Write a Review</a></li>
+                        </ul>
+                        <div class="tab-content">
+                            <div class="tab-pane active" id="home">
+                                <p> {% include "reviews/review-form.html" %} </p>
+                            </div>
+                        </div>
+                    </div>
+
+                </form>
+
+            </div>
+            {% else %}
+
+            <div class="col-md-12">
+            <h4>You have already write review for this restaurant.</h4>
+                <a class="btn btn-alt "
+                    href="{% url "venues.views.reviews.update_review" reveiw_by_user.0.pk %}">
+                    <span class="glyphicon glyphicon-edit"></span>
+                    Edit your review
+                </a>
+            </div>
+            {% endif %}
+        </div>
+
+    </div>
+
+    {% addtoblock "js" %}
+        <script>
+            $(function () {
+                console.log($(".note-remove"));
+                $(".note-remove").click(function (event) {
+                    if (!confirm("Are you sure?")) {
+                        return false;
+                    }
+                })
+            });
+        </script>
+    {% endaddtoblock %}
+{% endblock %}

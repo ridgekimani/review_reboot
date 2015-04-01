@@ -137,17 +137,28 @@ def restaurant(request, rest_pk):
 
 @login_required
 @require_GET
-def reviews_view(request,rest_pk):
+def add_review_view(request,rest_pk):
     _restaurant = get_object_or_404(Restaurant, pk=rest_pk)
-    note_form = forms.NoteForm()
     if not _restaurant.approved and \
             not (hasattr(request.user, 'is_venue_moderator') and request.user.is_venue_moderator()):
         raise Http404
 
     reveiw_by_user = Review.objects.filter(venue_id = rest_pk, created_by = request.user)
-    return render(request, 'restaurants/restaurantReviews.html', {
+    return render(request, 'restaurants/restaurant_writereview.html', {
         'restaurant': _restaurant,
         'reveiw_by_user' : reveiw_by_user,
+    })
+
+@login_required
+@require_GET
+def add_note_view(request,rest_pk):
+    _restaurant = get_object_or_404(Restaurant, pk=rest_pk)
+    if not _restaurant.approved and \
+            not (hasattr(request.user, 'is_venue_moderator') and request.user.is_venue_moderator()):
+        raise Http404
+
+    return render(request, 'restaurants/restaurant_addnote.html', {
+        'restaurant': _restaurant,
     })
 
 
@@ -223,4 +234,25 @@ def restaurant_by_slug(request, slug):
     '''
     r = get_object_or_404(Restaurant, slug=slug)
     return restaurant(request, r.pk)
+
+
+def all_reviews_view(request, rest_pk):
+    rest = get_object_or_404(Restaurant, pk=rest_pk)
+
+    reviews = Review.objects.filter(venue_id=rest_pk)
+
+    return render(request, 'reviews/all_reviews.html',{
+        'reviews':reviews,
+        'restaurant':rest
+        })
+
+def all_notes_view(request, rest_pk):
+    rest = get_object_or_404(Restaurant, pk=rest_pk)
+
+    notes = Note.objects.filter(venue_id=rest_pk)
+
+    return render(request, 'notes/all_notes.html',{
+        'notes':notes,
+        'restaurant':rest
+        })
 

@@ -32,14 +32,19 @@ urlpatterns = patterns('venues.views',
     url(r'restaurant/(?P<rest_pk>[0-9]+)/report/$', 'reports.report_restaurant'),
     url(r'restaurant/(?P<rest_pk>[0-9]+)/update/$', 'venuess.update_restaurant'),
     url(r'restaurant/(?P<rest_pk>[0-9]+)/approve/$', 'moderate.approve_restaurant'),
-    url(r'restaurant/(?P<rest_pk>[0-9]+)/$', 'venuess.restaurant'),
+    url(r'restaurant/(?P<rest_pk>[0-9]+)/$', 'venuess.restaurant', name="restaurant_profile"),
     url(r'restaurant/(?P<rest_pk>[0-9]+)/note/new/$', 'notes.add_note'),
     url(r'restaurant/(?P<rest_pk>[0-9]+)/review/new/$', 'reviews.add_review'),
-    url(r'restaurant/(?P<rest_pk>[0-9]+)/writereview/$', 'venuess.reviews_view'),
+
+    url(r'restaurant/(?P<rest_pk>[0-9]+)/writereview/$', 'venuess.add_review_view', name='restaurant_writereview'),
+    url(r'restaurant/(?P<rest_pk>[0-9]+)/addnote/$', 'venuess.add_note_view', name='restaurant_addnote'),
 
     url(r'restaurant/(?P<rest_pk>[0-9]+)/moderate/$', 'moderate.moderate_restaurant'),
     url(r'restaurant/(?P<rest_pk>[0-9]+)/unsuspend/$', 'moderate.unsuspend_restaurant'),
     url(r'restaurant/(?P<rest_pk>[0-9]+)/remove/$', 'moderate.suspend_restaurant'),
+
+    url(r'restaurant/(?P<rest_pk>[0-9]+)/allreviews/$', 'venuess.all_reviews_view', name='restaurant_allreviews'),
+    url(r'restaurant/(?P<rest_pk>[0-9]+)/allnotes/$', 'venuess.all_notes_view', name='restaurant_allnotes'),
 
     # common
     url(r'get_category/', 'get_category', name='get_drugs'),

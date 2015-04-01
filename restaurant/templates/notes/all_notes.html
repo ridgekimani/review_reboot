@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% load sekizai_tags static %}
+{% block body %}
+
+<style>
+    .profile-tile{
+        padding: 10px;
+        position: relative;
+    }
+    .profile-tile time{
+        position: absolute;
+        top: 10px;
+        right: 10px;
+    }
+    .profile-block-title{
+        width: 100%;
+    }
+</style>
+    <h4 class="page-title">Notes for {{ restaurant.name }}
+                <p class="">
+                    <a href="{% url 'restaurant_profile' restaurant.pk %}" class="btn btn-alt"><< Back to the restaurant profile</a>
+                    <a href="{% url 'restaurant_addnote' restaurant.pk %}" class="btn btn-alt">Add note</a>
+                </p></h4>
+    <div class="block-area">
+        <div class="row fieldWysiwye">
+            <div class="col-xs-12 col-md-12">
+                {% for note in notes %}
+                    <div class="tile profile-tile">
+                        <!--  <a class="btn btn-default pull-right"
+                           href="#">
+                            <span class="glyphicon glyphicon-edit"></span>
+                        </a> -->
+                        <b><a href="{{ review.content_object.show_url }}">{{ note.created_by }}</a> </b>
+                        <div>
+                           <p>{{ note.text }}</p> 
+                        </div>
+                        <div>
+                           <p>{{ note.created_on }}</p> 
+                        </div>
+                    </div>
+                {% empty %}
+                    <h3>
+                        No notes for that restaurant. 
+                        <a href="#" class="btn btn-alt">Add your note</a>
+                {% endfor %}
+                
+            </div>
+            
+    </div>
+{% endblock %}

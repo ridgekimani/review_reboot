@@ -206,10 +206,14 @@
                     <!--</div>-->
                 </div>
                 {% empty %}
-                    <div class="list-group-item">
-                        You didn't write any reviews
-                    </div>
+                    <p>
+                        There is no reviews.
+                    </p>
                 {% endfor %}
+
+                {% if reviews %}
+                    <a href="{% url 'restaurant_allreviews' restaurant.pk %}" class="btn btn-alt pull-right">All reviews</a>
+                {% endif %}
                 
             </div>
             
@@ -253,11 +257,13 @@
                         </div>
                     </div>
                 {% empty %}
-                    <div class="list-group-item">
-                        You didn't write any reviews
-                    </div>
+                    <p>
+                        There is no notes.
+                    </p>
                 {% endfor %}
-
+                {% if notes %}
+                    <a href="{% url 'restaurant_allnotes' restaurant.pk %}" class="btn btn-alt pull-right">All notes</a>
+                {% endif %}
             </div>
         </div>
 

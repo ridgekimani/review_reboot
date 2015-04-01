@@ -4,15 +4,7 @@ Todo:
 On json api: send review count, ratings and note count. (will this effect the performance ? Any other alternative to get
 review count on mobile device ?)
 
-Create a new single page (no nav bars no search bar) this page will show all reviews for a given restaurant ... url = site.cpm/restaurant/pk/allreviews
-
-Create another single page for note site.cpm/restaurant/pk/allnotes (add header and footer for both these pages, header will be site name)
-
-
-
 Dont update address box with google api, just update city and country.
-
-
 
 Do later:
 
@@ -22,6 +14,10 @@ Add masjid page, add this on moderator page
 
 
 Done:
+
+Create a new single page (no nav bars no search bar) this page will show all reviews for a given restaurant ... url = site.cpm/restaurant/pk/allreviews
+
+Create another single page for note site.cpm/restaurant/pk/allnotes (add header and footer for both these pages, header will be site name)
 
 Add footer in all pages.
 

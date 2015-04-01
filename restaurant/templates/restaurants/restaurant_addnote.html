@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+{% load sekizai_tags static %}
+{% block body %}
+                {% if messages %}
+                    {% for message in messages %}
+                        {% if message.tags  %}
+                            <div class="alert alert-success alert-dismissable fade in">
+                                <button class="close" aria-hidden="true" data-dismiss="alert" type="button">x</button>
+                                {{message}}
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+
+    <h4 class="page-title">
+    Write note for {{ restaurant.name }}
+    <p>
+    <a href="{% url 'venues.views.venuess.restaurant' restaurant.pk %}" class="btn btn-alt"><< Back to the restaurant profile</a>
+    <a href="{% url 'restaurant_allnotes' restaurant.pk %}" class="btn btn-alt">All notes</a>
+    </p></h4>
+    
+    <div class="block-area">
+
+
+
+        <div class="row">
+            <div class="col-md-12">
+                <form action="{% url 'venues.views.notes.add_note' restaurant.pk %}" method="post">
+                {% csrf_token %}
+
+                <div class="tab-container tile">
+                    <ul class="nav tab nav-tabs">
+                        <li class="active"><a href="#home">Write a note on Halal-ness</a></li>
+                    </ul>
+                    
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="home">
+                                <p> {% include "notes/note-form.html" %} </p>
+                        </div>
+                    </div>
+                </div>
+
+                </form>
+
+            </div>
+        </div>
+
+    </div>
+
+    {% addtoblock "js" %}
+        <script>
+            $(function () {
+                console.log($(".note-remove"));
+                $(".note-remove").click(function (event) {
+                    if (!confirm("Are you sure?")) {
+                        return false;
+                    }
+                })
+            });
+        </script>
+    {% endaddtoblock %}
+{% endblock %}

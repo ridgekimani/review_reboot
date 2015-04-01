@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% load sekizai_tags static %}
+{% block body %}
+
+<style>
+    .profile-tile{
+        padding: 10px;
+        position: relative;
+    }
+    .profile-tile time{
+        position: absolute;
+        top: 10px;
+        right: 10px;
+    }
+    .profile-block-title{
+        width: 100%;
+    }
+</style>
+    <h4 class="page-title">Reviews for {{ restaurant.name }}
+                <p class=""><a href="{% url 'restaurant_profile' restaurant.pk %}" class="btn btn-alt"><< Back to the restaurant profile</a>
+                <a href="{% url 'restaurant_writereview' restaurant.pk %}" class="btn btn-alt">Write review</a></p></h4>
+    <div class="block-area">
+        <div class="row fieldWysiwye">
+            <div class="col-xs-12 col-md-12">
+                {% for review in reviews %}
+                <div class="tile profile-tile">
+                    <!--<div class="list-group-item {{ review.approved|yesno:"list-group-item-success, list-group-item-danger" }}">-->
+                        {% if review.created_by == request.user %}
+                        <a class="btn btn-alt pull-right"
+                           href="{% url "venues.views.reviews.update_review" review.id %}">
+                            <span class="glyphicon glyphicon-edit"></span>
+                        </a>
+                        {% endif %}
+                        <b><a href="{% url 'venues.views.profile.user_profile' review.created_by.pk %}">{{ review.created_by }}</a></b> |
+                        <strong>{{ review.rating }}</strong> of 5
+                           <p>{{ review.text }}</p> 
+                           <p>{{ review.created_on }}</p> 
+                    <!--</div>-->
+                </div>
+                {% empty %}
+                    <h3>
+                        No reviews for that restaurant. 
+                {% endfor %}
+                
+            </div>
+            
+    </div>
+{% endblock %}
