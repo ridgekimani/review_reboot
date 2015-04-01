@@ -1,9 +1,33 @@
 
 Todo:
 
+On json api: send review count, ratings and note count. (will this effect the performance ? Any other alternative to get
+review count on mobile device ?)
 
+On template/profile,  delete the duplicate profile.html
+
+If we are not using restaurantlist.html, then delete it as well
+
+On user restaurant profile, show reviews, notes like the user profile (separate transparent cell for
+each item)
+
+update all urls: for restuarants use = site.com/restaurant/pk
+                 for reports     use = site.com/restaurant/pk/report
+                 for update/edit      use = site.com/restaurant/pk/update
+                 for single review page = site.com/restaurant/pk/writereview
+                 for single note page   = site.com/restaurant/pl/addnote
+
+                 for user profile use = site.com/user/pk (update all user urls like this)
+
+
+Create a new single page (no nav bars no search bar) this page will show all reviews for a given restaurant ... url = site.cpm/restaurant/pk/allreviews
+
+Create another single page for note site.cpm/restaurant/pk/allnotes (add header and footer for both these pages, header will be site name)
+
+Add footer in all pages.
 
 Dont update address box with google api, just update city and country.
+
 
 
 Do later:
