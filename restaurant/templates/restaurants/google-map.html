@@ -33,12 +33,16 @@
         });
 
         var input = document.getElementById('id_city');
-        var input2 = document.getElementById('id_country');
+        var input_country = document.getElementById('id_country');
         var options = {
             types: ['(city)']
         };
+        var options_country = {
+            types: ['(regions)']
+        };
 
         var searchBox = new google.maps.places.SearchBox(input,options);
+        var searchBox_country = new google.maps.places.SearchBox(input_country,options_country);
 
         
 
@@ -57,9 +61,7 @@
             var value = 'POINT (' + marker.position.lng() + ' ' + marker.position.lat() + ')';
             $("#id_location").html(value);
 
-                    } else {
-                        alert("Geocode was not successful for the following reason: " + status);
-                    }
+                    } 
                 });
             }
 
@@ -92,6 +94,25 @@
                 }
             };
             $('#id_city').val(city_v);
+            set_map();
+        });
+
+        google.maps.event.addListener(searchBox_country, 'places_changed', function () {
+            var address_str = [];
+            var places = searchBox.getPlaces();
+            var place = places[0];
+            //alert(places[0].address_components[4].types[0]);
+            var country_v = '';
+            var city_v = '';
+            var political_v = '';
+            for (var item in place.address_components){
+                var component = place.address_components[item];
+                if (component.types && component.types[1] == 'political') {
+                    if (component.types[0] == 'country') {
+                        country_v = component.long_name
+                    }
+                }
+            };
             $('#id_country').val(country_v);
             set_map();
         });
@@ -102,6 +123,18 @@
         });
 
         $("#id_address").blur(function(){
+           set_map();
+        });
+
+        $("#id_address").keypress(function(){
+           set_map();
+        });
+
+        $("#id_country").change(function(){
+           set_map();
+        });
+
+        $("#id_country").blur(function(){
            set_map();
         });
 
