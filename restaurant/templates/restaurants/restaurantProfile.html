@@ -2,6 +2,21 @@
 {% load sekizai_tags static %}
 {% block body %}
 
+<style>
+    .profile-tile{
+        padding: 10px;
+        position: relative;
+    }
+    .profile-tile time{
+        position: absolute;
+        top: 10px;
+        right: 10px;
+    }
+    .profile-block-title{
+        width: 100%;
+    }
+</style>
+
                 {% if messages %}
                     {% for message in messages %}
                         {% if message.tags  %}
@@ -130,17 +145,16 @@
                 {% if not reveiw_by_user %}
                 <ul class="nav tab nav-tabs">
                     <li class="active"><a href="#home">Write a Review</a></li>
+                    
+                </ul>
                         <div class="tab-content">
                             <div class="tab-pane active" id="home">
                                 <p> {% include "reviews/review-form.html" %} </p>
                             </div>
                         </div>
-                    
-                </ul>
                 
                 {% else %}
 
-                <div class="col-md-12">
 
                 <ul class="nav tab nav-tabs">
                     <li class="active"><a href="#home">You have already write review for this restaurant.</a>
@@ -154,9 +168,8 @@
                         <span class="glyphicon glyphicon-edit"></span> Edit your review
                     </a>
                 </div>
-                </div>
                 {% endif %}
-            {% else %}
+                {% else %}
                 <ul class="nav tab nav-tabs">
                     <li class="active"><a href="#home">Write a Review</a></li>
                     
@@ -172,37 +185,32 @@
             </form>
 
 
-                <h4 class="page-title">Reviews</h4>
-                <div class="block-area">
-                    <div class="list-group">
-                        {% for review in reviews %}
-                            <div class="list-group-item {{ review.approved|yesno:"list-group-item-success, list-group-item-danger" }}">
-                                {% if review.created_by == request.user %}
-                                <a class="btn btn-alt pull-right"
-                                   href="{% url "venues.views.reviews.update_review" review.id %}">
-                                    <span class="glyphicon glyphicon-edit"></span>
-                                </a>
-                                {% endif %}
-                                <a href="{% url 'venues.views.profile.user_profile' review.created_by.pk %}">{{ review.created_by }}</a> |
-                                <strong>{{ review.rating }}</strong> of 5
-                                <div>
-                                   <p>{{ review.text }}</p> 
-                                </div>
-                                <div>
-                                   <p>{{ review.created_on }}</p> 
-                                </div>
-                            </div>
-                        {% empty %}
-                            <div class="list-group-item">
-                                You didn't write any reviews
-                            </div>
-                        {% endfor %}
-                    </div>
-
                 
+                <h3 class="block-title profile-block-title">
+                    Reviews
+                </h3>
+                
+                {% for review in reviews %}
+                <div class="tile profile-tile">
+                    <!--<div class="list-group-item {{ review.approved|yesno:"list-group-item-success, list-group-item-danger" }}">-->
+                        {% if review.created_by == request.user %}
+                        <a class="btn btn-alt pull-right"
+                           href="{% url "venues.views.reviews.update_review" review.id %}">
+                            <span class="glyphicon glyphicon-edit"></span>
+                        </a>
+                        {% endif %}
+                        <b><a href="{% url 'venues.views.profile.user_profile' review.created_by.pk %}">{{ review.created_by }}</a></b> |
+                        <strong>{{ review.rating }}</strong> of 5
+                           <p>{{ review.text }}</p> 
+                           <p>{{ review.created_on }}</p> 
+                    <!--</div>-->
                 </div>
+                {% empty %}
+                    <div class="list-group-item">
+                        You didn't write any reviews
+                    </div>
+                {% endfor %}
                 
-            
             </div>
             
         <div class="col-xs-12 col-md-6">
@@ -227,35 +235,32 @@
 
         </form>
 
-                <h4 class="page-title">Notes</h4>
-                <div class="block-area">
-                    <div class="list-group">
-                        {% for note in notes %}
-                            <div class="list-group-item {{ review.approved|yesno:"list-group-item-success, list-group-item-danger" }}">
-                                <!--  <a class="btn btn-default pull-right"
-                                   href="#">
-                                    <span class="glyphicon glyphicon-edit"></span>
-                                </a> -->
-                                <a href="{{ review.content_object.show_url }}">{{ note.created_by }}</a> 
-                                <div>
-                                   <p>{{ note.text }}</p> 
-                                </div>
-                                <div>
-                                   <p>{{ note.created_on }}</p> 
-                                </div>
-                            </div>
-                        {% empty %}
-                            <div class="list-group-item">
-                                You didn't write any reviews
-                            </div>
-                        {% endfor %}
+                <h3 class="block-title profile-block-title">
+                    Notes
+                </h3>
+                {% for note in notes %}
+                    <div class="tile profile-tile">
+                        <!--  <a class="btn btn-default pull-right"
+                           href="#">
+                            <span class="glyphicon glyphicon-edit"></span>
+                        </a> -->
+                        <b><a href="{{ review.content_object.show_url }}">{{ note.created_by }}</a> </b>
+                        <div>
+                           <p>{{ note.text }}</p> 
+                        </div>
+                        <div>
+                           <p>{{ note.created_on }}</p> 
+                        </div>
                     </div>
-                </div>
+                {% empty %}
+                    <div class="list-group-item">
+                        You didn't write any reviews
+                    </div>
+                {% endfor %}
 
             </div>
         </div>
 
-    </div>
 
     {% addtoblock "js" %}
         <!-- google-maps scripts -->
