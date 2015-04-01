@@ -4,10 +4,6 @@ Todo:
 On json api: send review count, ratings and note count. (will this effect the performance ? Any other alternative to get
 review count on mobile device ?)
 
-On template/profile,  delete the duplicate profile.html
-
-If we are not using restaurantlist.html, then delete it as well
-
 On user restaurant profile, show reviews, notes like the user profile (separate transparent cell for
 each item)
 
@@ -38,6 +34,11 @@ Add masjid page, add this on moderator page
 
 
 Done:
+
+On template/profile,  delete the duplicate profile.html
+
+If we are not using restaurantlist.html, then delete it as well
+
 
 Add note for address in model and form. (300 characters)
 Add shop number in restaurant model and form.
