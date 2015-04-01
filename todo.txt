@@ -4,8 +4,7 @@ Todo:
 On json api: send review count, ratings and note count. (will this effect the performance ? Any other alternative to get
 review count on mobile device ?)
 
-On user restaurant profile, show reviews, notes like the user profile (separate transparent cell for
-each item)
+
 
 update all urls: for restuarants use = site.com/restaurant/pk
                  for reports     use = site.com/restaurant/pk/report
@@ -34,6 +33,9 @@ Add masjid page, add this on moderator page
 
 
 Done:
+
+On user restaurant profile, show reviews, notes like the user profile (separate transparent cell for
+each item)
 
 On template/profile,  delete the duplicate profile.html
 
