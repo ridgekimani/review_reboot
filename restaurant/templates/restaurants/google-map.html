@@ -3,7 +3,6 @@
 <script src="https://maps.googleapis.com/maps/api/js?libraries=places"></script>
 <script>
     function initialize_map() {
-        var geocoder = new google.maps.Geocoder();
         var latitude = 50.715591133433854
         var longitude = -3.53485107421875;
         var position;
@@ -32,127 +31,39 @@
             position: position
         });
 
-        function searchPlace(from_field, onlyfield){
-            var $address = $("#id_address"),
-                $city = $("#id_city"),
-                country = $("#id_country"),
-                search_str = [];
-
-            if (onlyfield===undefined) {
-                onlyfield = '';
-            }
-            if ((!onlyfield) || (onlyfield == 'id_address'))
-                search_str.push($address.val());
-            if ((!onlyfield) || (onlyfield == 'id_city'))
-                search_str.push($city.val());
-            if ((!onlyfield) || (onlyfield == 'id_country'))
-                search_str.push(country);
-
-            autocompleteSearch(search_str.join(', '), from_field);
-
-
-        }
-
-        function autocompleteSearch(str, from_field) {
-            autocomplete.getPlacePredictions({input: str}, function(predictions, status) {
-                    var googlePlacesService = new google.maps.places.PlacesService($("<input id='q'/>")[0]);
-                    if (status === google.maps.places.PlacesServiceStatus.OK) {
-                        googlePlacesService.getDetails({
-                            reference: predictions[0].reference
-                        }, function(details, status){
-                            if(details){
-                                fromblur = [details];
-                                google.maps.event.trigger(searchBox, 'places_changed');
-                            }
-                        });
-                    }else {
-                        if (from_field!==undefined) {
-                            searchPlace(from_field, from_field);
-                        }
-                    }
-                });
-        }
-
-        // Create the search box and link it to the UI element.
-        var input_address = document.getElementById('id_address');
-        $(input_address).on('keypress', function (event) {
-            if (event.keyCode == 13) {
-                searchPlace();
-                return false;
-            }
-        });
-
-
-
         var input_city = document.getElementById('id_city');
         var input_country = document.getElementById('id_country');
         var options_city = {
-            types: ['(city)']
+            types: ['(cities)']
         };
         var options_country = {
             types: ['(regions)']
         };
-        
-        var searchBox = new google.maps.places.SearchBox(input_address);
-        var searchBox_city = new google.maps.places.SearchBox(input_city,options_city);
-        var searchBox_country = new google.maps.places.SearchBox(input_country,options_country);
 
-        var autocomplete = new google.maps.places.AutocompleteService();
+        var city_autocomplete = new google.maps.places.Autocomplete(input_city,options_city);
+        var country_autocomplete = new google.maps.places.Autocomplete(input_country,options_country);
 
-        var fromblur = false;
-        $("#id_address").on('blur', function(){
-            searchPlace('id_address');
-        });
 
-        $("#id_city").change(function(){
-           searchPlace('id_city');
-        });
+        function placeChanged(autocomplete) {
 
-        $("#id_city").blur(function(){
-           searchPlace('id_city');
-        });
-        $("#id_country").change(function(){
-           searchPlace('id_country');
-        });
+            var place = autocomplete.getPlace();
+            if (!place.geometry) {
+              return;
+            }
+            if (place.geometry.viewport) {
+              map.fitBounds(place.geometry.viewport);
+            } else {
+              map.setCenter(place.geometry.location);
+            }
 
-            function set_map (street, city, country) {
-                var st = $('#id_address').val()
-                var reg = $('#id_city').val()
-                var country = $('#id_country').val()
-                var address = st+' '+reg+' '+country ;
-                geocoder.geocode({ 'address': address }, function (results, status) {
-                    if (status == google.maps.GeocoderStatus.OK) {
-                        map.setCenter(results[0].geometry.location);
-                        marker.setPosition(results[0].geometry.location);
-                        $(latitude).val(marker.getPosition().lat());
-                        $(longitude).val(marker.getPosition().lng());
+            marker.setPosition(place.geometry.location);
+            $(latitude).val(marker.getPosition().lat());
+            $(longitude).val(marker.getPosition().lng());
 
             var value = 'POINT (' + marker.position.lng() + ' ' + marker.position.lat() + ')';
             $("#id_location").html(value);
 
-                    } 
-                });
-            }
-
-
-
-        google.maps.event.addListener(searchBox, 'places_changed', function () {
-            if (fromblur) {
-                var places = fromblur;
-            } else {
-                var places = searchBox.getPlaces();
-            }
-            fromblur = false;
-
-
-
-            if (places.length == 0) {
-                return
-            }
-
-            var place = places[0];
-
-            var address_str = [];
+            var country= '';
             var city = '';
             for(var item in place.address_components) {
                 var component = place.address_components[item];
@@ -166,17 +77,23 @@
                         city += ', '+component.short_name;
                     } else  if (component.types[0] == 'country') {
                         country = component.long_name
+{#                        options_city.componentRestrictions.country = component.short_name#}
                     }
-                } else if ($.inArray(component.types[0], ['street_number', 'route']) != -1) {
-                    address_str.push(component.long_name)
                 }
             }
             $("#id_city").val(city);
             $("#id_country").val(country)
-            $("#id_address").val(address_str.join(' '));
 
-            set_map();
-        });
+          }
+
+         google.maps.event.addListener(city_autocomplete, 'place_changed', function(){
+            placeChanged(city_autocomplete);
+         });
+
+
+         google.maps.event.addListener(country_autocomplete, 'place_changed', function(){
+            placeChanged(country_autocomplete);
+         });
 
         google.maps.event.addListener(map, 'click', function(event) {
             marker.setPosition(event.latLng);
@@ -186,7 +103,8 @@
 
         google.maps.event.addListener(map, 'bounds_changed', function () {
             var bounds = map.getBounds();
-            searchBox.setBounds(bounds);
+            city_autocomplete.setBounds(bounds);
+            country_autocomplete.setBounds(bounds);
         });
 
         google.maps.event.addListener(marker, 'dragend', function (event) {
