@@ -31,6 +31,8 @@ for row in sq_curs.execute("SELECT * FROM Restaurant;"):
         yelp_url=row[6] or '',
         foursquare_url=row[8] or '',
         approved=True,
+        city=row[11],
+        country=row[12],
     )
     rest.save()
     counter += 1
