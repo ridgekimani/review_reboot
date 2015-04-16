@@ -42,35 +42,17 @@
             types: ['(regions)']
         };
 
-        //var address_searchBox = new google.maps.places.SearchBox(input_address);
         var city_autocomplete = new google.maps.places.Autocomplete(input_city,options_city);
         var country_autocomplete = new google.maps.places.Autocomplete(input_country,options_country);
 
 
         function placeChanged(autocomplete) {
-            console.log(autocomplete);
             if (autocomplete.getPlace){
                 var place = autocomplete.getPlace();
             } else {
                 var place = autocomplete.getPlaces()[0];
 
             }
-            if (!place.geometry) {
-              return;
-            }
-            if (place.geometry.viewport) {
-              map.fitBounds(place.geometry.viewport);
-            } else {
-              map.setCenter(place.geometry.location);
-            }
-
-            marker.setPosition(place.geometry.location);
-            $(latitude).val(marker.getPosition().lat());
-            $(longitude).val(marker.getPosition().lng());
-
-            var value = 'POINT (' + marker.position.lng() + ' ' + marker.position.lat() + ')';
-            $("#id_location").html(value);
-
             var country= '';
             var city = '';
             for(var item in place.address_components) {
@@ -85,30 +67,64 @@
                         city += ', '+component.short_name;
                     } else  if (component.types[0] == 'country') {
                         country = component.long_name
-{#                        options_city.componentRestrictions.country = component.short_name#}
                     }
                 }
             }
             $("#id_city").val(city);
             $("#id_country").val(country)
+            input_blur();
+
 
           }
 
-{##}
-{#        google.maps.event.addListener(address_searchBox, 'places_changed', function(){#}
-{#            placeChanged(address_searchBox);#}
-{#         });#}
+         google.maps.event.addListener(city_autocomplete, 'place_changed', function(){
+            placeChanged(city_autocomplete);
+         });
 
-{#         google.maps.event.addListener(city_autocomplete, 'place_changed', function(){#}
-{#            placeChanged(city_autocomplete);#}
-{#         });#}
-{##}
-{##}
-{##}
-{##}
-{#         google.maps.event.addListener(country_autocomplete, 'place_changed', function(){#}
-{#            placeChanged(country_autocomplete);#}
-{#         });#}
+         google.maps.event.addListener(country_autocomplete, 'place_changed', function(){
+            placeChanged(country_autocomplete);
+         });
+
+        function getNewLocation(results, status){
+
+            if (status == google.maps.GeocoderStatus.OK) {
+                        place = results[0];
+
+                        if (place.geometry.viewport) {
+                          map.fitBounds(place.geometry.viewport);
+                        } else {
+                          map.setCenter(place.geometry.location);
+                          map.setZoom(16);
+                        }
+
+                        marker.setPosition(place.geometry.location);
+                        $(latitude).val(marker.getPosition().lat());
+                        $(longitude).val(marker.getPosition().lng());
+
+                        var value = 'POINT (' + marker.position.lng() + ' ' + marker.position.lat() + ')';
+                        $("#id_location").html(value);
+
+
+                        var country= '';
+                        var city = '';
+                        for(var item in place.address_components) {
+                            var component = place.address_components[item];
+                            if (component.types && component.types[1] == 'political') {
+                                if (component.types[0] == 'locality') {
+                                    city = component.long_name;
+                                } else if (component.types[0] == 'administrative_area_level_1') {
+                                    if (!city) {
+                                       city = component.long_name;
+                                    }
+                                    city += ', '+component.short_name;
+                                } else  if (component.types[0] == 'country') {
+                                    country = component.long_name
+                                }
+                            }
+                        }
+                            return {'city':city, 'country':country}
+                 }
+        }
 
         function input_blur(){
             oldAddress = $("#id_address").val();
@@ -122,46 +138,17 @@
                     options['componentRestrictions']['locality'] = oldCity;
                 }
                 if (oldCountry.length != 0){
+                    if (!options['componentRestrictions'])
+                        options['componentRestrictions'] = {}
                     options['componentRestrictions']['country'] = oldCountry;
                 }
 
                 geocoder.geocode(options, function (results, status) {
-                    if (status == google.maps.GeocoderStatus.OK) {
-                        place = results[0];
-                        map.setCenter(place.geometry.location);
-                        marker.setPosition(place.geometry.location);
-                        $(latitude).val(marker.getPosition().lat());
-                        $(longitude).val(marker.getPosition().lng());
+                    if(loc = getNewLocation(results,status)){
 
-            var value = 'POINT (' + marker.position.lng() + ' ' + marker.position.lat() + ')';
-            $("#id_location").html(value);
-
-
-            var newCountry= '';
-            var city = '';
-            for(var item in place.address_components) {
-                var component = place.address_components[item];
-                if (component.types && component.types[1] == 'political') {
-                    if (component.types[0] == 'locality') {
-                        city = component.long_name;
-                    } else if (component.types[0] == 'administrative_area_level_1') {
-                        if (!city) {
-                           city = component.long_name;
-                        }
-                        city += ', '+component.short_name;
-                    } else  if (component.types[0] == 'country') {
-                        newCountry = component.long_name
-{#                        options_city.componentRestrictions.country = component.short_name#}
+                        $('#id_city').val(loc.city)
+                        $('#id_country').val(loc.country)
                     }
-                }
-            }
-
-                $("#id_city").val(city);
-
-
-                $("#id_country").val(newCountry)
-
-                 }
                 });
         }
 
@@ -173,46 +160,23 @@
                     options['componentRestrictions']['locality'] = reg;
                 }
                 if (country){
+                    if (!options['componentRestrictions'])
+                        options['componentRestrictions'] = {}
                     options['componentRestrictions']['country'] = country;
                 }
 
                 geocoder.geocode(options, function (results, status) {
-                    if (status == google.maps.GeocoderStatus.OK) {
-                        place = results[0];
-                        map.setCenter(place.geometry.location);
-                        marker.setPosition(place.geometry.location);
-                        $(latitude).val(marker.getPosition().lat());
-                        $(longitude).val(marker.getPosition().lng());
+                    if(loc = getNewLocation(results,status)){
 
-            var value = 'POINT (' + marker.position.lng() + ' ' + marker.position.lat() + ')';
-            $("#id_location").html(value);
+                        
+                        if (!reg)
+                            $("#id_city").val(loc.city);
 
-
-            var newCountry= '';
-            var city = '';
-            for(var item in place.address_components) {
-                var component = place.address_components[item];
-                if (component.types && component.types[1] == 'political') {
-                    if (component.types[0] == 'locality') {
-                        city = component.long_name;
-                    } else if (component.types[0] == 'administrative_area_level_1') {
-                        if (!city) {
-                           city = component.long_name;
-                        }
-                        city += ', '+component.short_name;
-                    } else  if (component.types[0] == 'country') {
-                        newCountry = component.long_name
-{#                        options_city.componentRestrictions.country = component.short_name#}
-                    }
-                }
-            }
-            if (!reg)
-                $("#id_city").val(city);
-
-            if (!country)
-                $("#id_country").val(newCountry)
+                        if (!country)
+                            $("#id_country").val(loc.country)
 
                     }
+
                 });
             }
 
@@ -231,28 +195,27 @@
 
 
         $('#id_city').focusout(function(event){
-
           input_blur();
         });
 
         $('#id_country').focusout(function(event){
            input_blur();
+
         });
+
 
         google.maps.event.addListener(map, 'click', function(event) {
             marker.setPosition(event.latLng);
             var value = 'POINT (' + event.latLng.lng() + ' ' + event.latLng.lat() + ')';
             $("#id_location").html(value);
         });
-
-        google.maps.event.addListener(map, 'bounds_changed', function () {
-            var bounds = map.getBounds();
-            city_autocomplete.setBounds(bounds);
-            country_autocomplete.setBounds(bounds);
-        });
+{##}
+{#        google.maps.event.addListener(map, 'bounds_changed', function () {#}
+{#            var bounds = map.getBounds();#}
+{#            map.setBounds(bounds);#}
+{#        });#}
 
         google.maps.event.addListener(marker, 'dragend', function (event) {
-            console.log(event);
             var value = 'POINT (' + event.latLng.lng() + ' ' + event.latLng.lat() + ')';
             $("#id_location").html(value);
         });
