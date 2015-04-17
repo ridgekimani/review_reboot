@@ -2,6 +2,7 @@
 <!doctype html>
 <html>
 <head>
+{% load analytics %}
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
     <meta name="format-detection" content="telephone=no">
     <meta charset="utf-8">
@@ -207,6 +208,7 @@
         <div class="panel panel-default tile" style="margin-bottom: 0;">
                          <div class="panel-footer">&copy; 2015 halaltracker.com. All rights reserved.</div>
                     </div>
+                    {% analytics "UA-61876839-1" %}
     </footer>
 
 {% assets "base-js" %}
