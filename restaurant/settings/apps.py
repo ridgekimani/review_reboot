@@ -1,4 +1,5 @@
 INSTALLED_APPS = (
+    'django.contrib.sites',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -14,5 +15,8 @@ INSTALLED_APPS = (
     'venues',
     "widget_tweaks", # for form add class
     'django_assets',
-    'autoslug'
+    'autoslug',
+    'google_analytics'
 )
+
+GOOGLE_ANALYTICS_MODEL = True
