@@ -10,7 +10,9 @@ def RestaurantSerializer(format, queryset, **options):
     for obj in queryset:
         obj.menu = MENU_TYPES[obj.menu]
         obj.porkFree = CHOICES[obj.porkFree]
-        obj.catering = CHOICES[obj.catering]
         obj.muslimOwner = CHOICES[obj.muslimOwner]
+        obj.alcoholFree = CHOICES[obj.alcoholFree]
+        obj.catering = CHOICES[obj.catering]
+        obj.delivery = CHOICES[obj.delivery]
 
     return serializers.serialize(format,queryset, **options)
