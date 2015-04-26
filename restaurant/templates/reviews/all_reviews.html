@@ -2,7 +2,7 @@
 {% load sekizai_tags static %}
 {% block body %}
 {% load analytics %}
-{% all_review %}
+{% review %}
 <style>
     .profile-tile{
         padding: 10px;
@@ -17,8 +17,8 @@
         width: 100%;
     }
 </style>
-    <h4 class="page-title">Reviews for {{ restaurant.name }}
-                <p class=""><a href="{% url 'restaurant_profile' restaurant.pk %}" class="btn btn-alt"><< Back to the restaurant profile</a>
+    <h4 class="page-title">{{ restaurant.name }}
+                <p class="">
                 <a href="{% url 'restaurant_writereview' restaurant.pk %}" class="btn btn-alt">Write review</a></p></h4>
     <div class="block-area">
         <div class="row fieldWysiwye">
