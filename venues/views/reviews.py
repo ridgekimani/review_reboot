@@ -132,10 +132,11 @@ def update_review(request, review_pk):
             if form.is_valid():
                 form.save()
                 messages.add_message(request, messages.INFO, "Review is updated!")
-                if rest.slug:
-                    return redirect(reverse('venues.views.venuess.restaurant_by_slug', args=[rest.slug]))
-                else:
-                    return redirect(reverse('venues.views.venuess.restaurant', args=[rest_pk]))
+                return render(request, 'reviews/update.html', context)
+                # if rest.slug:
+                #     return redirect(reverse('venues.views.venuess.restaurant_by_slug', args=[rest.slug]))
+                # else:
+                #     return redirect(reverse('venues.views.venuess.restaurant', args=[rest_pk]))
             else:
                 context['form'] = form
         else:

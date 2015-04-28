@@ -1,10 +1,21 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block body %}
+
+{% if messages %}
+    {% for message in messages %}
+        {% if message.tags  %}
+            <div class="alert alert-success alert-dismissable fade in">
+                <button class="close" aria-hidden="true" data-dismiss="alert" type="button">x</button>
+                {{message}}
+            </div>
+        {% endif %}
+    {% endfor %}
+{% endif %}
+
     <div class="panel panel-default">
         <div class="panel-body">
             <h3>{{ venue_name }}</h3>
-
             <form autocomplete="off" action="{% url "venues.views.reviews.update_review" review.pk %}"
                   method="post">{% csrf_token %}
                 <label>Rating: </label>
