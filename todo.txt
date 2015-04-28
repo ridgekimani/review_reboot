@@ -1,6 +1,12 @@
 
 Todo:
 
+in all review page, remove the button "Back to the restaurant profile", remove side navigation bar.
+When user submits review, open new page and confirm submission/update.
+
+
+Done:
+
 On json api: send review count, ratings and note count. (will this effect the performance ? Any other alternative to get
 review count on mobile device ?)
 

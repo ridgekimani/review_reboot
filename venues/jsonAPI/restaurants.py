@@ -5,13 +5,13 @@ from venues.jsonAPI.masjid import get_masjids
 from django.contrib.gis.geos import Point
 from venues.models import Masjid, Restaurant
 
-from django.core import serializers
+# from django.core import serializers
 
 from geopy.distance import distance as geopy_distance
 from venues.models.cuisine import Cuisine
 from django.contrib.gis import measure
 
-
+from serializers import *
 @require_GET
 def closest(request):
     lat = float(request.GET['lat'])
@@ -84,7 +84,7 @@ def __get_restaurants(request, longitude, latitude, categories, limit=20):
     # restaurants = restaurants.distance(currentPoint).order_by('distance')
     restaurants = restaurants[:limit]
     # String based JSON
-    data = serializers.serialize('json', restaurants)
+    data = RestaurantSerializer('json', restaurants)
     # Actual JSON object to be edited
     data = json.loads(data)
 
