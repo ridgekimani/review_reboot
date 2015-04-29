@@ -13,9 +13,8 @@
                 {% endif %}
 
     <h4 class="page-title">
-    Write note for {{ restaurant.name }}
+    {{ restaurant.name }}
     <p>
-    <a href="{% url 'venues.views.venuess.restaurant' restaurant.pk %}" class="btn btn-alt"><< Back to the restaurant profile</a>
     <a href="{% url 'restaurant_allnotes' restaurant.pk %}" class="btn btn-alt">All notes</a>
     </p></h4>
     

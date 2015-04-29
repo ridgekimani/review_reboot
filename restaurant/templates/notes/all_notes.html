@@ -17,9 +17,8 @@
         width: 100%;
     }
 </style>
-    <h4 class="page-title">Notes for {{ restaurant.name }}
+    <h4 class="page-title">{{ restaurant.name }}
                 <p class="">
-                    <a href="{% url 'restaurant_profile' restaurant.pk %}" class="btn btn-alt"><< Back to the restaurant profile</a>
                     <a href="{% url 'restaurant_addnote' restaurant.pk %}" class="btn btn-alt">Add note</a>
                 </p></h4>
     <div class="block-area">
@@ -31,6 +30,13 @@
                            href="#">
                             <span class="glyphicon glyphicon-edit"></span>
                         </a> -->
+
+                        {% if note.created_by == request.user %}
+                            <a class="btn btn-alt pull-right"
+                               href="{% url "venues.views.notes.update_note" note.id %}">
+                                <span class="glyphicon glyphicon-edit"></span>
+                            </a>
+                        {% endif %}
                         <b><a href="{{ review.content_object.show_url }}">{{ note.created_by }}</a> </b>
                         <div>
                            <p>{{ note.text }}</p> 

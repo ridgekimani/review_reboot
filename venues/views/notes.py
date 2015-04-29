@@ -91,10 +91,12 @@ def update_note(request, note_pk):
 
         if form.is_valid():
             form.save()
-            if rest.slug:
-                return redirect(reverse('venues.views.venuess.restaurant_by_slug', args=[rest.slug]))
-            else:
-                return redirect(reverse('venues.views.venuess.restaurant', args=[rest_pk]))
+            messages.add_message(request, messages.INFO, "Note is updated!")
+            return render(request, 'notes/update.html', context)
+            # if rest.slug:
+            #     return redirect(reverse('venues.views.venuess.restaurant_by_slug', args=[rest.slug]))
+            # else:
+            #     return redirect(reverse('venues.views.venuess.restaurant', args=[rest_pk]))
         else:
             context['form'] = form
 
