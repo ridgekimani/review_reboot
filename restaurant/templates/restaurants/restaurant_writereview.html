@@ -13,9 +13,9 @@
                 {% endif %}
 
     <h4 class="page-title">
-    Write review for {{ restaurant.name }}
+        {{ restaurant.name }}
     <p>
-    <a href="{% url 'venues.views.venuess.restaurant' restaurant.pk %}" class="btn btn-alt"><< Back to the restaurant profile</a>
+    <!-- <a href="{% url 'venues.views.venuess.restaurant' restaurant.pk %}" class="btn btn-alt"><< Back to the restaurant profile</a> -->
     <a href="{% url 'restaurant_allreviews' restaurant.pk %}" class="btn btn-alt">All reviews</a>
     </p></h4>
     

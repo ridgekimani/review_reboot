@@ -108,6 +108,7 @@ def index(request):
 
 
 def restaurant(request, rest_pk):
+  
     _restaurant = get_object_or_404(Restaurant, pk=rest_pk)
     note_form = forms.NoteForm()
     if not _restaurant.approved and \
@@ -118,8 +119,11 @@ def restaurant(request, rest_pk):
 
     if request.user.is_authenticated():
         reveiw_by_user = Review.objects.filter(venue_id = rest_pk, created_by = request.user)
+        note_by_user=Note.objects.filter(venue_id = rest_pk, created_by=request.user)
+
     else:
         reveiw_by_user = None
+        note_by_user = None
     
     
     reviews = Review.objects.filter(venue_id = _restaurant.pk).order_by('-created_on')
@@ -132,7 +136,8 @@ def restaurant(request, rest_pk):
         'note_form' : note_form,
         'reviews' : reviews,
         'notes' : notes,
-        'reveiw_by_user' : reveiw_by_user
+        'reveiw_by_user' : reveiw_by_user ,
+        'note_by_user' : note_by_user
     })
 
 @login_required
