@@ -2,7 +2,7 @@
 {% load sekizai_tags static widget_tweaks %}
 {% load widget_tweaks bootstrap3 %}
 {% block body %}
-    <h4 class="page-title">Update profile</h4>
+    <h4 class="page-title">Please update your profile</h4>
 
     <div class="block-area">
         <form method="POST" class="row form-columned theForm" role="form">
@@ -31,11 +31,11 @@
                         <tr>
                             <td>About me</td>
                             <td>
-                                {% render_field form.info class="form-control auto-size m-b-10" placeholder="Write about you..." %}
+                                {% render_field form.info class="form-control auto-size m-b-10" placeholder="" %}
                             </td>
                         </tr>
                         <tr>
-                            <td><span class="formTitle">Your sex</span></td>
+                            <td><span class="formTitle">Sex</span></td>
                             <td>
                                 {%  render_field form.sex class="form-control input-sm" %}
                             </td>
@@ -47,9 +47,9 @@
                             </td>
                         </tr>
                         <tr>
-                            <td><span class="formTitle">Your website</span></td>
+                            <td><span class="formTitle">Website</span></td>
                             <td>
-                                {%  render_field form.website class="form-control input-sm" %}
+                                {%  render_field form.website class="form-control input-sm" placeholder="http://www.example.com/" %}
                             </td>
                         </tr>
                         <tr>
