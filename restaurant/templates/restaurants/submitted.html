@@ -2,16 +2,15 @@
 {% load sekizai_tags static %}
 {% block body %}
 
-    <h4 class="page-title">Submitted for review</h4>
+    <h4 class="page-title">Submitted for approval</h4>
     <div class="block-area">
-        <h5> Restaurant will publish after approving by moderators. </h5>
+        <h5> InshaAllah our moderators will review and approve it soon </h5>
 
         {% if user.is_venue_moderator %}
              <a href="{% url "venues.views.venuess.restaurant_by_slug" restaurant_slug %}"
              class="btn btn-alt">Go to the restaurant page</a>
         {% endif %}
-        <a href="{% url 'index' %}" class="btn btn-alt ">Go to the restaurant list</a>
-        <a href="{% url 'add_restaurant' %}" class="btn btn-alt ">Add new restaurant</a>
+
     </div>
 
 
