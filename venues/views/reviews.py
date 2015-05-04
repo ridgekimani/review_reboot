@@ -102,7 +102,7 @@ def add_review(request, rest_pk):
     _restaurant.update_review_counter()
 
     
-    messages.add_message(request, messages.INFO, "Review is added!")
+    messages.add_message(request, messages.INFO, "Review Submitted")
     return redirect(request.META['HTTP_REFERER'])
 
 
@@ -131,7 +131,7 @@ def update_review(request, review_pk):
             form = ReviewForm(request.POST, instance=review, request=request)
             if form.is_valid():
                 form.save()
-                messages.add_message(request, messages.INFO, "Review is updated!")
+                messages.add_message(request, messages.INFO, "Updated")
                 return render(request, 'reviews/update.html', context)
                 # if rest.slug:
                 #     return redirect(reverse('venues.views.venuess.restaurant_by_slug', args=[rest.slug]))

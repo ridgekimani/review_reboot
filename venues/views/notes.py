@@ -58,7 +58,7 @@ def add_note(request, rest_pk):
     form = NoteForm(request.POST, instance=note, request=request)
     if form.is_valid():
         form.save()
-        messages.add_message(request, messages.INFO, "Note is added!")
+        messages.add_message(request, messages.INFO, "Submitted")
 
     if request.is_ajax():
         return HttpResponse()
@@ -91,7 +91,7 @@ def update_note(request, note_pk):
 
         if form.is_valid():
             form.save()
-            messages.add_message(request, messages.INFO, "Note is updated!")
+            messages.add_message(request, messages.INFO, "Updated")
             return render(request, 'notes/update.html', context)
             # if rest.slug:
             #     return redirect(reverse('venues.views.venuess.restaurant_by_slug', args=[rest.slug]))
