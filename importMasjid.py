@@ -9,7 +9,7 @@ from venues.models.sect import Sect
 
 counter = 0
 
-sq_conn = sqlite3.connect('masjid.db')
+sq_conn = sqlite3.connect('/home/miznat/masjid.db')
 sq_curs = sq_conn.cursor()
 
 
