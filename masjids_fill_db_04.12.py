@@ -14,22 +14,19 @@ sq_curs = sq_conn.cursor()
 
 
 
-for row in sq_curs.execute("SELECT * FROM Masjid;"):
-    counter +=1
+for row in sq_curs.execute('SELECT * FROM Masjid;'):
+    counter += 1
     try:
-        Sect.objects.get(name=row[2])
+        sect = Sect.objects.get(name=row[2])
     except:
-        Sect.objects.create(name=row[2])
-
+        sect = Sect.objects.create(name=row[2])
     masjid = Masjid(
-        name = row[0],
+        name=row[0],
         address = row[1],
-        sect = row[2],
+        sect = sect,
         location = geos.GEOSGeometry('POINT(%s %s)' %(row[3], row[4])),
         city = row[5],
-        country = row[6]
-    )
-
+        country = row[6])
     masjid.save()
 
 

@@ -10,7 +10,7 @@ class Masjid(Venue):
     twitter_url = models.CharField(max_length=255, blank=True, validators=[URLValidator()])
     facebook_url = models.CharField(max_length=255, blank=True, validators=[URLValidator()])
 
-    sect = models.ManyToManyField(Sect)
+    sect = models.ForeignKey(Sect, null=True, default=None)
 
 
     # django-simple-history code
