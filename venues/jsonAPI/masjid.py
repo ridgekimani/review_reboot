@@ -3,6 +3,7 @@ from venues.models import Masjid, Restaurant
 import json
 from venues.models.cuisine import Cuisine
 from django.core import serializers
+from geopy.distance import distance as geopy_distance
 
 
 
