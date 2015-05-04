@@ -24,7 +24,7 @@ for row in sq_curs.execute('SELECT * FROM Masjid;'):
         name=row[0],
         address = row[1],
         sect = sect,
-        location = geos.GEOSGeometry('POINT(%s %s)' %(row[3], row[4])),
+        location = geos.GEOSGeometry('POINT(%s %s)' %(row[4], row[3])),
         city = row[5],
         country = row[6])
     masjid.save()
