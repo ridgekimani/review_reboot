@@ -9,14 +9,17 @@ from venues.models.sect import Sect
 
 counter = 0
 
-sq_conn = sqlite3.connect('/home/miznat/masjid.db')
+sq_conn = sqlite3.connect('masjid.db')
 sq_curs = sq_conn.cursor()
 
 for row in sq_curs.execute('SELECT * FROM Masjid;'):
     counter += 1
     sect_name = row[2].split(',')[0]
     try:
-        sect = Sect.objects.get(name=sect_name)
+        if len(sect_name) > 0:
+            sect = Sect.objects.get(name=sect_name)
+        else:
+            sect=None
     except:
         sect = Sect.objects.create(name=sect_name)
     masjid = Masjid(name=row[0],
