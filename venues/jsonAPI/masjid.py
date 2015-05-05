@@ -7,6 +7,9 @@ from geopy.distance import distance as geopy_distance
 from django.core import serializers
 from django.contrib.gis.geos import Point
 
+from geopy.distance import distance as geopy_distance
+
+
 
 
 def get_masjids(longitude, latitude, categories):
