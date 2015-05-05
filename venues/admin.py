@@ -2,7 +2,7 @@ from django.contrib.auth.models import User
 from django.contrib.gis import admin
 from simple_history.admin import SimpleHistoryAdmin
 from django.contrib.auth.admin import UserAdmin
-from venues.models import Restaurant, Masjid
+from venues.models import Restaurant, Masjid, Sect
 
 from venues.models import Review
 from venues.models.cuisine import Cuisine
@@ -98,3 +98,4 @@ admin.site.register(Masjid, MasjidAdmin)
 admin.site.register(Cuisine, CuisineAdmin)
 # admin.site.register(Note, NoteAdmin)
 admin.site.register(Report, admin.ModelAdmin)
+admin.site.register(Sect)
