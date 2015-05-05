@@ -39,7 +39,7 @@ admin.site.register(User, UserAdmin)
 # VENUES
 
 class MasjidAdmin(SimpleHistoryAdmin):
-    list_display = ('name', 'id', 'phone', 'twitter_url', 'facebook_url')
+    list_display = ('name', 'id', 'city', 'country')
 
 
 class RestaurantAdmin(SimpleHistoryAdmin):
