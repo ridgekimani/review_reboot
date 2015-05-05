@@ -40,6 +40,7 @@ admin.site.register(User, UserAdmin)
 
 class MasjidAdmin(SimpleHistoryAdmin):
     list_display = ('name', 'id', 'city', 'country')
+    list_filter = ('country',)
 
 
 class RestaurantAdmin(SimpleHistoryAdmin):
