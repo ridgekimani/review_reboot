@@ -8,7 +8,7 @@ import sqlite3
 from django.contrib.gis import geos
 from venues.models import Cuisine, Restaurant
 
-RESTS_SQLITE_FILE = 'upload.db'
+RESTS_SQLITE_FILE = '/home/miznat/NewUpload.db'
 
 f = open('cuisineList.txt', 'r')
 cats = [c.replace("\n", "") for c in f.readlines()]
@@ -33,6 +33,7 @@ for row in sq_curs.execute("SELECT * FROM Restaurant;"):
         approved=True,
         city=row[11],
         country=row[12],
+        website=row[13],
     )
     rest.save()
     counter += 1
