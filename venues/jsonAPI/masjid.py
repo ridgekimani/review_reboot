@@ -25,7 +25,7 @@ def get_masjids(longitude, latitude, categories):
         list of dicts
     '''
     currentPoint =Point(float(longitude), float(latitude)) #geos.GEOSGeometry('POINT(%s %s)' % (longitude, latitude))
-    distance_m = 15000
+    distance_m = {'km': 30}
     list_of_cats = []
     for c in categories:
         list_of_cats.append(Cuisine.objects.get(name=c))
