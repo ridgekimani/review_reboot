@@ -9,7 +9,7 @@ from venues.models.sect import Sect
 
 counter = 0
 
-sq_conn = sqlite3.connect('masjid.db')
+sq_conn = sqlite3.connect('/home/miznat/masjid.db')
 sq_curs = sq_conn.cursor()
 
 
@@ -25,7 +25,7 @@ for row in sq_curs.execute('SELECT * FROM Masjid;'):
         name=row[0],
         address = row[1],
         sect = sect,
-        location = geos.GEOSGeometry('POINT(%s %s)' %(row[3], row[4])),
+        location = geos.GEOSGeometry('POINT(%s %s)' %(row[4], row[3])),
         city = row[5],
         country = row[6])
     masjid.save()

@@ -2,11 +2,18 @@ from django.contrib.gis import geos
 from venues.models import Masjid, Restaurant
 import json
 from venues.models.cuisine import Cuisine
+from venues.models.sect import Sect
+from geopy.distance import distance as geopy_distance
+from django.core import serializers
+from django.contrib.gis.geos import Point
+
+from geopy.distance import distance as geopy_distance
 
 
 
 
 def get_masjids(longitude, latitude, categories):
+     
     '''
     Returns objects at given point that satisfy set of categories,
     or all of them if categories is empty.
@@ -17,8 +24,8 @@ def get_masjids(longitude, latitude, categories):
     output:
         list of dicts
     '''
-    currentPoint = geos.GEOSGeometry('POINT(%s %s)' % (longitude, latitude))
-    distance_m = 15000
+    currentPoint =Point(float(longitude), float(latitude)) #geos.GEOSGeometry('POINT(%s %s)' % (longitude, latitude))
+    distance_m = {'km': 30}
     list_of_cats = []
     for c in categories:
         list_of_cats.append(Cuisine.objects.get(name=c))
@@ -54,10 +61,10 @@ def get_masjids(longitude, latitude, categories):
         masjid['fields']['lat'] = lat
 
         # Replace category ids with names
+        
         cat_names = []
-        for cat_id in masjid['fields']['cuisines']:
-            cat = Cuisine.objects.get(id=cat_id)
+        for cat in Sect.objects.filter(id=masjid['fields']['sect']):
             cat_names.append(cat.name)
-        masjid['fields']['cuisines'] = cat_names
+        masjid['fields']['sects'] = cat_names
 
     return data
