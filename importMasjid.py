@@ -20,7 +20,9 @@ for row in sq_curs.execute('SELECT * FROM Masjid;'):
     try:
         sect = Sect.objects.get(name=sect_name)
     except:
-        sect = Sect.objects.create(name=row[2])
+        sect = Sect.objects.create(name=sect_name)
+
+
     masjid = Masjid(
         name=row[0],
         address = row[1],
