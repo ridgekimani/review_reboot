@@ -119,7 +119,7 @@ only screen and (                min-resolution: 120dpi),
 only screen and (                min-resolution: 1.25dppx) {
 
     /* Left Menu */
-    .sa-side-typography, .sa-side-widget, .sa-side-table, .sa-side-ui, .sa-side-folder sa-side-add { background-size: 23px 21px; }
+    .sa-side-typography, .sa-side-widget, .sa-side-table, .sa-side-ui, .sa-side-folder .sa-side-add { background-size: 23px 21px; }
 
     .sa-side-home { background-image: url(../img/icon/home@2x.png); background-size: 25px 25px; }
     .sa-side-typography { background-image: url(../img/icon/typography@2x.png); }
