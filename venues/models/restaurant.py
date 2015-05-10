@@ -32,9 +32,9 @@ class Restaurant(Venue):
 
     website = models.URLField(default="", blank=True)
 
-    google_reviews_url = models.URLField(default="")
-    yelp_url = models.URLField(default="")
-    foursquare_url = models.URLField(default="")
+    google_reviews_url = models.URLField(default="", blank=True)
+    yelp_url = models.URLField(default="", blank=True)
+    foursquare_url = models.URLField(default="", blank=True)
 
 
     catering = models.NullBooleanField(null=True, blank=True, choices=CHOICES)
