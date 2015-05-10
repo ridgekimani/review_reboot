@@ -31,10 +31,9 @@ class Restaurant(Venue):
     shop_number = models.CharField(max_length=50, blank=True)
 
     website = models.URLField(default="", blank=True)
+
     google_reviews_url = models.URLField(default="")
     yelp_url = models.URLField(default="")
-
-
     foursquare_url = models.URLField(default="")
 
 

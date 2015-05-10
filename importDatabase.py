@@ -26,18 +26,17 @@ for row in sq_curs.execute("SELECT * FROM Restaurant;"):
         name=row[0],
         address=row[1],
         phone=row[2].replace(" ", "") or '',
-        catering="Catering" in row[3],
+        catering="Catering" in row[4],
         delivery="Delivery" in row[4],
 
-
         yelp_url=row[6] or '',
-
-
         foursquare_url=row[8] or '',
+        google_reviews_url=row[13] or '',
+
         location=geos.GEOSGeometry('POINT(%s %s)' % (row[10], row[9])),
         city=row[11],
         country=row[12],
-        website=row[13] or '',
+        website=row[14] or '',
         approved=True,
 
     )
