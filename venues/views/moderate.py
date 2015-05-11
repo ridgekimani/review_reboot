@@ -165,6 +165,24 @@ def approve_restaurant(request, rest_pk):
         else:
             return redirect(reverse("venues.views.venuess.index"))
 
+
+@login_required
+@user_passes_test(lambda u: u.is_venue_moderator())
+def reject_restaurant(request, rest_pk):
+    restaurant = get_object_or_404(Restaurant, pk=rest_pk)
+    restaurant.delete()
+    messages.add_message(request, messages.INFO, "Restaurant rejected!")
+
+    if request.is_ajax():
+        return HttpResponse()
+    else:
+        if 'HTTP_REFERER' in request.META:
+            return redirect(request.META['HTTP_REFERER'])
+        else:
+            return redirect(reverse("venues.views.venuess.index"))
+
+
+
 @login_required
 @user_passes_test(lambda u: u.is_venue_moderator())
 def unsuspend_restaurant(request, rest_pk):

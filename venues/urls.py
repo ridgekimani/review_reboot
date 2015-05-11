@@ -15,7 +15,7 @@ urlpatterns = patterns('venues.views',
     url(r'reviews/(?P<review_pk>[0-9]+)/approve/$', 'moderate.approve_review'),
 
     # moderate
-    url(r'moderate/$', 'moderate.index'),
+    url(r'^moderate/$', 'moderate.index'),
     url(r'moderate/reports$', 'moderate.reports'),
     url(r'moderate/reports/(?P<id>[0-9]+)/close$', 'moderate.resolve_report'),
 
@@ -42,6 +42,7 @@ urlpatterns = patterns('venues.views',
     url(r'restaurant/(?P<rest_pk>[0-9]+)/moderate/$', 'moderate.moderate_restaurant'),
     url(r'restaurant/(?P<rest_pk>[0-9]+)/unsuspend/$', 'moderate.unsuspend_restaurant'),
     url(r'restaurant/(?P<rest_pk>[0-9]+)/remove/$', 'moderate.suspend_restaurant'),
+    url(r'restaurant/(?P<rest_pk>[0-9]+)/reject/$', 'moderate.reject_restaurant'),
 
     url(r'restaurant/(?P<rest_pk>[0-9]+)/allreviews/$', 'venuess.all_reviews_view', name='restaurant_allreviews'),
     url(r'restaurant/(?P<rest_pk>[0-9]+)/allnotes/$', 'venuess.all_notes_view', name='restaurant_allnotes'),
