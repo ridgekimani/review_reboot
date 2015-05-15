@@ -13,7 +13,7 @@ from django.views.decorators.http import require_GET
 from geopy.distance import distance as geopy_distance
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.core.exceptions import MultipleObjectsReturned, ObjectDoesNotExist
-from geopy.geocoders import Nominatim
+from geopy.geocoders import Nominatim, GoogleV3
 from tastypie.http import HttpBadRequest
 
 from restaurant.utils import get_client_ip
@@ -31,6 +31,8 @@ from venues.jsonAPI.restaurants import __get_restaurants,closest
 from venues.jsonAPI.masjid import get_masjids
 
 
+
+GOOGLE_KEY = 'AIzaSyAJ7o-jjLVWcaAXaW_fe0hnTsQeyhxsBBQ'
 
 def search_view(request):
     if 'lat' in request.GET and 'lon' in request.GET:
@@ -67,7 +69,7 @@ def index(request):
                 except IndexError:
                     pass
             else:
-                geocoder = Nominatim()
+                geocoder = GoogleV3(api_key=GOOGLE_KEY)
                 try:
                     location = geocoder.geocode(address)
                 except Exception as e:
