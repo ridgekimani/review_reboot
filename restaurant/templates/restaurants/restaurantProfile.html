@@ -223,18 +223,19 @@
 
         <div class="tab-container tile">
                {% if user.is_authenticated %}
-{% if not note_by_user %}
+				{% if not note_by_user %}
  <form action="{% url 'venues.views.notes.add_note' restaurant.pk %}" method="post">
             <ul class="nav tab nav-tabs">
                 <li class="active"><a href="#home">Write a note on Halal-ness</a></li>
             </ul>
             
-            <div class="tab-content">
-                <div class="tab-pane active" id="home">
-                 
- <p> {% include "notes/note-form.html" %} </p>
- </form>
-{% else %}
+                <div class="tab-content">
+                    <div class="tab-pane active" id="home"> 
+     					  <p> {% include "notes/note-form.html" %} </p>
+                    </div>
+                </div>
+ 
+                {% else %}
  
 
                   <ul class="nav tab nav-tabs">
@@ -249,24 +250,21 @@
                         <span class="glyphicon glyphicon-edit"></span> Edit your note
                     </a>
                 </div>
-{% endif %}
-
-                      
+					{% endif %}    
                     {% else %}
-                      <ul class="nav tab nav-tabs">
-                    <li class="active"><a href="#home">write a Note.</a>
-                    </li>
-
-                    
+                    <ul class="nav tab nav-tabs">
+                        <li class="active"><a href="#home">Write a note on Halal-ness</a>
+                    </li>   
                 </ul>
+
                 <div class="tab-content">
                         <p><a  data-toggle="modal" class="btn btn-alt btn-xs" href="#login_modal">Login</a> to write notes</p>
-                    
+                    </div>
                 </div>
- {% endif %}
-     
+        {% endif %}
+    </div>
+    </form>
 
-    
 
                 <h3 class="block-title profile-block-title">
                     Notes
@@ -277,7 +275,7 @@
                            href="#">
                             <span class="glyphicon glyphicon-edit"></span>
                         </a> -->
-                                         {% if note.created_by == request.user %}
+                        {% if note.created_by == request.user %}
                         <a class="btn btn-alt pull-right"
                            href="{% url "venues.views.notes.update_note" note.id %}">
                             <span class="glyphicon glyphicon-edit"></span>
@@ -293,7 +291,7 @@
                     </div>
                 {% empty %}
                     <p>
-                        There is no notes.
+                        There are no notes on Halal-ness
                     </p>
                 {% endfor %}
                 {% if notes %}
