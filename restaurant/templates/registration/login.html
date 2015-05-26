@@ -28,12 +28,12 @@
             <button type="submit" class="btn btn-sm m-r-5">Log In</button>-->
             <div class="pull-right">
                 <a class="btn btn-social btn-google-plus" data-toggle="modal"
-                   href="{% url 'social:begin' 'google-oauth2' %}">
+                   href="{% url 'social:begin' 'google-oauth2' %}?next={{ next }}">
                     <i class="fa fa-google-plus"></i>
                     Login wih Google
                 </a>
                 <a class="btn btn-social btn-facebook" data-toggle="modal"
-                   href="{% url 'social:begin' 'facebook' %}">
+                   href="{% url 'social:begin' 'facebook' %}?next={{ next }}">
                     <i class="fa fa-facebook"></i>
                     Login with Facebook
                 </a>

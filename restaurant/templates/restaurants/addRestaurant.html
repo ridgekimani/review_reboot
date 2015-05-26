@@ -8,7 +8,11 @@
               role="form">
             {% csrf_token %}
             {% include "restaurants/updateForm.html" %}
+
             <div class="col-xs-12 col-md-6 block-label">
+                <div class="tile" style="padding: 10px; margin-bottom: 5px;">
+                    <span>To update the map, please drag and drop the map pin to the correct location.</span>
+                </div>
                 <div id="map-canvas" style="width:100%;height:350px;"></div>
             </div>
         </form>
