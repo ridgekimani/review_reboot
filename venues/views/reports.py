@@ -9,6 +9,7 @@ from restaurant.utils import get_client_ip
 from venues import forms
 from venues.models import Restaurant
 from venues.models.report import Report
+from django.contrib import messages
 
 
 @login_required
@@ -37,7 +38,7 @@ def report_restaurant(request, rest_pk):
 
         if form.is_valid():
             form.save()
-
+            messages.add_message(request, messages.INFO, "Report Submitted")
             # if form.cleaned_data['tipe'] == ':
             # rest.update_close_state()
 
@@ -45,6 +46,7 @@ def report_restaurant(request, rest_pk):
                 return redirect(reverse('venues.views.venuess.restaurant_by_slug', args=[rest.slug]))
             else:
                 return redirect(reverse('venues.views.venuess.restaurant', args=[rest_pk]))
+
 
         return render(request, 'reports/report.html', context)
 
