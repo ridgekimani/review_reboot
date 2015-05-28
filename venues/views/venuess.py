@@ -43,7 +43,7 @@ def search_view(request):
 
 def index(request):
 
-    if request.user.is_authenticated() and not request.user.venueuser.university:
+    if request.user.is_authenticated() and not request.user.venueuser.location:
         return redirect('profile-form', pk=request.user.venueuser.pk)
 
 

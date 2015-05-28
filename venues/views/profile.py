@@ -170,7 +170,10 @@ class ProfileUpdateView(UpdateView):
     success_url = '/profile/'
 
     def get_initial(self):
-        return {'username': self.request.user.username}
+        if self.request.user.venueuser.location:
+            return {'username': self.request.user.username}
+        else:
+            return {'username': self.request.user.first_name + "_" + self.request.user.last_name[:1] }
 
     def form_valid(self, form):
         user = self.request.user
