@@ -39,7 +39,7 @@ class RestaurantForm(CommonForm):
         return cleaned_data
 
     cuisines = forms.ModelMultipleChoiceField(widget=forms.CheckboxSelectMultiple(),required=True,
-        queryset=Cuisine.objects.all())
+        queryset=Cuisine.objects.all(),error_messages={'required': 'Please select a cuisine'})
 
     class Meta:
         model = Restaurant

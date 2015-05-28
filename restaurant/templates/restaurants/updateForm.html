@@ -8,14 +8,30 @@
     <!-- Firs Box -->
     <div class="forTable tile">
         <table>
-        {{form.errors}}
+
+        {% if form.errors %}
+        <div class="alert alert-success">
+            <a class="close" data-dismiss="alert">×</a>
+             {% for field in form %}
+                {% if field.errors %}
+                <div style="text-transform: uppercase;">{{ field.label }}</div>
+                <ul class="list-group">
+                    {% for error in field.errors %}
+                        <li class="list-group-item">{{ error }}</li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+             {% endfor %}
+        </div>
+        {% endif %}
+
             <tr>
                 <th colspan="2">{{ action_title }}</th>
             </tr>
             <tr>
                 <td><span class="formTitle">Name</span></td>
                 <td>
-                    {%  render_field form.name class="form-control input-sm" placeholder="Name of the Restaurant" required="" %}
+                    {%  render_field form.name class="form-control input-sm" placeholder="Name of the Restaurant"  required="" %}
                 </td>
             </tr>
             <tr>
@@ -46,7 +62,7 @@
             <tr>
                 <td>Address note</td>
                 <td>
-                    {%  render_field form.address_note class="form-control input-sm auto-size m-b-10" placeholder="example: level 2, near KFC" required="" cols="40" rows="3" %}
+                    {%  render_field form.address_note class="form-control input-sm auto-size m-b-10" placeholder="example: level 2, near KFC" cols="40" rows="3" %}
                 </td>
             </tr>
             <tr>
@@ -176,3 +192,10 @@
         <button type="submit" class="btn btn-sm">Submit</button>
     </div>
 </div>
+
+
+<script>
+    $(document).ready(function(){
+        $("#id_name").show();
+    });
+</script>

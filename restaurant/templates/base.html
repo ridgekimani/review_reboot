@@ -54,7 +54,7 @@
                   id="restaurant-form">
                   {% csrf_token %}
                 <input type="text" id="pac-input" name="address" class="form-control" placeholder="enter address/suburb/city/postcode" value="{{address}}" />
-                <input type="text" id="pac-input" name="name" class="form-control" placeholder="Name of Restaurant" value="{{name}}" />
+                <input type="text" id="pac-input" name="name" class="form-control" placeholder="Name of Restaurant" value="{{name}}" style="display: None;"/>
 
                 <!--<input type="text" id="pac-input" name="cuisine" class="form-control" placeholder="Cuisine"/>-->
                 <input class="btn btn-sm btn-alt" type="submit" value="Search"/>
@@ -171,7 +171,7 @@
     alert('qwe');
     $('#restaurant-form').submit();
 });*/
-$('[name="name"]').hide();
+
 </script>
 </body>
 </html>
