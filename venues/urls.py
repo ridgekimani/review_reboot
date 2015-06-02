@@ -8,7 +8,7 @@ urlpatterns = patterns('venues.views',
 
 
 
-    url(r'^disclaimer$', 'Disclaimer', name='disclaimer'),
+    url(r'^(?i)disclaimer$', 'Disclaimer', name='disclaimer'),
 
 
     # notes editing
