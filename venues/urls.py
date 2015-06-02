@@ -5,6 +5,12 @@ from venues.views.profile import ProfileUpdateView
 __author__ = 'm'
 
 urlpatterns = patterns('venues.views',
+
+
+
+    url(r'^disclaimer$', 'Disclaimer', name='disclaimer'),
+
+
     # notes editing
     url(r'notes/(?P<note_pk>[0-9]+)/remove/$', 'notes.remove_note'),
     url(r'notes/(?P<note_pk>[0-9]+)/update/$', 'notes.update_note'),
@@ -58,4 +64,7 @@ urlpatterns = patterns('venues.views',
     url(r'(?P<slug>[\w-]+)/$', 'venuess.restaurant_by_slug'),
     # index page
     url(r'$', 'venuess.index', name='index'),
+
+
+
 )

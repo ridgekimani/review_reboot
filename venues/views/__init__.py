@@ -4,7 +4,7 @@ from django.http import HttpResponse
 from django.contrib.auth import login
 from social.apps.django_app.utils import psa
 from venues.models.cuisine import Cuisine
-
+from django.shortcuts import render
 
 def get_category(request):
     if request.is_ajax():
@@ -22,6 +22,10 @@ def get_category(request):
     mimetype = 'application/json'
     return HttpResponse(data, mimetype)
 
+
+def Disclaimer(request):
+
+    return render(request, "disclaimer.html")
 
 
 # @psa('social:complete')
