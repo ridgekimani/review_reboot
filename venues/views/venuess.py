@@ -18,7 +18,7 @@ from tastypie.http import HttpBadRequest
 
 from restaurant.utils import get_client_ip
 from venues import forms
-from venues.forms import RestaurantForm
+from venues.forms import RestaurantForm, MasjidForm
 from venues.models import Masjid, Restaurant
 from venues.models import Review
 from venues.models.cuisine import Cuisine
@@ -262,4 +262,80 @@ def all_notes_view(request, rest_pk):
         'notes':notes,
         'restaurant':rest
         })
+
+
+
+
+@login_required
+def add_masjid(request):
+    if request.method == "GET":
+        form = MasjidForm(request=request)
+        return render(request, "masjids/addMasjid.html", {
+            "form": form,
+        })
+    elif request.method == "POST":
+        rest_data = request.POST.copy()
+        #rest_data['cuisines'] = [int(rest_data['cuisines']), ]
+        form = MasjidForm(rest_data, request=request)
+        if form.is_valid():
+            new_masjid = form.save()
+            return render(request, 'masjids/submitted.html',{
+                "masjid_slug":new_masjid.slug
+                })
+            #return redirect(reverse('venues.views.venuess.restaurant_by_slug', args=[new_restaurant.slug]))
+        elif not request.is_ajax():
+            return render(request, "masjids/addMasjid.html", {
+                "form": form,
+            })
+        return HttpBadRequest(form.errors())
+    return HttpBadRequest()
+
+
+def masjid_by_slug(request, slug):
+
+    m = get_object_or_404(Masjid, slug=slug)
+    return masjid(request, m.pk)
+
+
+
+def masjid(request, masjid_pk):
+
+    _masjid = get_object_or_404(Masjid, pk=masjid_pk)
+    if not _masjid.approved and \
+            not (hasattr(request.user, 'is_venue_moderator') and request.user.is_venue_moderator()):
+        return render(request, 'masjids/submitted.html',{
+                "masjid_slug":_masjid.slug
+                })
+
+
+    return render(request, 'masjids/masjidProfile.html', {
+        'masjid': _masjid,
+        'reports': Report.list_for_venue(_masjid),
+    })
+
+
+
+@login_required
+def update_masjid(request, masjid_pk):
+    _masjid = get_object_or_404(Masjid, pk=masjid_pk)
+
+    context = {
+        'masjid': _masjid,
+        'reports': Report.list_for_venue(_masjid),
+    }
+
+    if request.method == 'POST':
+        masjid_data = request.POST.copy()
+        form = forms.MasjidForm(masjid_data, instance=_masjid, request=request)  # A form bound to the POST data
+        if form.is_valid():
+            form.save()
+            if _masjid.slug:
+                return redirect(reverse('venues.views.venuess.masjid_by_slug', args=[_masjid.slug]))
+            else:
+                return redirect(reverse('venues.views.venuess.masjid', args=[masjid_pk]))
+        context['form'] = form
+    else:
+        context['form'] = forms.MasjidForm(instance=_masjid, request=request)
+
+    return render(request, 'masjids/update.html', context)
 

@@ -7,7 +7,7 @@ from django.shortcuts import redirect, render, get_object_or_404
 
 from restaurant.utils import get_client_ip
 from venues import forms
-from venues.models import Restaurant
+from venues.models import Restaurant, Masjid
 from venues.models.report import Report
 from django.contrib import messages
 
@@ -84,3 +84,41 @@ def moderate_report(request, pk):
         report.save()
         #postfix = "?page=%d" % request.POST['page_num'] if 'page_num' in request.POST else ''
         return redirect(reverse("venues.views.reports.moderate_reports")) #+ postfix)
+
+
+
+@login_required
+def report_masjid(request, masjid_pk):
+    masjid = Masjid.objects.get(id=masjid_pk)
+    related_object_type = ContentType.objects.get_for_model(masjid)
+
+    context = {
+        'venue_name': masjid.name
+    }
+
+    if request.method == 'GET':
+        context['form'] = forms.ReportForm(request=request)
+        return render(request, 'reports/report.html', context)
+    elif request.method == 'POST':
+        data = request.POST.copy()
+
+        report = Report(
+            content_type=related_object_type,
+            venue_id=masjid_pk,
+        )
+
+        form = forms.ReportForm(request.POST, instance=report, request=request)
+
+        context['form'] = form
+
+        if form.is_valid():
+            form.save()
+            messages.add_message(request, messages.INFO, "Report Submitted")
+
+            if masjid.slug:
+                return redirect(reverse('venues.views.venuess.masjid_by_slug', args=[masjid.slug]))
+            else:
+                return redirect(reverse('venues.views.venuess.masjid', args=[masjid_pk]))
+
+
+        return render(request, 'reports/report.html', context)

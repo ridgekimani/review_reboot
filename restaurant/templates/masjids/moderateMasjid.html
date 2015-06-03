@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% load sekizai_tags static %}
+{% block body %}
+
+{% if messages %}
+    {% for message in messages %}
+        {% if message.tags  %}
+            <div class="alert alert-success alert-dismissable fade in">
+                <button class="close" aria-hidden="true" data-dismiss="alert" type="button">x</button>
+                {{message}}
+            </div>
+        {% endif %}
+    {% endfor %}
+{% endif %}
+<h4 class="page-title">Moderate {{masjid.name}}</h4>
+
+<div class="block-area">
+
+
+
+    <div class="row">
+        <div class="col-md-8">
+            {% if not masjid.is_suspended %}
+            <form action="{% url "venues.views.moderate.suspend_masjid" masjid.pk %}" method="post">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-alt">Suspend Masjid</button>
+                </form>
+            {% else %}
+                <p>Masjid is suspended</p>
+                <a href="{% url "venues.views.moderate.unsuspend_masjid" masjid.pk %}" class="btn btn-alt">Unsuspend Masjid</a>
+                <a href="{% url "venues.views.moderate.approve_masjid" masjid.pk %}" class="btn btn-alt">Unsuspend and approve Masjid</a>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+{% endblock %}

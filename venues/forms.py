@@ -1,7 +1,7 @@
 from django import forms
 from django_countries.widgets import CountrySelectWidget
 from restaurant.utils import get_client_ip
-from venues.models import Restaurant, Review, Note, Report, VenueUser, ReportType, Cuisine
+from venues.models import Restaurant, Review, Note, Report, VenueUser, ReportType, Cuisine, Sect, Masjid
 
 
 class CommonForm(forms.ModelForm):
@@ -55,6 +55,9 @@ class RestaurantForm(CommonForm):
             'delivery': forms.RadioSelect(),
             'cuisines': forms.Select(),
         }
+
+
+
 
 
 class AddressForm(forms.Form):
@@ -113,3 +116,17 @@ class ProfileForm(forms.ModelForm):
             'sex', 'university', 'info',
         )
         exclude = ('user',)
+
+
+
+class MasjidForm(CommonForm):
+    def clean(self):
+        cleaned_data = super(MasjidForm, self).clean()
+        return cleaned_data
+
+    # sect = forms.RadioSelect(queryset=Sect.objects.all())
+
+    class Meta:
+        model = Masjid
+        fields = ['name', 'address', 'phone', 'sect', 'location', 'city', 'country',  'address_note']
+

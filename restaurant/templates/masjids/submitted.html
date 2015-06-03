@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% load sekizai_tags static %}
+{% block body %}
+
+    <h4 class="page-title">Submitted for approval</h4>
+
+    <div class="block-area">
+
+        <div class="tile profile-tile">
+            </br>
+            <h5>JazakAllah khair for adding a new venue. InshaAllah our moderators will review and approve it soon.</h5>
+            </br>
+        </div>
+
+
+        {% if user.is_venue_moderator %}
+             <a href="{% url "venues.views.venuess.masjid_by_slug" masjid_slug %}"
+             class="btn btn-alt">Go to the Masjid page</a>
+        {% endif %}
+
+    </div>
+
+
+{% endblock %}

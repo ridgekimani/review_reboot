@@ -3,7 +3,7 @@ from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.core.urlresolvers import reverse
 from django.http.response import HttpResponse, HttpResponseBadRequest
 from django.shortcuts import render, render_to_response, get_object_or_404, redirect
-from venues.models import Restaurant
+from venues.models import Restaurant, Masjid
 from venues.models import Review
 from venues.models.report import Report
 from datetime import datetime, timedelta, time
@@ -237,4 +237,90 @@ def resolve_report(request, id):
             return redirect(request.META['HTTP_REFERER'])
         return redirect(reverse("venues.views.venuess.index"))
 
+
+@login_required
+def moderate_masjid(request, masjid_pk):
+    masjid = get_object_or_404(Masjid, pk=masjid_pk)
+    if not request.user.is_venue_moderator():
+        if not (masjid.created_by == request.user and not masjid.approved):
+            return redirect(reverse('django.contrib.auth.views.login') + "?next=%s" % request.path)
+
+    return render(request,'masjids/moderateMasjid.html',{
+        'masjid':masjid,
+        })
+
+
+
+@login_required
+@user_passes_test(lambda u: u.is_venue_moderator())
+def reject_masjid(request, masjid_pk):
+    masjid = get_object_or_404(Masjid, pk=masjid_pk)
+    masjid.delete()
+    messages.add_message(request, messages.INFO, "Masjid rejected!")
+
+    if request.is_ajax():
+        return HttpResponse()
+    else:
+        if 'HTTP_REFERER' in request.META:
+            return redirect(request.META['HTTP_REFERER'])
+        else:
+            return redirect(reverse("venues.views.venuess.index"))
+
+
+
+@login_required
+@require_POST
+def suspend_masjid(request, masjid_pk):
+    masjid = get_object_or_404(Masjid, pk=masjid_pk)
+    if not request.user.is_venue_moderator():
+        if not (masjid.created_by == request.user and not masjid.approved):
+            return redirect(reverse('django.contrib.auth.views.login') + "?next=%s" % request.path)
+
+    masjid.is_suspended = True
+    masjid.save()
+    messages.add_message(request, messages.INFO, "Masjid suspended!")
+    if request.is_ajax():
+        return HttpResponse()
+    else:
+        if 'HTTP_REFERER' in request.META:
+            return redirect(request.META['HTTP_REFERER'])
+        else:
+            return redirect(reverse("venues.views.venuess.index"))
+
+@login_required
+@user_passes_test(lambda u: u.is_venue_moderator())
+def approve_masjid(request, masjid_pk):
+    masjid = get_object_or_404(Masjid, pk=masjid_pk)
+    masjid.approved = True
+    masjid.is_suspended = False
+    masjid.save()
+    messages.add_message(request, messages.INFO, "Masjid approved!")
+
+    if request.is_ajax():
+        return HttpResponse()
+    else:
+        if 'HTTP_REFERER' in request.META:
+            return redirect(request.META['HTTP_REFERER'])
+        else:
+            return redirect(reverse("venues.views.venuess.index"))
+
+
+
+@login_required
+@user_passes_test(lambda u: u.is_venue_moderator())
+def unsuspend_masjid(request, masjid_pk):
+    masjid = get_object_or_404(Masjid, pk=masjid_pk)
+    masjid.is_suspended = False
+    masjid.save()
+
+
+    messages.add_message(request, messages.INFO, "Masjid unsuspended!")
+
+    if request.is_ajax():
+        return HttpResponse()
+    else:
+        if 'HTTP_REFERER' in request.META:
+            return redirect(request.META['HTTP_REFERER'])
+        else:
+            return redirect(reverse("venues.views.venuess.index"))
 

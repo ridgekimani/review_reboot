@@ -1,0 +1,85 @@
+{% load widget_tweaks bootstrap3 %}
+
+{% bootstrap_form_errors form %}
+
+<div class="col-xs-12 col-md-6">
+
+    <!-- Firs Box -->
+    <div class="forTable tile">
+        <table>
+
+        {% if form.errors %}
+        <div class="alert alert-success">
+            <a class="close" data-dismiss="alert">×</a>
+             {% for field in form %}
+                {% if field.errors %}
+                <div style="text-transform: uppercase;">{{ field.label }}</div>
+                <ul class="list-group">
+                    {% for error in field.errors %}
+                        <li class="list-group-item">{{ error }}</li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+             {% endfor %}
+        </div>
+        {% endif %}
+
+            <tr>
+                <th colspan="2">{{ action_title }}</th>
+            </tr>
+            <tr>
+                <td><span class="formTitle">Name</span></td>
+                <td>
+                    {%  render_field form.name class="form-control input-sm" placeholder="Name of the Masjid"  required="" %}
+                </td>
+            </tr>
+
+            <tr>
+                <td><span class="formTitle">Address</span></td>
+                <td>
+                    {%  render_field form.address class="form-control input-sm" placeholder="Enter the street name e.g. 21 Baklava Street :)" required="" %}
+                </td>
+            </tr>
+            <tr>
+                <td><span class="formTitle">Suburb,City & State </span></td>
+                <td>
+                    {%  render_field form.city class="form-control input-sm" placeholder="e.g. Braddon Canberra ACT" required="" %}
+                </td>
+            </tr>
+            <tr>
+                <td>Country</td>
+                <td>
+                    {%  render_field form.country class="form-control input-sm" placeholder="" required="" %}
+                </td>
+            
+            <tr>
+                <td>Address note</td>
+                <td>
+                    {%  render_field form.address_note class="form-control input-sm auto-size m-b-10" placeholder="example: level 2, near KFC" cols="40" rows="3" %}
+                </td>
+            </tr>
+            <tr>
+                <td><span class="formTitle">Phone</span></td>
+                <td>
+                    {%  render_field form.phone class="form-control input-sm" %}
+                </td>
+            </tr>
+            <tr>
+                <td><span class="formTitle">Sect</span></td>
+                <td>
+                    {%  render_field form.sect class="form-control input-sm" %}
+                </td>
+            </tr>
+
+        </table>
+    </div>
+    <textarea name="location" id="id_location" cols="30" rows="10" hidden></textarea>
+    <!-- END Firs Box -->
+
+
+    <div style="margin-bottom: 10px;">
+        <button type="submit" class="btn btn-sm">Submit</button>
+    </div>
+</div>
+
+

@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% load widget_tweaks sekizai_tags static %}
+{% block body %}
+    <h4 class="page-title">Update Masjid</h4>
+
+    <div class="block-area">
+
+        <form class="row form-columned theForm" role="form"
+              action="{% url "venues.views.venuess.update_masjid" masjid.pk %}" method="POST">
+            {% csrf_token %}
+            {{ form.errors }}
+            {{ form.non_field_errors }}
+            {% include "masjids/masjidForm.html" with action_title="Update Masjid" %}
+            <div class="col-xs-12 col-md-6 block-label">
+                <div class="tile" style="padding: 10px; margin-bottom: 5px;">
+                    <span>To update the map, please drag and drop the map pin to the correct location.</span>
+                </div>
+                <div id="map-canvas" style="width:100%;height:350px;"></div>
+            </div>
+        </form>
+    </div>
+
+    {% addtoblock "js" %}
+        {% include "restaurants/google-map.html" %}
+    {% endaddtoblock %}
+{% endblock %}
