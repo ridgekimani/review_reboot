@@ -9,3 +9,4 @@ upload.db
 restAus.db
 
 *.db
+static
