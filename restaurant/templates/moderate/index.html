@@ -11,6 +11,7 @@
         </div></h4>
     <div class="block-area">
        <div class="row">
+
             <div class="col-md-4 col-xs-6">
                 <a href="{% url "venues.views.profile.approvedrestaurants" %}">
                     <div class="tile quick-stats media">
@@ -48,6 +49,38 @@
                     </div>
                 </a>
             </div>
+    </div>
+
+    <div class="row">
+
+            <div class="col-md-4 col-xs-6">
+                <a href="{% url "venues.views.profile.approvedmasjids" %}">
+                    <div class="tile quick-stats media">
+                        <div id="stats-line-3" class="pull-left"></div>
+                        <div class="media-body">
+                            <h2 data-value="{{masjid_approved_count}}">{{masjid_approved_count}}</h2>
+                            <small>Masjids Needs Approval</small>
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+
+            <div class="col-md-4 col-xs-6">
+                <a href="{% url "venues.views.reports.moderate_reports" %}">
+                    <div class="tile quick-stats media">
+                        <div id="stats-line-4" class="pull-left"></div>
+                        <div class="media-body">
+                            <h2 data-value="{{masjid_report_counter}}">{{masjid_report_counter}}</h2>
+                            <small>Masjids Reported</small>
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+
+
+
     </div>
 
 

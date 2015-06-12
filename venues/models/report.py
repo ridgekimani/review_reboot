@@ -8,6 +8,14 @@ from venues.models.restaurant import Restaurant
 
 class ReportType(models.Model):
     report_type = models.CharField(max_length=200)
+
+    CHOICES = (
+        ('restaurant','Restaurnat'),
+        ('masjid', 'Masjid')
+    )
+
+    venue_type = models.CharField(max_length=20, default='restaurant', choices=CHOICES)
+
     def __unicode__(self):
         return self.report_type
 
@@ -56,11 +64,14 @@ class Report(models.Model):
 
     def __unicode__(self):
         return u' '.join([
-            Restaurant.objects.get(id=self.venue_id).name, '\n'
-                                                           'report:', self.get_type_display(), '\n'
-                                                                                                 'note:', self.note
+            self.venue_name, '\n'
+            'report:', [ n.report_type.__str__() for n in self.report_type.get_queryset() ].__str__(), '\n'
+            'note:', self.note
         ])
 
     @property
     def venue_name(self):
-        return self.content_object.name
+        if self.content_object:
+            return self.content_object.name
+        else:
+            return ""

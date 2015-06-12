@@ -8,7 +8,7 @@ from django.shortcuts import redirect, render, get_object_or_404
 from restaurant.utils import get_client_ip
 from venues import forms
 from venues.models import Restaurant, Masjid
-from venues.models.report import Report
+from venues.models.report import Report, ReportType
 from django.contrib import messages
 
 
@@ -22,7 +22,10 @@ def report_restaurant(request, rest_pk):
     }
 
     if request.method == 'GET':
-        context['form'] = forms.ReportForm(request=request)
+        form = forms.ReportForm(request=request)
+
+        form.fields['report_type'].queryset = ReportType.objects.filter(venue_type = related_object_type)
+        context['form'] = form
         return render(request, 'reports/report.html', context)
     elif request.method == 'POST':
         data = request.POST.copy()
@@ -33,7 +36,7 @@ def report_restaurant(request, rest_pk):
         )
 
         form = forms.ReportForm(request.POST, instance=report, request=request)
-
+        form.fields['report_type'].queryset = ReportType.objects.filter(venue_type = related_object_type)
         context['form'] = form
 
         if form.is_valid():
@@ -97,7 +100,10 @@ def report_masjid(request, masjid_pk):
     }
 
     if request.method == 'GET':
-        context['form'] = forms.ReportForm(request=request)
+        form = forms.ReportForm(request=request)
+
+        form.fields['report_type'].queryset = ReportType.objects.filter(venue_type = related_object_type)
+        context['form'] = form
         return render(request, 'reports/report.html', context)
     elif request.method == 'POST':
         data = request.POST.copy()
@@ -108,7 +114,7 @@ def report_masjid(request, masjid_pk):
         )
 
         form = forms.ReportForm(request.POST, instance=report, request=request)
-
+        form.fields['report_type'].queryset = ReportType.objects.filter(venue_type = related_object_type)
         context['form'] = form
 
         if form.is_valid():

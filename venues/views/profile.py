@@ -7,6 +7,7 @@ from venues.models import Review
 from venues.models import VenueUser
 from venues.models.report import Report
 from venues.models.restaurant import Restaurant
+from venues.models.masjid import Masjid
 from venues.models.venue import Venue
 from django.contrib.auth.models import User
 
@@ -181,3 +182,34 @@ class ProfileUpdateView(UpdateView):
         user.save()
         return super(ProfileUpdateView, self).form_valid(form)
 
+
+
+
+@login_required
+def approvedmasjids(request):
+    user_masjids = Masjid.objects.filter(approved=False).exclude(is_suspended=True)
+    suspended = Masjid.objects.filter(is_suspended=True)
+    paginatorApproved = Paginator(user_masjids, 10)
+    page = request.GET.get("page")
+    try:
+        masjids = paginatorApproved.page(page)
+    except PageNotAnInteger:
+        masjids = paginatorApproved.page(1)
+    except EmptyPage:
+        masjids = paginatorApproved.page(paginatorApproved.num_pages)
+
+
+    paginatorApproved = Paginator(list(suspended), 10)
+    page = request.GET.get("pageSuspended")
+    try:
+        suspended = paginatorApproved.page(page)
+    except PageNotAnInteger:
+        suspended = paginatorApproved.page(1)
+    except EmptyPage:
+        suspended = paginatorApproved.page(paginatorApproved.num_pages)
+
+    return render(request, "profile/masjidsapproved.html", {
+        'user_masjids': user_masjids,
+        'masjids': masjids,
+        'suspended':suspended
+    })

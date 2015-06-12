@@ -10,6 +10,7 @@ from datetime import datetime, timedelta, time
 from django.views.decorators.http import require_POST, require_GET
 
 from django.contrib import messages
+from django.contrib.contenttypes.models import ContentType
 
 @login_required
 @user_passes_test(lambda u: u.is_venue_moderator())
@@ -86,8 +87,11 @@ def index(request):
         recently_added_reviews = paginatorApproved.page(paginatorApproved.num_pages)
 
     #counters
-    report_counter = Report.objects.filter(created_on__gte=start_time).count()
+    report_counter = Report.objects.filter(created_on__gte=start_time, content_type=ContentType.objects.get_for_model(Restaurant)).count()
+    masjid_report_counter = Report.objects.filter(created_on__gte=start_time, content_type=ContentType.objects.get_for_model(Masjid)).count()
+
     approved_count = Restaurant.objects.filter(approved=False,created_on__gte=start_time).count()
+    masjid_approved_count = Masjid.objects.filter(approved=False,created_on__gte=start_time).count()
 
 
     context = {
@@ -95,7 +99,10 @@ def index(request):
         'recently_update_restaurants': recently_update_restaurants,
         'recently_added_reviews': recently_added_reviews,
         'approved_count':approved_count,
-        'report_counter':report_counter
+        'report_counter':report_counter,
+
+        'masjid_approved_count':masjid_approved_count,
+        'masjid_report_counter':masjid_report_counter
     }
     return render(request, "moderate/index.html", context)
 

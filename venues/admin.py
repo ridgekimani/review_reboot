@@ -7,7 +7,7 @@ from venues.models import Restaurant, Masjid, Sect
 from venues.models import Review
 from venues.models.cuisine import Cuisine
 from venues.models.note import Note
-from venues.models.report import Report
+from venues.models.report import Report, ReportType
 from venues.models.venue_user import VenueUser
 
 from venues.forms import ProfileForm
@@ -98,5 +98,6 @@ admin.site.register(Masjid, MasjidAdmin)
 # admin.site.register(Comment, CommentAdmin)
 admin.site.register(Cuisine, CuisineAdmin)
 # admin.site.register(Note, NoteAdmin)
-admin.site.register(Report, admin.ModelAdmin)
+admin.site.register(Report)
+admin.site.register(ReportType)
 admin.site.register(Sect)

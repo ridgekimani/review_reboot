@@ -60,8 +60,7 @@ urlpatterns = patterns('venues.views',
 
     url(r'^newmasjid/$', 'venuess.add_masjid', name='add_masjid'),
     url(r'^masjid/(?P<masjid_pk>[0-9]+)/$', 'venuess.masjid', name="masjid_profile"),
-    # masjid by slug
-    url(r'^masjid/(?P<slug>[\w-]+)/$', 'venuess.masjid_by_slug'),
+
     url(r'^masjid/(?P<masjid_pk>[0-9]+)/report/$', 'reports.report_masjid'),
     url(r'^masjid/(?P<masjid_pk>[0-9]+)/update/$', 'venuess.update_masjid'),
     url(r'^masjid/(?P<masjid_pk>[0-9]+)/moderate/$', 'moderate.moderate_masjid'),
@@ -70,7 +69,10 @@ urlpatterns = patterns('venues.views',
     url(r'^masjid/(?P<masjid_pk>[0-9]+)/reject/$', 'moderate.reject_masjid'),
     url(r'^masjid/(?P<masjid_pk>[0-9]+)/approve/$', 'moderate.approve_masjid'),
 
+    url(r'^masjid/approved/$', 'profile.approvedmasjids'),
 
+    # masjid by slug
+    url(r'^masjid/(?P<slug>[\w-]+)/$', 'venuess.masjid_by_slug'),
     #search
     #url(r'search/', 'venuess.search_view', name='search'),
 
