@@ -27,6 +27,10 @@ def Disclaimer(request):
 
     return render(request, "disclaimer.html")
 
+def thankyou(request):
+
+    return render(request, "thankyou.html")
+
 
 # @psa('social:complete')
 # def register_by_access_token(request, backend):
