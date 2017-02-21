@@ -25,27 +25,25 @@ from venues.models.cuisine import Cuisine
 from venues.models.note import Note
 from venues.models.report import Report
 
-from django.contrib import messages 
+from django.contrib import messages
 
-from venues.jsonAPI.restaurants import __get_restaurants,closest
+from venues.jsonAPI.restaurants import __get_restaurants, closest
 from venues.jsonAPI.masjid import get_masjids
-
-
 
 GOOGLE_KEY = 'AIzaSyAJ7o-jjLVWcaAXaW_fe0hnTsQeyhxsBBQ'
 
+
 def search_view(request):
     if 'lat' in request.GET and 'lon' in request.GET:
-        #return closest(request)
+        # return closest(request)
         return closest(request)
     else:
         return HttpResponse("qwe")
 
-def index(request):
 
+def index(request):
     if request.user.is_authenticated() and not request.user.venueuser.location:
         return redirect('profile-form', pk=request.user.venueuser.pk)
-
 
     if 'lat' in request.GET and 'lon' in request.GET:
         return closest(request)
@@ -63,7 +61,7 @@ def index(request):
             address = form.cleaned_data['address']
             name = form.cleaned_data['name']
             if not address:
-                restaurants = Restaurant.objects.filter(approved=True, is_suspended=False,name__icontains=name)
+                restaurants = Restaurant.objects.filter(approved=True, is_suspended=False, name__icontains=name)
                 try:
                     longitude, latitude = restaurants[0].location
                 except IndexError:
@@ -82,15 +80,16 @@ def index(request):
                     currentPoint = geos.GEOSGeometry('POINT(%s %s)' % (longitude, latitude))
                     distance_m = {'km': 30}
                     restaurants = Restaurant.gis.filter(approved=True,
-                            location__distance_lte=(currentPoint, measure.D(**distance_m)),
-                            name__icontains=name).distance(currentPoint).order_by('distance')
+                                                        location__distance_lte=(currentPoint, measure.D(**distance_m)),
+                                                        name__icontains=name).distance(currentPoint).order_by(
+                        'distance')
     else:
         page = request.GET.get('page')
         restaurants = Restaurant.objects.filter(approved=True, is_suspended=False)
 
-    #if hasattr(request.user, 'is_venue_moderator') and request.user.is_venue_moderator():
+    # if hasattr(request.user, 'is_venue_moderator') and request.user.is_venue_moderator():
     #    pass
-    #else:
+    # else:
     #    restaurants = Restaurant.objects.filter(approved=True, is_suspended=False)
 
     paginator = Paginator(restaurants, 20)
@@ -101,64 +100,120 @@ def index(request):
         restaurants = paginator.page(1)
     except EmptyPage:
         restaurants = paginator.page(paginator.num_pages)
-    
-    context = {'all_restaurants': restaurants, 'form': form, 'longitude': longitude, 'latitude': latitude, 'address':address, 'name':name}
+
+    context = {'all_restaurants': restaurants, 'form': form, 'longitude': longitude, 'latitude': latitude,
+               'address': address, 'name': name}
     return render(request, 'restaurants/restaurants.html', context)
     # else:
     # context = {'all_restaurants': restaurants, 'form': form, 'longitude': longitude, 'latitude': latitude}
     # return render(request, 'restaurants/restaurants.html', context)
 
 
+def start_search_screen(request):
+    if request.user.is_authenticated() and not request.user.venueuser.location:
+        return redirect('profile-form', pk=request.user.venueuser.pk)
+
+    if 'lat' in request.GET and 'lon' in request.GET:
+        return closest(request)
+
+    form = forms.AddressForm()
+    restaurants = []
+    latitude = ""
+    longitude = ""
+    address = ""
+    name = ""
+    if request.POST:
+        page = request.POST.get('page')
+        form = forms.AddressForm(request.POST)
+        if form.is_valid():
+            address = form.cleaned_data['address']
+            name = form.cleaned_data['name']
+            if not address:
+                restaurants = Restaurant.objects.filter(approved=True, is_suspended=False, name__icontains=name)
+                try:
+                    longitude, latitude = restaurants[0].location
+                except IndexError:
+                    pass
+            else:
+                geocoder = GoogleV3(api_key=GOOGLE_KEY)
+                try:
+                    location = geocoder.geocode(address)
+                except Exception as e:
+                    print e
+                    location = ""
+
+                if location:
+                    latitude = location.latitude
+                    longitude = location.longitude
+                    currentPoint = geos.GEOSGeometry('POINT(%s %s)' % (longitude, latitude))
+                    distance_m = {'km': 30}
+                    restaurants = Restaurant.gis.filter(approved=True, location__distance_lte=(currentPoint, measure.D(**distance_m)), name__icontains=name).distance(currentPoint).order_by('distance')
+            context = {'all_restaurants': restaurants, 'form': form, 'longitude': longitude, 'latitude': latitude, 'address': address, 'name': name}
+            return render(request, 'restaurants/restaurants.html', context)
+
+    # paginator = Paginator(restaurants, 20)
+    # page = request.GET.get("page")
+    # try:
+    #     restaurants = paginator.page(page)
+    # except PageNotAnInteger:
+    #     restaurants = paginator.page(1)
+    # except EmptyPage:
+    #     restaurants = paginator.page(paginator.num_pages)
+    #
+    # context = {'all_restaurants': restaurants, 'form': form, 'longitude': longitude, 'latitude': latitude, 'address': address, 'name': name}
+    return render(request, 'restaurants/start_search.html')
+
+
 def restaurant(request, rest_pk):
-  
     _restaurant = get_object_or_404(Restaurant, pk=rest_pk)
     note_form = forms.NoteForm()
     if not _restaurant.approved and \
             not (hasattr(request.user, 'is_venue_moderator') and request.user.is_venue_moderator()):
-        return render(request, 'restaurants/submitted.html',{
-                "restaurant_slug":_restaurant.slug
-                })
+        return render(request, 'restaurants/submitted.html', {
+            "restaurant_slug": _restaurant.slug
+        })
 
     if request.user.is_authenticated():
-        reveiw_by_user = Review.objects.filter(venue_id = rest_pk, created_by = request.user)
-        note_by_user=Note.objects.filter(venue_id = rest_pk, created_by=request.user)
+        reveiw_by_user = Review.objects.filter(venue_id=rest_pk, created_by=request.user)
+        note_by_user = Note.objects.filter(venue_id=rest_pk, created_by=request.user)
 
     else:
         reveiw_by_user = None
         note_by_user = None
-    
-    
-    reviews = Review.objects.filter(venue_id = _restaurant.pk).order_by('-created_on')
-    notes = Note.objects.filter(venue_id = _restaurant.pk).order_by('-created_on')
+
+    reviews = Review.objects.filter(venue_id=_restaurant.pk).order_by('-created_on')
+    notes = Note.objects.filter(venue_id=_restaurant.pk).order_by('-created_on')
     return render(request, 'restaurants/restaurantProfile.html', {
         'restaurant': _restaurant,
         'reviews': Review.list_for_venue(_restaurant).order_by('-modified_on'),
         'notes': Note.list_for_venue(_restaurant).order_by('-modified_on'),
         'reports': Report.list_for_venue(_restaurant),
-        'note_form' : note_form,
-        'reviews' : reviews,
-        'notes' : notes,
-        'reveiw_by_user' : reveiw_by_user ,
-        'note_by_user' : note_by_user
+        'note_form': note_form,
+        'reviews': reviews,
+        'notes': notes,
+        'reveiw_by_user': reveiw_by_user,
+        'note_by_user': note_by_user
     })
+
 
 @login_required
 @require_GET
-def add_review_view(request,rest_pk):
+def add_review_view(request, rest_pk):
     _restaurant = get_object_or_404(Restaurant, pk=rest_pk)
     if not _restaurant.approved and \
             not (hasattr(request.user, 'is_venue_moderator') and request.user.is_venue_moderator()):
         raise Http404
 
-    reveiw_by_user = Review.objects.filter(venue_id = rest_pk, created_by = request.user)
+    reveiw_by_user = Review.objects.filter(venue_id=rest_pk, created_by=request.user)
     return render(request, 'restaurants/restaurant_writereview.html', {
         'restaurant': _restaurant,
-        'reveiw_by_user' : reveiw_by_user,
+        'reveiw_by_user': reveiw_by_user,
     })
+
 
 @login_required
 @require_GET
-def add_note_view(request,rest_pk):
+def add_note_view(request, rest_pk):
     _restaurant = get_object_or_404(Restaurant, pk=rest_pk)
     if not _restaurant.approved and \
             not (hasattr(request.user, 'is_venue_moderator') and request.user.is_venue_moderator()):
@@ -167,7 +222,6 @@ def add_note_view(request,rest_pk):
     return render(request, 'restaurants/restaurant_addnote.html', {
         'restaurant': _restaurant,
     })
-
 
 
 @login_required
@@ -180,14 +234,14 @@ def add_restaurant(request):
         })
     elif request.method == "POST":
         rest_data = request.POST.copy()
-        #rest_data['cuisines'] = [int(rest_data['cuisines']), ]
+        # rest_data['cuisines'] = [int(rest_data['cuisines']), ]
         form = RestaurantForm(rest_data, request=request)
         if form.is_valid():
             new_restaurant = form.save()
-            return render(request, 'restaurants/submitted.html',{
-                "restaurant_slug":new_restaurant.slug
-                })
-            #return redirect(reverse('venues.views.venuess.restaurant_by_slug', args=[new_restaurant.slug]))
+            return render(request, 'restaurants/submitted.html', {
+                "restaurant_slug": new_restaurant.slug
+            })
+            # return redirect(reverse('venues.views.venuess.restaurant_by_slug', args=[new_restaurant.slug]))
         elif not request.is_ajax():
             return render(request, "restaurants/addRestaurant.html", {
                 "form": form,
@@ -201,7 +255,7 @@ def add_restaurant(request):
 def update_restaurant(request, rest_pk):
     _restaurant = get_object_or_404(Restaurant, pk=rest_pk)
 
-    #if not request.user.is_venue_moderator():
+    # if not request.user.is_venue_moderator():
     #    if not (_restaurant.created_by == request.user and not _restaurant.approved):
     #        return redirect(reverse('django.contrib.auth.views.login') + "?next=%s" % request.path)
 
@@ -214,7 +268,7 @@ def update_restaurant(request, rest_pk):
 
     if request.method == 'POST':
         rest_data = request.POST.copy()
-        #rest_data['cuisines'] = [int(rest_data['cuisines']), ]
+        # rest_data['cuisines'] = [int(rest_data['cuisines']), ]
         # rest_data['cuisines'] = list([int(i) for i in rest_data['cuisines']])
         form = forms.RestaurantForm(rest_data, instance=_restaurant, request=request)  # A form bound to the POST data
         if form.is_valid():
@@ -248,22 +302,21 @@ def all_reviews_view(request, rest_pk):
 
     reviews = Review.objects.filter(venue_id=rest_pk)
 
-    return render(request, 'reviews/all_reviews.html',{
-        'reviews':reviews,
-        'restaurant':rest
-        })
+    return render(request, 'reviews/all_reviews.html', {
+        'reviews': reviews,
+        'restaurant': rest
+    })
+
 
 def all_notes_view(request, rest_pk):
     rest = get_object_or_404(Restaurant, pk=rest_pk)
 
     notes = Note.objects.filter(venue_id=rest_pk)
 
-    return render(request, 'notes/all_notes.html',{
-        'notes':notes,
-        'restaurant':rest
-        })
-
-
+    return render(request, 'notes/all_notes.html', {
+        'notes': notes,
+        'restaurant': rest
+    })
 
 
 @login_required
@@ -275,14 +328,14 @@ def add_masjid(request):
         })
     elif request.method == "POST":
         rest_data = request.POST.copy()
-        #rest_data['cuisines'] = [int(rest_data['cuisines']), ]
+        # rest_data['cuisines'] = [int(rest_data['cuisines']), ]
         form = MasjidForm(rest_data, request=request)
         if form.is_valid():
             new_masjid = form.save()
-            return render(request, 'masjids/submitted.html',{
-                "masjid_slug":new_masjid.slug
-                })
-            #return redirect(reverse('venues.views.venuess.restaurant_by_slug', args=[new_restaurant.slug]))
+            return render(request, 'masjids/submitted.html', {
+                "masjid_slug": new_masjid.slug
+            })
+            # return redirect(reverse('venues.views.venuess.restaurant_by_slug', args=[new_restaurant.slug]))
         elif not request.is_ajax():
             return render(request, "masjids/addMasjid.html", {
                 "form": form,
@@ -292,27 +345,22 @@ def add_masjid(request):
 
 
 def masjid_by_slug(request, slug):
-
     m = get_object_or_404(Masjid, slug=slug)
     return masjid(request, m.pk)
 
 
-
 def masjid(request, masjid_pk):
-
     _masjid = get_object_or_404(Masjid, pk=masjid_pk)
     if not _masjid.approved and \
             not (hasattr(request.user, 'is_venue_moderator') and request.user.is_venue_moderator()):
-        return render(request, 'masjids/submitted.html',{
-                "masjid_slug":_masjid.slug
-                })
-
+        return render(request, 'masjids/submitted.html', {
+            "masjid_slug": _masjid.slug
+        })
 
     return render(request, 'masjids/masjidProfile.html', {
         'masjid': _masjid,
         'reports': Report.list_for_venue(_masjid),
     })
-
 
 
 @login_required
@@ -338,4 +386,3 @@ def update_masjid(request, masjid_pk):
         context['form'] = forms.MasjidForm(instance=_masjid, request=request)
 
     return render(request, 'masjids/update.html', context)
-
