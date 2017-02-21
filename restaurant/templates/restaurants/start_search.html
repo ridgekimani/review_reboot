@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% load static bootstrap3 sekizai_tags %}
+{% block body %}
+    <h4 class="page-title">Search</h4>
+
+    <div class="container-fluid search-start">
+        <div class="row">
+            <div class="col-md-3">
+            </div>
+            <div class="col-md-6">
+                <h1 class="text-center">Search your city</h1>
+                <p class="text-center">Get Me HSP helps you find where Kebabs and Halal Snack Packs are near you. Let's
+                    do it.</p>
+            </div>
+            <div class="col-md-3">
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="col-md-3">
+            </div>
+            <div class="col-md-6">
+                <form method="post" action="/" id="restaurant-form" _lpchecked="1">
+                    {% csrf_token %}
+                    <div class="input-group">
+                        <input type="text" placeholder="enter address/suburb/city/postcode" class="form-control">
+                        <span class="input-group-btn"> <button class="btn btn-default"
+                                                               type="submit">Search</button> </span>
+                    </div>
+                </form>
+            </div>
+            <div class="col-md-3">
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+

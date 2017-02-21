@@ -80,7 +80,8 @@ urlpatterns = patterns('venues.views',
     # restautant by slug
     url(r'(?P<slug>[\w-]+)/$', 'venuess.restaurant_by_slug'),
     # index page
-    url(r'$', 'venuess.index', name='index'),
+    # url(r'$', 'venuess.index', name='search_index'),
+    url(r'$', 'venuess.start_search_screen', name='main_search_index'),
 
 
 
