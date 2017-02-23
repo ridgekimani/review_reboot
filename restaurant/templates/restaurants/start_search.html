@@ -23,9 +23,8 @@
                 <form method="post" action="/" id="restaurant-form" _lpchecked="1">
                     {% csrf_token %}
                     <div class="input-group">
-                        <input type="text" placeholder="enter address/suburb/city/postcode" class="form-control">
-                        <span class="input-group-btn"> <button class="btn btn-default"
-                                                               type="submit">Search</button> </span>
+                        <input type="text" placeholder="enter address/suburb/city/postcode" name="address" class="form-control">
+                        <span class="input-group-btn"> <button class="btn btn-default" type="submit">Search</button> </span>
                     </div>
                 </form>
             </div>
