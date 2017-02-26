@@ -147,21 +147,26 @@ def start_search_screen(request):
                     longitude = location.longitude
                     currentPoint = geos.GEOSGeometry('POINT(%s %s)' % (longitude, latitude))
                     distance_m = {'km': 30}
-                    restaurants = Restaurant.gis.filter(approved=True, location__distance_lte=(currentPoint, measure.D(**distance_m)), name__icontains=name).distance(currentPoint).order_by('distance')
-            context = {'all_restaurants': restaurants, 'form': form, 'longitude': longitude, 'latitude': latitude, 'address': address, 'name': name}
-            return render(request, 'restaurants/restaurants.html', context)
+                    restaurants = Restaurant.gis.filter(approved=True,
+                                                        location__distance_lte=(currentPoint, measure.D(**distance_m)),
+                                                        name__icontains=name).distance(currentPoint).order_by(
+                        'distance')
+    else:
+        # page = request.GET.get('page')
+        # restaurants = Restaurant.objects.filter(approved=True, is_suspended=False)
+        return render(request, 'restaurants/start_search.html')
 
-    # paginator = Paginator(restaurants, 20)
-    # page = request.GET.get("page")
-    # try:
-    #     restaurants = paginator.page(page)
-    # except PageNotAnInteger:
-    #     restaurants = paginator.page(1)
-    # except EmptyPage:
-    #     restaurants = paginator.page(paginator.num_pages)
-    #
-    # context = {'all_restaurants': restaurants, 'form': form, 'longitude': longitude, 'latitude': latitude, 'address': address, 'name': name}
-    return render(request, 'restaurants/start_search.html')
+    paginator = Paginator(restaurants, 20)
+    page = request.GET.get("page")
+    try:
+        restaurants = paginator.page(page)
+    except PageNotAnInteger:
+        restaurants = paginator.page(1)
+    except EmptyPage:
+        restaurants = paginator.page(paginator.num_pages)
+
+    context = {'all_restaurants': restaurants, 'form': form, 'longitude': longitude, 'latitude': latitude, 'address': address, 'name': name}
+    return render(request, 'restaurants/restaurants.html', context)
 
 
 def restaurant(request, rest_pk):
