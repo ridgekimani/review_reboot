@@ -1,5 +1,7 @@
 from django.contrib.auth.models import User
 from django.contrib.gis import admin
+from django.contrib.gis.db import models as gis_models
+from django.forms import widgets
 from simple_history.admin import SimpleHistoryAdmin
 from django.contrib.auth.admin import UserAdmin
 from venues.models import Restaurant, Masjid, Sect
@@ -42,12 +44,23 @@ class MasjidAdmin(SimpleHistoryAdmin):
     list_display = ('name', 'id', 'city', 'country')
     list_filter = ('country',)
 
+    formfield_overrides = {
+        gis_models.PointField: {
+            'widget': widgets.TextInput(attrs={'size': '100', 'label': 'test'})
+            }
+        }
 
 class RestaurantAdmin(SimpleHistoryAdmin):
     list_display = ('name', 'id', 'catering', 'delivery')
     search_fields = ['name']
 
-#
+    formfield_overrides = {
+        gis_models.PointField: {
+            'widget': widgets.TextInput(attrs={'size': '100', 'label': 'test'})
+            }
+        }
+
+
 # class CommentAdmin(admin.ModelAdmin):
 #     list_display = ('venue_name', 'rating', 'short_text', 'created_by')
 #     fields = (('venue_name', 'created_by'), 'rating', 'text')
