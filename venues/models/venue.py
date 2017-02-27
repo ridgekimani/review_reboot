@@ -41,7 +41,7 @@ class Venue(CommonModel):
     )
 
     location = gis_models.PointField(
-        u'Latitude/Longitude',
+        u'Longitude/Latitude',
         geography=True,
         blank=True,
         null=True
