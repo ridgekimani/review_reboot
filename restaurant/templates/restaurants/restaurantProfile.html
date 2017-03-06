@@ -28,7 +28,7 @@
                     {% endfor %}
                 {% endif %}
     <h4 class="page-title">Restaurant profile</h4>
-    
+
     <div class="block-area">
         <div class="table table-bordered tile  mainTable">
             <div class="title">
@@ -131,7 +131,7 @@
                     {% else %}
                         No about information.
                     {% endif %}
-                    
+
                 </div>
             </div>
         </div>
@@ -145,14 +145,14 @@
                 {% if not reveiw_by_user %}
                 <ul class="nav tab nav-tabs">
                     <li class="active"><a href="#home">Write a Review</a></li>
-                    
+
                 </ul>
                         <div class="tab-content">
                             <div class="tab-pane active" id="home">
                                 <p> {% include "reviews/review-form.html" %} </p>
                             </div>
                         </div>
-                
+
                 {% else %}
 
 
@@ -160,10 +160,10 @@
                     <li class="active"><a href="#home">You have already written a review for this restaurant.</a>
                     </li>
 
-                    
+
                 </ul>
                 <div class="tab-content">
-                    <a class="btn btn-alt" style="z-index: 999999999;" 
+                    <a class="btn btn-alt" style="z-index: 999999999;"
                         href="{% url "venues.views.reviews.update_review" reveiw_by_user.0.id %}">
                         <span class="glyphicon glyphicon-edit"></span> Edit your review
                     </a>
@@ -172,7 +172,7 @@
                 {% else %}
                 <ul class="nav tab nav-tabs">
                     <li class="active"><a href="#home">Write a Review</a></li>
-                    
+
                 </ul>
                         <div class="tab-content">
                             <div class="tab-pane active" id="home">
@@ -185,11 +185,11 @@
             </form>
 
 
-                
+
                 <h3 class="block-title profile-block-title">
                     Reviews
                 </h3>
-                
+
                 {% for review in reviews %}
                 <div class="tile profile-tile">
                     <!--<div class="list-group-item {{ review.approved|yesno:"list-group-item-success, list-group-item-danger" }}">-->
@@ -201,8 +201,8 @@
                         {% endif %}
                         <b><a href="{% url 'venues.views.profile.user_profile' review.created_by.pk %}">{{ review.created_by }}</a></b> |
                         <strong>{{ review.rating }}</strong> of 5
-                           <p>{{ review.text }}</p> 
-                           <p>{{ review.created_on }}</p> 
+                           <p>{{ review.text }}</p>
+                           <p>{{ review.created_on }}</p>
                     <!--</div>-->
                 </div>
                 {% empty %}
@@ -214,91 +214,8 @@
                 {% if reviews %}
                     <a href="{% url 'restaurant_allreviews' restaurant.pk %}" class="btn btn-alt pull-right">All reviews</a>
                 {% endif %}
-                
+
             </div>
-            
-        <div class="col-xs-12 col-md-6">
-       
-        {% csrf_token %}
-
-        <div class="tab-container tile">
-               {% if user.is_authenticated %}
-				{% if not note_by_user %}
- <form action="{% url 'venues.views.notes.add_note' restaurant.pk %}" method="post">
-            <ul class="nav tab nav-tabs">
-                <li class="active"><a href="#home">Write a note on Halal-ness</a></li>
-            </ul>
-            
-                <div class="tab-content">
-                    <div class="tab-pane active" id="home"> 
-     					  <p> {% include "notes/note-form.html" %} </p>
-                    </div>
-                </div>
- 
-                {% else %}
- 
-
-                  <ul class="nav tab nav-tabs">
-                    <li class="active"><a href="#home">You have already written a halal-ness note for this restaurant.</a>
-                    </li>
-
-                    
-                </ul>
-                <div class="tab-content">
-                    <a class="btn btn-alt" style="z-index: 999999999;" 
-                        href="{% url "venues.views.notes.update_note" note_by_user.0.id %}">
-                        <span class="glyphicon glyphicon-edit"></span> Edit your note
-                    </a>
-                </div>
-					{% endif %}    
-                    {% else %}
-                    <ul class="nav tab nav-tabs">
-                        <li class="active"><a href="#home">Write a note on Halal-ness</a>
-                    </li>   
-                </ul>
-
-                <div class="tab-content">
-                        <p><a  data-toggle="modal" class="btn btn-alt btn-xs" href="#login_modal">Login</a> to write notes</p>
-                    </div>
-                </div>
-        {% endif %}
-    </div>
-    </form>
-
-
-                <h3 class="block-title profile-block-title">
-                    Notes
-                </h3>
-                {% for note in notes %}
-                    <div class="tile profile-tile">
-                        <!--  <a class="btn btn-default pull-right"
-                           href="#">
-                            <span class="glyphicon glyphicon-edit"></span>
-                        </a> -->
-                        {% if note.created_by == request.user %}
-                        <a class="btn btn-alt pull-right"
-                           href="{% url "venues.views.notes.update_note" note.id %}">
-                            <span class="glyphicon glyphicon-edit"></span>
-                        </a>
-                        {% endif %}
-                        <b><a href="{{ review.content_object.show_url }}">{{ note.created_by }}</a> </b>
-                        <div>
-                           <p>{{ note.text }}</p> 
-                        </div>
-                        <div>
-                           <p>{{ note.created_on }}</p> 
-                        </div>
-                    </div>
-                {% empty %}
-                    <p>
-                        There are no notes on Halal-ness
-                    </p>
-                {% endfor %}
-                {% if notes %}
-                    <a href="{% url 'restaurant_allnotes' restaurant.pk %}" class="btn btn-alt pull-right">All notes</a>
-                {% endif %}
-            </div>
-        </div>
 
 
     {% addtoblock "js" %}
