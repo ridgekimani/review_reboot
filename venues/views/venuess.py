@@ -22,7 +22,6 @@ from venues.forms import RestaurantForm, MasjidForm
 from venues.models import Masjid, Restaurant
 from venues.models import Review
 from venues.models.cuisine import Cuisine
-from venues.models.note import Note
 from venues.models.report import Report
 
 from django.contrib import messages
@@ -171,7 +170,6 @@ def start_search_screen(request):
 
 def restaurant(request, rest_pk):
     _restaurant = get_object_or_404(Restaurant, pk=rest_pk)
-    note_form = forms.NoteForm()
     if not _restaurant.approved and \
             not (hasattr(request.user, 'is_venue_moderator') and request.user.is_venue_moderator()):
         return render(request, 'restaurants/submitted.html', {
@@ -180,24 +178,17 @@ def restaurant(request, rest_pk):
 
     if request.user.is_authenticated():
         reveiw_by_user = Review.objects.filter(venue_id=rest_pk, created_by=request.user)
-        note_by_user = Note.objects.filter(venue_id=rest_pk, created_by=request.user)
 
     else:
         reveiw_by_user = None
-        note_by_user = None
 
     reviews = Review.objects.filter(venue_id=_restaurant.pk).order_by('-created_on')
-    notes = Note.objects.filter(venue_id=_restaurant.pk).order_by('-created_on')
     return render(request, 'restaurants/restaurantProfile.html', {
         'restaurant': _restaurant,
         'reviews': Review.list_for_venue(_restaurant).order_by('-modified_on'),
-        'notes': Note.list_for_venue(_restaurant).order_by('-modified_on'),
         'reports': Report.list_for_venue(_restaurant),
-        'note_form': note_form,
         'reviews': reviews,
-        'notes': notes,
-        'reveiw_by_user': reveiw_by_user,
-        'note_by_user': note_by_user
+        'reveiw_by_user': reveiw_by_user
     })
 
 
@@ -213,19 +204,6 @@ def add_review_view(request, rest_pk):
     return render(request, 'restaurants/restaurant_writereview.html', {
         'restaurant': _restaurant,
         'reveiw_by_user': reveiw_by_user,
-    })
-
-
-@login_required
-@require_GET
-def add_note_view(request, rest_pk):
-    _restaurant = get_object_or_404(Restaurant, pk=rest_pk)
-    if not _restaurant.approved and \
-            not (hasattr(request.user, 'is_venue_moderator') and request.user.is_venue_moderator()):
-        raise Http404
-
-    return render(request, 'restaurants/restaurant_addnote.html', {
-        'restaurant': _restaurant,
     })
 
 
@@ -267,7 +245,6 @@ def update_restaurant(request, rest_pk):
     context = {
         'restaurant': _restaurant,
         'reviews': Review.list_for_venue(_restaurant),
-        'notes': Note.list_for_venue(_restaurant),
         'reports': Report.list_for_venue(_restaurant),
     }
 
@@ -309,17 +286,6 @@ def all_reviews_view(request, rest_pk):
 
     return render(request, 'reviews/all_reviews.html', {
         'reviews': reviews,
-        'restaurant': rest
-    })
-
-
-def all_notes_view(request, rest_pk):
-    rest = get_object_or_404(Restaurant, pk=rest_pk)
-
-    notes = Note.objects.filter(venue_id=rest_pk)
-
-    return render(request, 'notes/all_notes.html', {
-        'notes': notes,
         'restaurant': rest
     })
 

@@ -13,8 +13,8 @@ urlpatterns = patterns('venues.views',
 
 
     # notes editing
-    url(r'^notes/(?P<note_pk>[0-9]+)/remove/$', 'notes.remove_note'),
-    url(r'^notes/(?P<note_pk>[0-9]+)/update/$', 'notes.update_note'),
+    #url(r'^notes/(?P<note_pk>[0-9]+)/remove/$', 'notes.remove_note'),
+    #url(r'^notes/(?P<note_pk>[0-9]+)/update/$', 'notes.update_note'),
 
     # reviews editing
     url(r'^reviews/(?P<review_pk>[0-9]+)/remove/$', 'reviews.remove_review'),
@@ -35,16 +35,16 @@ urlpatterns = patterns('venues.views',
 
     # venues
     url(r'^restaurant/(?P<rest_pk>[0-9]+)/show-all-reviews/$', 'reviews.show_all_reviews'),
-    url(r'^restaurant/(?P<rest_pk>[0-9]+)/show-all-tips/$', 'notes.show_all_notes'),
+    #url(r'^restaurant/(?P<rest_pk>[0-9]+)/show-all-tips/$', 'notes.show_all_notes'),
     url(r'^restaurant/(?P<rest_pk>[0-9]+)/report/$', 'reports.report_restaurant'),
     url(r'^restaurant/(?P<rest_pk>[0-9]+)/update/$', 'venuess.update_restaurant'),
     url(r'^restaurant/(?P<rest_pk>[0-9]+)/approve/$', 'moderate.approve_restaurant'),
     url(r'^restaurant/(?P<rest_pk>[0-9]+)/$', 'venuess.restaurant', name="restaurant_profile"),
-    url(r'^restaurant/(?P<rest_pk>[0-9]+)/note/new/$', 'notes.add_note'),
+    #url(r'^restaurant/(?P<rest_pk>[0-9]+)/note/new/$', 'notes.add_note'),
     url(r'^restaurant/(?P<rest_pk>[0-9]+)/review/new/$', 'reviews.add_review'),
 
     url(r'^restaurant/(?P<rest_pk>[0-9]+)/writereview/$', 'venuess.add_review_view', name='restaurant_writereview'),
-    url(r'^restaurant/(?P<rest_pk>[0-9]+)/addnote/$', 'venuess.add_note_view', name='restaurant_addnote'),
+    #url(r'^restaurant/(?P<rest_pk>[0-9]+)/addnote/$', 'venuess.add_note_view', name='restaurant_addnote'),
 
     url(r'^restaurant/(?P<rest_pk>[0-9]+)/moderate/$', 'moderate.moderate_restaurant'),
     url(r'^restaurant/(?P<rest_pk>[0-9]+)/unsuspend/$', 'moderate.unsuspend_restaurant'),
@@ -52,7 +52,7 @@ urlpatterns = patterns('venues.views',
     url(r'^restaurant/(?P<rest_pk>[0-9]+)/reject/$', 'moderate.reject_restaurant'),
 
     url(r'^restaurant/(?P<rest_pk>[0-9]+)/allreviews/$', 'venuess.all_reviews_view', name='restaurant_allreviews'),
-    url(r'^restaurant/(?P<rest_pk>[0-9]+)/allnotes/$', 'venuess.all_notes_view', name='restaurant_allnotes'),
+    #url(r'^restaurant/(?P<rest_pk>[0-9]+)/allnotes/$', 'venuess.all_notes_view', name='restaurant_allnotes'),
 
     # common
     url(r'^get_category/', 'get_category', name='get_drugs'),
