@@ -1,0 +1,433 @@
+/*animation styles*/
+/* Shutter Out Horizontal */
+.hvr-shutter-out-horizontal {
+  display: inline-block;
+  vertical-align: middle;
+  -webkit-transform: perspective(1px) translateZ(0);
+  transform: perspective(1px) translateZ(0);
+  box-shadow: 0 0 1px transparent;
+  position: relative;
+  background: #e1e1e1;
+  -webkit-transition-property: color;
+  transition-property: color;
+  -webkit-transition-duration: 0.3s;
+  transition-duration: 0.3s;
+}
+.hvr-shutter-out-horizontal:before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(255, 255, 255, 0.39);
+  -webkit-transform: scaleX(0);
+  transform: scaleX(0);
+  -webkit-transform-origin: 50%;
+  transform-origin: 50%;
+  -webkit-transition-property: transform;
+  transition-property: transform;
+  -webkit-transition-duration: 0.3s;
+  transition-duration: 0.3s;
+  -webkit-transition-timing-function: ease-out;
+  transition-timing-function: ease-out;
+}
+.hvr-shutter-out-horizontal:hover, .hvr-shutter-out-horizontal:focus, .hvr-shutter-out-horizontal:active {
+  color: white;
+}
+.hvr-shutter-out-horizontal:hover:before, .hvr-shutter-out-horizontal:focus:before, .hvr-shutter-out-horizontal:active:before {
+  -webkit-transform: scaleX(1);
+  transform: scaleX(1);
+}
+
+/*for the main content section*/
+#content {
+    margin:0px;
+    min-height: 500px;
+    position: relative;
+}
+/*styles for the navigation */
+.navbar-default{
+    background:rgba(0,0,0,.3);
+    border-color:transparent;
+    margin-bottom: 0px;
+}
+.navbar>.container .navbar-brand{
+    color:white;
+    font-size:18px;
+    margin-left:0px;
+}
+.navbar-default .navbar-nav>li>a{
+    color:white;
+    font-size:16px;
+    display:inline-block;
+}
+.navbar-default .navbar-nav>li>a:hover{
+    color:white;
+}
+/*overwriting theme container style */
+.container-nav{
+    width:1170px;
+    margin:0 auto;
+}
+/*styling the header section*/
+header .wrapper{
+    width:100%;
+    /*background-color: rgba(0,0,0,.8) ;*/
+}
+header .header-content {
+    position: relative;
+    text-align: center;
+    padding: 100px 15px 100px;
+    width: 100%; }
+header .header-content .header-content-inner{
+    z-index:9;
+}
+header .header-content .header-content-inner h1{
+    margin:5.75% auto;
+
+}
+header .header-content .header-content-inner h2{
+    margin-top:5.75%;
+    color:white;
+}
+header .header-content .header-content-inner p {
+    font-size:14px;
+    margin-top:20px;
+}
+header .header-content .header-content-inner .top-contributors h4{
+    font-weight:bold;
+}
+form.search-bar{
+    width:700px;
+    margin:0px auto;
+}
+form button{
+    border-radius:0px ;
+    background:rgba(0,0,0,.3) !important;
+    color:white;
+}
+header .header-content .header-content-inner .top-contributors {
+    width:100%;
+    margin-top:20px;
+}
+header .header-content .header-content-inner .top-contributors h4{
+    color: white;
+}
+header .header-content .header-content-inner .top-contributors .row{
+    width:100%;
+}
+.row .card{
+    font-size:14px;
+    background:rgba(0,0,0,.3);
+    margin-bottom:15px;
+}
+header .header-content .header-content-inner .top-contributors > h4{
+    margin-bottom:30px;
+}
+.row .card .card-block {
+    padding: 10px;
+}
+.card .card-block .card-title{
+    color:white;
+    font-size:30px;
+    margin:0px 0px 3px 0px;
+}
+header .header-content .header-content-inner .top-contributors .row .col-md-3 .card .red{
+    color:white;
+    font-size:16px;
+}
+.card .card-block .card-text{
+    font-size:13px;
+}
+.card .card-block .card-text p{
+    margin-bottom: 0px;
+}
+.header-content-inner .card .card-block .card-text .commits,
+.header-content-inner .card .card-block .card-text .reviews,
+.header-content-inner .card .card-block .card-text .reports {
+    display:inline-block;
+    color:white;
+}
+.card .card-block .card-text a.show-more{
+    margin-right:20px;
+    color:#a5253c;
+}
+.card-row{
+    margin:0px;
+}
+.header-content-inner form .input-group-btn button{
+    margin-left:5px !important;
+}
+header .header-content .header-content-inner h1{
+    text-transform:uppercase;
+}
+/*search results page styles*/
+section.map-container{
+}
+section.container{
+    padding:15px;
+    margin-right: auto;
+    margin-left: auto;
+}
+section.card-container .col-md-3:nth-last-child(1) .card, section.container .col-md-3:nth-last-child(2) .card,
+section.card-container .col-md-3:nth-last-child(3) .card, section.container .col-md-3:nth-last-child(4) .card {
+    margin-bottom:0px;
+}
+section.card-container .col-sm-6.col-xs-12:nth-last-child(1) .card, section.container .col-sm-6.col-xs-12:nth-last-child(2) .card {
+    margin-bottom:0px;
+}
+/*report resturant page styles*/
+.report-container{
+    display:flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: space-between;
+}
+/*resturant profile page style*/
+.resturant-profile a.tile-menu{
+    margin-right:7px;
+}
+.resturant-profile ul.dropdown-menu{
+    margin-right:7px;
+}
+.resturant-profile .listview{
+    background:rgba(0,0,0,.2);
+}
+
+.resturant-profile .map-container{
+    margin-bottom: 1.5rem;
+    margin-top:0px;
+}
+.resturant-profile button.suggest-edit {
+    width:100%;
+    background: rgba(0,0,0,.2);
+    border:1px solid white;
+    margin-bottom:1.5rem;
+    font-size: 14px;
+}
+.resturant-profile button.suggest-edit:hover{
+    background: rgba(0,0,0, 0.25);
+    text-shadow: none;
+}
+.resturant-profile button.report-resturant {
+    width:100%;
+    background: rgba(0,0,0,.2);
+    border:1px solid white;
+    margin-bottom:1.5rem;
+    font-size: 14px;
+}
+.resturant-profile button.report-resturant:hover{
+    background: rgba(0,0,0, 0.25);
+    text-shadow: none;
+}
+.map-container iframe{
+    width: 100%;
+    display: block;
+    pointer-events: none;
+    position: relative; /* IE needs a position other than static */
+}
+.map-container iframe.clicked {
+    pointer-events: auto;
+}
+.map-card{
+    padding:10px 15px;
+    background:rgba(0,0,0,.3);
+    text-align: center;
+}
+.resturant-profile .read-reviewers {
+    font-size: 14px;
+    background: rgba(0,0,0,.3);
+    padding:20px 8px;
+    text-align:center;
+}
+.resturant-profile .read-reviewers h4{
+    margin-bottom:20px;
+}
+.resturant-profile .read-reviewers .btn{
+    background:transparent;
+    border:1px solid white;
+    margin:0px 10px;
+}
+.resturant-profile .col-md-3{
+    padding:0px 15px;
+}
+.resturant-profile .col-md-3 .title{
+    margin-bottom: 1.5rem;
+}
+.resturant-profile .col-md-6{
+    padding: 0px 15px;
+}
+.resturant-profile .col-md-6  .card{
+    margin-bottom:1.5rem;
+    padding:15px;
+}
+.resturant-profile .col-md-6  .card .card-block{
+    padding:0px;
+}
+.resturant-profile .col-md-6 textarea{
+    margin-bottom:1.5rem !important;
+}
+.resturant-profile .col-md-6 .note{
+    margin:1.5em 0px;
+    padding:15px;
+    text-align: justify;
+    background:rgba(0,0,0,.3);
+}
+.resturant-profile .read-reviewers {
+    margin-bottom: 1.5rem;
+}
+.resturant-profile .read-reviewers h4{
+    margin:0px 0px 20px 0px;
+}
+
+.user-review{
+    background:rgba(0,0,0,.3);
+    margin-top:15px;
+    padding:15px;
+}
+.user-review .media .media-heading{
+    font-size:12px;
+}
+.user-review .review-date{
+    color:#c0c0c0;
+}
+.user-review img{
+    width:35px;
+    height:35px;
+    margin-right: 10px;
+    float:left;
+}
+.user-review .media:last-child p{
+    margin-bottom:-2px;
+}
+.resturant-profile .col-md-6 .user-review textarea{
+    margin-top:10px;
+    margin-bottom:0px !important;
+}
+.resturant-profile .col-md-6 .user-review .media hr{
+    border-top:1px solid #606060;
+}
+.resturant-profile .col-md-6 .user-review .media p{
+    margin-top:10px;
+}
+.resturant-profile .col-md-6 .user-review h3{
+    margin-top:0px;
+    text-align: center;
+}
+/*write review section*/
+
+.resturant-profile .col-md-6 .write-review{
+    background: rgba(0,0,0,.3);
+    margin-top:1.5rem;
+    margin-bottom: 1.5rem;
+    padding:15px;
+}
+.resturant-profile .col-md-6 .write-review .rating{
+    font-size:14px;
+    margin-bottom:10px;
+}
+.resturant-profile .col-md-6 .write-review textarea{
+    margin-bottom:5px !important;
+    font-size: 12px;
+}
+.resturant-profile .col-md-6 .write-review .btn{
+    background:transparent;
+    border:1px solid white;
+}
+/*section for search results*/
+.search-results-page .resturant-item{
+    width:50%;
+    margin:10px;
+}
+/*responsive section */
+@media (max-width:767px){
+    header .wrapper{
+        height:auto;
+    }
+    form.search-bar{
+        width: 90%;
+        margin:0px auto;
+    }
+    .card{
+        margin-bottom:30px;
+    }
+    .container-nav{
+        width:100%;
+    }
+    .navbar-form{
+        padding:0px;
+    }
+    .container>.navbar-header{
+        margin-right: 0px;
+        margin-left: 0px;
+    }
+    .container>.navbar-collapse{
+        margin-right: 0px;
+        margin-left:0px;
+    }
+    header .header-content {
+        padding-top:30px;
+    }
+}
+@media (min-width: 768px) {
+    header {
+        height: auto;
+    }
+    section.container {
+        width: 750px;
+    }
+    .container-nav {
+        width: 100%;
+    }
+
+}
+@media (max-width:990px){
+    .navbar-default{
+        background:rgba(0,0,0,.5);
+        border-color:transparent;
+        z-index:9;
+    }
+    header .header-content{
+        padding-top:30px;
+    }
+    .card{
+        margin-bottom:30px;
+    }
+}
+@media(min-width: 991px){
+    header .header-content {
+        /*top:50%;*/
+        /*position:absolute;*/
+        /*transform: translateY(-50%);*/
+        display: flex;
+        justify-content:space-between;
+        flex-direction: column;
+        padding: 0px;
+    }
+    header .header-content .header-content-inner .row .card{
+        /*position:fixed;
+        bottom:5%;*/
+    }
+    header .header-content .header-content-inner .top-contributors{
+        margin-top:5.75%;
+
+    }
+    header .header-content .header-content-inner {
+        max-width: 1000px;
+        margin-left: auto;
+        margin-right: auto; }
+    header .header-content .header-content-inner p {
+        max-width: 80%;
+        margin-left: auto;
+        margin-right: auto; }
+    section.container {
+        width: 970px;
+    }
+}
+@media (min-width: 1200px) {
+    section.container {
+        width: 1170px;
+    }
+}
