@@ -29,7 +29,7 @@
     {% assets "core-js" %}
         <script src="{{ ASSET_URL }}"></script>
     {% endassets %}
-        <script src="https://maps.googleapis.com/maps/api/js?key=NONE&libraries=places"></script>
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBUQ_dk9TdGZkIXN4rawvUB7HZhwTWnO0c&libraries=places"></script>
         <script>
          function initialize() {
            var input = /** @type {HTMLInputElement} */(
@@ -93,10 +93,10 @@
     </section>
 </section>
     <footer>
-        <div class="panel panel-default tile" style="margin-bottom: 0;">
-                         <div class="panel-footer">&copy; 2015 halaltracker.com. All rights reserved.</div>
-                    </div>
-                    {% analytics "UA-61876839-1" %}
+      <div class="panel panel-default tile" style="margin-bottom: 0;">
+        <div class="panel-footer">&copy; 2015 halaltracker.com. All rights reserved.</div>
+      </div>
+      {% analytics "UA-61876839-1" %}
     </footer>
 
 {% assets "base-js" %}
@@ -106,7 +106,6 @@
 <script src="{% static "js/icheck.js" %}"></script>
 <script src="{% static "js/calendar.min.js" %}"></script>
 <script src="{% static "js/functions.js" %}"></script>
-{#<script src="{% static "js/form_googlemaps.js" %}"></script>#}
 {% render_block "js" %}
 
 {# Commented out on template change, maybe shuld be put back later #}
