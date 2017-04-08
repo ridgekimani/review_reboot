@@ -1,36 +1,93 @@
 {% extends 'base.html' %}
 {% load static bootstrap3 sekizai_tags %}
-{% block body %}
+{% block header %}
 
-    <div class="container-fluid search-start">
-        <div class="row">
-            <div class="col-md-3">
-            </div>
-            <div class="col-md-6">
-                <h1 class="text-center">Search your city</h1>
-                <p class="text-center">Get Me HSP helps you find where Kebabs and Halal Snack Packs are near you. Let's
-                    do it.</p>
-            </div>
-            <div class="col-md-3">
-            </div>
+<header>
+  <div class="wrapper">
+    <div class="header-content">
+      <div class="header-content-inner">
+        <h1 class="site-title">Halal Tracker</h1>
+        <form class="navbar-form search-bar" role="search"
+              id="restaurant-form" method="post" action="/" _lpchecked="1">
+          {% csrf_token %}
+          <div class="input-group">
+            <input type="text" class="form-control input-focused" placeholder="Name of website" name="address" id="pac-input">
+            <input type="hidden" id="id_city">
+            <input type="hidden" id="id_country">
+            <input type="hidden" id="id_address">
 
+            <div class="input-group-btn">
+              <button class="btn " type="submit"><i class="fa fa-search"></i></button>
+            </div>
+          </div>
+        </form>
+        <h2 id="homeHeading">As-salāmu ʿalaykum</h2>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur sed viverra sapien, maximus aliquet dui. Nam quam nulla, malesuada et eleifend a, mattis eget dolor. Maecenas varius, mauris vel placerat consequat, nulla sapien sodales ante</p>
+        <div class="top-contributors">
+          <h4>Top Contributors</h4>
+          <div class="row card-row">
+            <div class="col-md-3 col-sm-6 col-xs-12">
+              <div class="card">
+                <div class="card-block">
+                  <h4 class="card-title">Tanzim</h4>
+                  <div class="card-text">
+                    <div class="commits"> <span class = "red">4 </span> Reviews </div>
+                    <div class="reviews"><span class = "red">6</span> Edits</div>
+                    <div class="reports"><span class = "red">5</span> Reports </div>
+                    <a class = "show-more" href="#" >more</a>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3 col-sm-6 col-xs-12">
+              <div class="card" >
+                <div class="card-block">
+                  <h4 class="card-title">Tanzim</h4>
+                  <div class="card-text">
+                    <div class="commits"> <span class = "red">4 </span> Reviews </div>
+                    <div class="reviews"><span class = "red">6</span> Edits</div>
+                    <div class="reports"><span class = "red">5</span> Reports </div>
+                    <a class = "show-more" href="#" >more</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3 col-sm-6 col-xs-12">
+              <div class="card" >
+                <div class="card-block">
+                  <h4 class="card-title">Tanzim</h4>
+                  <div class="card-text">
+                    <div class="commits"> <span class = "red">4 </span> Reviews </div>
+                    <div class="reviews"><span class = "red">6</span> Edits</div>
+                    <div class="reports"><span class = "red">5</span> Reports </div>
+                    <a class = "show-more" href="#" >more</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3 col-sm-6 col-xs-12">
+              <div class="card" >
+                <div class="card-block">
+                  <h4 class="card-title">Tanzim</h4>
+                  <div class="card-text">
+                    <div class="commits"> <span class = "red">4 </span> Reviews </div>
+                    <div class="reviews"><span class = "red">6</span> Edits</div>
+                    <div class="reports"><span class = "red">5</span> Reports </div>
+                    <a class = "show-more" href="#" >more</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="row">
-            <div class="col-md-3">
-            </div>
-            <div class="col-md-6">
-                <form method="post" action="/" id="restaurant-form" _lpchecked="1">
-                    {% csrf_token %}
-                    <div class="input-group">
-                        <input type="text" placeholder="enter address/suburb/city/postcode" name="address" class="form-control">
-                        <span class="input-group-btn"> <button class="btn btn-default" type="submit">Search</button> </span>
-                    </div>
-                </form>
-            </div>
-            <div class="col-md-3">
-            </div>
-        </div>
+      </div>
     </div>
+  </div>
+</header>
+
+  {% addtoblock "js" %}
+    {% include "restaurants/google-map.html" %}
+  {% endaddtoblock %}
 
 {% endblock %}
-

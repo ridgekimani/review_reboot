@@ -1,6 +1,9 @@
-
+{% comment %}
+{# all js scripts are included in base template #}
 <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
 <script src="https://maps.googleapis.com/maps/api/js?libraries=places"></script>
+{% endcomment %}
+
 <script>
     function initialize_map() {
         var geocoder = new google.maps.Geocoder();

@@ -38,7 +38,6 @@
 .sa-side-page { background-image: url(../img/icon/pages.png); }
 .sa-side-chart { background-image: url(../img/icon/chart.png); }
 .sa-side-photos { background-image: url(../img/icon/photos.png); }
-.sa-side-add { background-image: url(../img/icon/add.png); }
 
 /* Top Menu */
 [class*="sa-top-"] {
@@ -86,7 +85,6 @@
 }
 
 .sa-list-add { background-image: url(../img/icon/add.png); }
-.sa-list-updates { background-image: url(../img/icon/updates.png); }
 .sa-list-refresh { background-image: url(../img/icon/refresh.png); }
 .sa-list-move { background-image: url(../img/icon/move.png); }
 .sa-list-delete { background-image: url(../img/icon/delete.png); }
@@ -120,7 +118,7 @@ only screen and (                min-resolution: 120dpi),
 only screen and (                min-resolution: 1.25dppx) {
 
     /* Left Menu */
-    .sa-side-typography, .sa-side-widget, .sa-side-table, .sa-side-ui, .sa-side-folder .sa-side-add { background-size: 23px 21px; }
+    .sa-side-typography, .sa-side-widget, .sa-side-table, .sa-side-ui, .sa-side-folder { background-size: 23px 21px; }
 
     .sa-side-home { background-image: url(../img/icon/home@2x.png); background-size: 25px 25px; }
     .sa-side-typography { background-image: url(../img/icon/typography@2x.png); }
@@ -133,8 +131,7 @@ only screen and (                min-resolution: 1.25dppx) {
     .sa-side-page { background-image: url(../img/icon/pages@2x.png); background-size: 25px 21px; }
     .sa-side-chart { background-image: url(../img/icon/chart@2x.png); background-size: 24px 19px; }
     .sa-side-photos { background-image: url(../img/icon/photos@2x.png); background-size: 23px 19px; }
-    .sa-side-add { background-image: url(../img/icon/add@2x.png); background-size: 23px 19px; }
-
+    
     /* Top Menu */
     .sa-top-message { background-image: url(../img/icon/message@2x.png); background-size: 25px 17px; }
     .sa-top-updates { background-image: url(../img/icon/updates@2x.png); background-size: 25px 25px; }
@@ -161,7 +158,6 @@ only screen and (                min-resolution: 1.25dppx) {
 
     /* List Icons */    
     .sa-list-add { background-image: url(../img/icon/add@2x.png); background-size: 19px 19px;  }
-    .sa-list-updates { background-image: url(../img/icon/updates@2x.png); background-size: 19px 19px;  }
     .sa-list-refresh { background-image: url(../img/icon/refresh@2x.png); background-size: 18px 19px; }
     .sa-list-move { background-image: url(../img/icon/move@2x.png); background-size: 19px 19px; }
     .sa-list-delete { background-image: url(../img/icon/delete@2x.png); background-size: 15px 19px; }
