@@ -149,10 +149,16 @@ header .header-content .header-content-inner .top-contributors .row .col-md-3 .c
 .header-content-inner .card .card-block .card-text .reports {
     display:inline-block;
     color:white;
+    width:30%;
 }
 .card .card-block .card-text a.show-more{
     margin-right:20px;
-    color:#a5253c;
+    color:#a0a0a0;
+    font-size:14px;
+    text-shadow:none;
+}
+.card .card-block .card-text a.show-more i{
+    font-size:11px;
 }
 .card-row{
     margin:0px;
@@ -160,7 +166,7 @@ header .header-content .header-content-inner .top-contributors .row .col-md-3 .c
 .header-content-inner form .input-group-btn button{
     margin-left:5px !important;
 }
-header .header-content .header-content-inner h1{
+header .header-content .header-content-inner h1:first-letter{
     text-transform:uppercase;
 }
 /*search results page styles*/
@@ -178,47 +184,53 @@ section.card-container .col-md-3:nth-last-child(3) .card, section.container .col
 section.card-container .col-sm-6.col-xs-12:nth-last-child(1) .card, section.container .col-sm-6.col-xs-12:nth-last-child(2) .card {
     margin-bottom:0px;
 }
-/*report resturant page styles*/
+/*report restaurant page styles*/
 .report-container{
     display:flex;
     align-items: center;
     flex-direction: column;
     justify-content: space-between;
 }
-/*resturant profile page style*/
-.resturant-profile a.tile-menu{
+/*restaurant profile page style*/
+.restaurant-profile a.tile-menu{
     margin-right:7px;
 }
-.resturant-profile ul.dropdown-menu{
+.restaurant-profile ul.dropdown-menu{
     margin-right:7px;
 }
-.resturant-profile .listview{
+.restaurant-profile .listview{
     background:rgba(0,0,0,.2);
 }
-
-.resturant-profile .map-container{
+.restaurant-profile .col-md-3:first-child .title .tile-title{
+    text-transform: none;
+    font-size:14px;
+}
+.restaurant-profile .col-md-3:first-child .title h2:first-letter{
+    text-transform: uppercase !important;
+}
+.restaurant-profile .map-container{
     margin-bottom: 1.5rem;
     margin-top:0px;
 }
-.resturant-profile button.suggest-edit {
+.restaurant-profile button.suggest-edit {
     width:100%;
     background: rgba(0,0,0,.2);
     border:1px solid white;
     margin-bottom:1.5rem;
     font-size: 14px;
 }
-.resturant-profile button.suggest-edit:hover{
+.restaurant-profile button.suggest-edit:hover{
     background: rgba(0,0,0, 0.25);
     text-shadow: none;
 }
-.resturant-profile button.report-resturant {
+.restaurant-profile button.report-restaurant {
     width:100%;
     background: rgba(0,0,0,.2);
     border:1px solid white;
     margin-bottom:1.5rem;
     font-size: 14px;
 }
-.resturant-profile button.report-resturant:hover{
+.restaurant-profile button.report-restaurant:hover{
     background: rgba(0,0,0, 0.25);
     text-shadow: none;
 }
@@ -236,49 +248,49 @@ section.card-container .col-sm-6.col-xs-12:nth-last-child(1) .card, section.cont
     background:rgba(0,0,0,.3);
     text-align: center;
 }
-.resturant-profile .read-reviewers {
+.restaurant-profile .read-reviewers {
     font-size: 14px;
     background: rgba(0,0,0,.3);
     padding:20px 8px;
     text-align:center;
 }
-.resturant-profile .read-reviewers h4{
+.restaurant-profile .read-reviewers h4{
     margin-bottom:20px;
 }
-.resturant-profile .read-reviewers .btn{
+.restaurant-profile .read-reviewers .btn{
     background:transparent;
     border:1px solid white;
     margin:0px 10px;
 }
-.resturant-profile .col-md-3{
+.restaurant-profile .col-md-3{
     padding:0px 15px;
 }
-.resturant-profile .col-md-3 .title{
+.restaurant-profile .col-md-3 .title{
     margin-bottom: 1.5rem;
 }
-.resturant-profile .col-md-6{
+.restaurant-profile .col-md-6{
     padding: 0px 15px;
 }
-.resturant-profile .col-md-6  .card{
+.restaurant-profile .col-md-6  .card{
     margin-bottom:1.5rem;
     padding:15px;
 }
-.resturant-profile .col-md-6  .card .card-block{
+.restaurant-profile .col-md-6  .card .card-block{
     padding:0px;
 }
-.resturant-profile .col-md-6 textarea{
+.restaurant-profile .col-md-6 textarea{
     margin-bottom:1.5rem !important;
 }
-.resturant-profile .col-md-6 .note{
+.restaurant-profile .col-md-6 .note{
     margin:1.5em 0px;
     padding:15px;
     text-align: justify;
     background:rgba(0,0,0,.3);
 }
-.resturant-profile .read-reviewers {
+.restaurant-profile .read-reviewers {
     margin-bottom: 1.5rem;
 }
-.resturant-profile .read-reviewers h4{
+.restaurant-profile .read-reviewers h4{
     margin:0px 0px 20px 0px;
 }
 
@@ -302,42 +314,42 @@ section.card-container .col-sm-6.col-xs-12:nth-last-child(1) .card, section.cont
 .user-review .media:last-child p{
     margin-bottom:-2px;
 }
-.resturant-profile .col-md-6 .user-review textarea{
+.restaurant-profile .col-md-6 .user-review textarea{
     margin-top:10px;
     margin-bottom:0px !important;
 }
-.resturant-profile .col-md-6 .user-review .media hr{
+.restaurant-profile .col-md-6 .user-review .media hr{
     border-top:1px solid #606060;
 }
-.resturant-profile .col-md-6 .user-review .media p{
+.restaurant-profile .col-md-6 .user-review .media p{
     margin-top:10px;
 }
-.resturant-profile .col-md-6 .user-review h3{
+.restaurant-profile .col-md-6 .user-review h3{
     margin-top:0px;
     text-align: center;
 }
 /*write review section*/
 
-.resturant-profile .col-md-6 .write-review{
+.restaurant-profile .col-md-6 .write-review{
     background: rgba(0,0,0,.3);
     margin-top:1.5rem;
     margin-bottom: 1.5rem;
     padding:15px;
 }
-.resturant-profile .col-md-6 .write-review .rating{
+.restaurant-profile .col-md-6 .write-review .rating{
     font-size:14px;
     margin-bottom:10px;
 }
-.resturant-profile .col-md-6 .write-review textarea{
+.restaurant-profile .col-md-6 .write-review textarea{
     margin-bottom:5px !important;
     font-size: 12px;
 }
-.resturant-profile .col-md-6 .write-review .btn{
+.restaurant-profile .col-md-6 .write-review .btn{
     background:transparent;
     border:1px solid white;
 }
 /*section for search results*/
-.search-results-page .resturant-item{
+.search-results-page .restaurant-item{
     width:50%;
     margin:10px;
 }
@@ -379,7 +391,7 @@ section.card-container .col-sm-6.col-xs-12:nth-last-child(1) .card, section.cont
         width: 750px;
     }
     .container-nav {
-        width: 100%;
+       padding:0px 6px;
     }
 
 }
@@ -388,6 +400,9 @@ section.card-container .col-sm-6.col-xs-12:nth-last-child(1) .card, section.cont
         background:rgba(0,0,0,.5);
         border-color:transparent;
         z-index:9;
+    }
+    .navbar-default .container{
+        width:100%;
     }
     header .header-content{
         padding-top:30px;
@@ -405,6 +420,11 @@ section.card-container .col-sm-6.col-xs-12:nth-last-child(1) .card, section.cont
         justify-content:space-between;
         flex-direction: column;
         padding: 0px;
+    }
+    /*styling the navbar section */
+    ul.nav.navbar-nav{
+        position:absolute;
+        right:15px;
     }
     header .header-content .header-content-inner .row .card{
         /*position:fixed;

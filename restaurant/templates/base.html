@@ -51,15 +51,15 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="#">Halal Tracker</a>
+        <a class="navbar-brand" href="/">Halal Tracker</a>
       </div>
 
       <!-- Collect the nav links, forms, and other content for toggling -->
-      <div class="collapse navbar-collapse" id="ht_bootstrap">
+      <div class="navbar-collapse collapse" id="ht_bootstrap">
         <ul class="nav navbar-nav navbar-right">
           <li class="nav-item">
 
-            <a class="nav-link page-scroll" href="#portfolio"><i class="fa fa-search"></i> Search</a>
+            <a class="nav-link page-scroll" href="/"><i class="fa fa-search"></i> Search</a>
           </li>
           <li class="nav-item">
 
@@ -77,6 +77,7 @@
 
 {% block header %}{% endblock %}
 
+{% block prebody %}{% endblock %} <!-- used for map to receive whole page width -->
 <section id="main" class="p-relative" role="main">
 
     <!-- Content -->
