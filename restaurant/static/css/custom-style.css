@@ -350,9 +350,9 @@ section.card-container .col-sm-6.col-xs-12:nth-last-child(1) .card, section.cont
 }
 /*section for search results*/
 .search-results-page .restaurant-item{
-    width:50%;
-    margin:10px;
+    width:100%;
 }
+
 /*responsive section */
 @media (max-width:767px){
     header .wrapper{
@@ -450,4 +450,13 @@ section.card-container .col-sm-6.col-xs-12:nth-last-child(1) .card, section.cont
     section.container {
         width: 1170px;
     }
+}
+
+.reviews, .ratings {
+    font-weight: bold;
+    margin-right: 13px;
+}
+
+.address {
+    color: rgba(255, 255, 255, 0.7);
 }

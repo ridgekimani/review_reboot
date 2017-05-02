@@ -8,8 +8,9 @@
 {% endblock %}
 
 {% block body %}
-<section class = "container search-results-page">
+<section class = "search-results-page">
   <div class="row">
+    <div class="col-xs-12 col-md-6">
       {% for restaurant in all_restaurants %}
       <div class = "restaurant-item">
         <div class="card">
@@ -23,15 +24,18 @@
               <div class="cuisine">
                 {% for cuisine in restaurant.cuisines.all %}{{ cuisine }} {% endfor %}</div>
               <div class="address">{{ restaurant.address }}</div>
-              <div class="subText">
-                <span class="reviews"><span>Reviews: </span><span>{{restaurant.review_count}}</span></span>
-                <span class="rating"><span>Rating: </span><span>{{restaurant.avg_rating}}</span></span>
-              </div>
+              <span class="reviews">
+                  <span>Reviews: {{restaurant.review_count}}</span>
+              </span>
+              <span class="ratings">
+                  <span>Rating: {{restaurant.avg_rating}}</span>
+              </span>
             </div>
           </div>
         </div>
       </div>
       {% endfor %}
+      </div>
   </div>
 
 </section>
