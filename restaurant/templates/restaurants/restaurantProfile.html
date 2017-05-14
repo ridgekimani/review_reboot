@@ -119,7 +119,7 @@
     {% else %}
       <div class="write-review">
         <p>Please login to write a review</p>
-        <a  class="btn hvr-shutter-out-horizontal btn-info m-t-10" href="/accounts/login/">Login</a>
+        <a data-toggle="modal" class="btn hvr-shutter-out-horizontal btn-info m-t-10" href="#login_modal">Login</a>
       </div>
     {% endif %}
 
@@ -231,16 +231,17 @@
      $('#main-login-modal').attr("action", "{% url "django.contrib.auth.views.login" %}?next={% url "venues.views.reports.report_restaurant" restaurant.pk %}");
    })
    $('#edit-login').click(function(){
-     alert("EDIT LOGIN");
      $('#modal-google-login').attr("href", "{% url 'social:begin' 'google-oauth2' %}?next={% url "venues.views.venuess.update_restaurant" restaurant.pk %}");
      $('#modal-facebook-login').attr("href", "{% url 'social:begin' 'google-oauth2' %}?next={% url "venues.views.venuess.update_restaurant" restaurant.pk %}");
      $('#main-login-modal').attr("action", "{% url "django.contrib.auth.views.login" %}?next={% url "venues.views.venuess.update_restaurant" restaurant.pk %}");
    })
 
    $('#login-default-btn').click(function(){
+     alert("LGINT");
      $('#modal-google-login').attr("href", "{% url 'social:begin' 'google-oauth2' %}?next={{ request.path }}");
      $('#modal-facebook-login').attr("href", "{% url 'social:begin' 'google-oauth2' %}?next={{ request.path }}");
      $('#main-login-modal').attr("action", "{% url "django.contrib.auth.views.login" %}?next={{ request.path }}");
+     $('body').addClass("modal-open")
    })
   </script>
   {% endaddtoblock %}
