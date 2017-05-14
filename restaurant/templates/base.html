@@ -67,18 +67,30 @@
               <a class="nav-link page-scroll" href="/accounts/login/"><i class="fa fa-sign-in"></i> Sign in</a>
             </li>
             {% else %}
-              {% if restaurant %}
+
+              {% if user.is_venue_moderator %}
               <li class="nav-item">
-                <a href="{% url "venues.views.moderate.moderate_restaurant" restaurant.pk %}" class="nav-link page-scroll"> Moderate </a>
+                <a class="nav-link page-scroll" href="/moderate/">Moderate</a>
               </li>
+                {% if restaurant %}
+                <li class="nav-item">
+                  <a href="{% url "venues.views.moderate.moderate_restaurant" restaurant.pk %}" class="nav-link page-scroll">Moderate the Place</a>
+                </li>
+                {% endif %}
               {% endif %}
+
               <li class="nav-item">
-                <a href="/new/" class="nav-link page-scroll"> Create </a>
+                <a href="/new/" class="nav-link page-scroll">New Restaurant</a>
+              </li>
+              <li class="nav-item">
+                <a href="/newmasjid/" class="nav-link page-scroll">New Masjid</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link page-scroll" href="/accounts/logout/"><i class="fa fa-sign-in"></i> Sign out</a>
               </li>
+
             {% endif %}
+
           <li class="nav-item">
             <a class="nav-link page-scroll" href="#contact"><i class="fa fa-users"></i> Contact us</a>
           </li>
