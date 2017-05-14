@@ -30,7 +30,6 @@
     {% if user.is_authenticated %}
       <a href="{% url "venues.views.venuess.update_restaurant" restaurant.pk %}" class="btn btn-lg suggest-edit hvr-shutter-out-horizontal"> Suggest an Edit </a>
       <a href="{% url "venues.views.reports.report_restaurant" restaurant.pk %}" class="btn btn-lg report-restaurant hvr-shutter-out-horizontal"> Report the Restaurant </a>
-      <a href="{% url "venues.views.moderate.moderate_restaurant" restaurant.pk %}" class="btn btn-lg report-restaurant hvr-shutter-out-horizontal"> Moderate this Restaurant </a>
     {% else %}
       <a id="edit-login" class="btn btn-lg suggest-edit hvr-shutter-out-horizontal" data-toggle="modal" href="#login_modal">Login to Suggest an Edit</a>
 

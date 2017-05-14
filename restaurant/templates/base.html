@@ -58,18 +58,27 @@
       <div class="navbar-collapse collapse" id="ht_bootstrap">
         <ul class="nav navbar-nav navbar-right">
           <li class="nav-item">
-
             <a class="nav-link page-scroll" href="/"><i class="fa fa-search"></i> Search</a>
           </li>
-          <li class="nav-item">
 
 
             {% if not user.is_authenticated %}
-            <a class="nav-link page-scroll" href="/accounts/login/"><i class="fa fa-sign-in"></i> Sign in</a>
+            <li class="nav-item">
+              <a class="nav-link page-scroll" href="/accounts/login/"><i class="fa fa-sign-in"></i> Sign in</a>
+            </li>
             {% else %}
-            <a class="nav-link page-scroll" href="/accounts/logout/"><i class="fa fa-sign-in"></i> Sign out</a>
+              {% if restaurant %}
+              <li class="nav-item">
+                <a href="{% url "venues.views.moderate.moderate_restaurant" restaurant.pk %}" class="nav-link page-scroll"> Moderate </a>
+              </li>
+              {% endif %}
+              <li class="nav-item">
+                <a href="/new/" class="nav-link page-scroll"> Create </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link page-scroll" href="/accounts/logout/"><i class="fa fa-sign-in"></i> Sign out</a>
+              </li>
             {% endif %}
-          </li>
           <li class="nav-item">
             <a class="nav-link page-scroll" href="#contact"><i class="fa fa-users"></i> Contact us</a>
           </li>
