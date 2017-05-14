@@ -212,25 +212,25 @@ section.card-container .col-sm-6.col-xs-12:nth-last-child(1) .card, section.cont
     margin-bottom: 1.5rem;
     margin-top:0px;
 }
-.restaurant-profile button.suggest-edit {
+.restaurant-profile a.suggest-edit {
     width:100%;
     background: rgba(0,0,0,.2);
     border:1px solid white;
     margin-bottom:1.5rem;
     font-size: 14px;
 }
-.restaurant-profile button.suggest-edit:hover{
+.restaurant-profile a.suggest-edit:hover{
     background: rgba(0,0,0, 0.25);
     text-shadow: none;
 }
-.restaurant-profile button.report-restaurant {
+.restaurant-profile a.report-restaurant {
     width:100%;
     background: rgba(0,0,0,.2);
     border:1px solid white;
     margin-bottom:1.5rem;
     font-size: 14px;
 }
-.restaurant-profile button.report-restaurant:hover{
+.restaurant-profile a.report-restaurant:hover{
     background: rgba(0,0,0, 0.25);
     text-shadow: none;
 }
