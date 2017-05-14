@@ -2,269 +2,236 @@
 {% load sekizai_tags static %}
 {% block body %}
 
-<style>
-    .profile-tile{
-        padding: 10px;
-        position: relative;
-    }
-    .profile-tile time{
-        position: absolute;
-        top: 10px;
-        right: 10px;
-    }
-    .profile-block-title{
-        width: 100%;
-    }
-</style>
+<div class = "row restaurant-profile">
 
-                {% if messages %}
-                    {% for message in messages %}
-                        {% if message.tags  %}
-                            <div class="alert alert-success alert-dismissable fade in">
-                                <button class="close" aria-hidden="true" data-dismiss="alert" type="button">x</button>
-                                {{message}}
-                            </div>
-                        {% endif %}
-                    {% endfor %}
-                {% endif %}
-
-    <div class="block-area">
-        <div class="table table-bordered tile  mainTable">
-            <div class="title">
-                {{ restaurant.name }}
-            </div>
-            <div class="cuisine">{% for cuisine in restaurant.cuisines.all %}{{ cuisine }} {% endfor %}</div>
-            <div class="address">{{ restaurant.address }}</div>
-            {% if restaurant.address_note %}
-                <div class="address_note">Address note: {{ restaurant.address_note }}</div>
-            {% endif %}
-            <div class="phone">{{ restaurant.phone }}</div>
+  <div class="col-md-3">
+    <div class="title">
+      <h2 class="tile-title"> Halal-ness Profile </h2>
+      <div class="listview icon-list">
+        <div class="media">
+          <div class="media-body">Muslim Owner: {{ restaurant.get_muslimOwner_display }}</div>
+        </div>
+        <div class="media">
+          <div class="media-body">Menu: {{ restaurant.get_menu_display }}</div>
         </div>
 
-
-        <div class="table table-bordered tile  mainTable">
-            <div class="title">
-
-                {% if user.is_authenticated %}
-                    <small>
-                        <a href="{% url "venues.views.venuess.update_restaurant" restaurant.pk %}"
-                        class="btn btn-alt">edit</a>
-
-                        <a href="{% url "venues.views.reports.report_restaurant" restaurant.pk %}"
-                        class="btn btn-alt">report</a>
-                        {% if user.is_venue_moderator %}
-                             <a href="{% url "venues.views.moderate.moderate_restaurant" restaurant.pk %}"
-                             class="btn btn-alt">moderate</a>
-                        {% endif %}
-                    </small>
-                {% else %}
-
-                    <small>
-                        <a id="edit-login" class="btn btn-alt" data-toggle="modal" href="#login_modal">edit</a>
-
-                        <a id="report-login" class="btn btn-alt" data-toggle="modal" href="#login_modal">report</a>
-                    </small>
-                {% endif %}
-            </div>
+        <div class="media">
+          <i class="fa fa-pork pull-left"></i>
+          <div class="media-body">Serves Alcohol: {{ restaurant.get_alcoholFree_display }}</div>
         </div>
 
-
-        <div class="row">
-            <div class="col-md-8">
-                <table class="table table-bordered table-hover tile tile">
-                    <tr>
-                        <th colspan="2">Halal-ness Profile</th>
-                    </tr>
-                    <tr>
-                        <td>Menu</td>
-                        <td>{{ restaurant.get_menu_display }}</td>
-                    </tr>
-                    <tr>
-                        <td>Alcohol Free</td>
-                        <td>{{ restaurant.get_alcoholFree_display }}</td>
-                    </tr>
-                    <tr>
-                        <td>Pork Free</td>
-                        <td>{{ restaurant.get_porkFree_display }}</td>
-                    </tr>
-                    <tr>
-                        <td>Muslim Owner</td>
-                        <td>{{ restaurant.get_muslimOwner_display }}</td>
-                    </tr>
-                </table>
-
-                <table class="table table-bordered table-hover tile tile">
-                    <tr>
-                        <th colspan="2">More info</th>
-                    </tr>
-                    <tr>
-                        <td>Catering</td>
-                        <td>{{ restaurant.get_catering_display }}</td>
-                    </tr>
-                    <tr>
-                        <td>Delivery</td>
-                        <td>{{ restaurant.get_delivery_display }}</td>
-                    </tr>
-                    <tr>
-                        <td>Website</td>
-                        <td>{{ restaurant.website }}</td>
-                    </tr>
-                </table>
-
-            </div>
-            <!-- GOOGLE MAP -->
-            <div class="col-md-4">
-                <div id="map-canvas" style="width: 100%; height: 300px"></div>
-            </div>
-            <!-- END GOOGLE MAP -->
+        <div class="media">
+          <div class="media-body">Pork Free: {{ restaurant.get_porkFree_display }}</div>
         </div>
+      </div>
+    </div>
+    <button class="btn btn-lg suggest-edit hvr-shutter-out-horizontal"> Suggest an Edit </button>
+    <button class="btn btn-lg report-restaurant hvr-shutter-out-horizontal"> Report this Restaurant </button>
 
-        <div class="tab-container tile">
-            <ul class="nav tab nav-tabs">
-                <li class="active"><a href="#home">About</a></li>
-            </ul>
-            <div class="tab-content">
-                <div class="tab-pane active" id="home">
-                    {% if restaurant.about %}
-                    {{ restaurant.about }}
-                    {% else %}
-                        No about information.
-                    {% endif %}
+    <section class = "map-container map-card">
+      <div id="map-canvas" style="width: 100%; height: 230px"></div>
+      <h4>{{ restaurant.name }}</h4>
+      <p><i class="fa fa-map-marker"></i> {{ restaurant.address }}</p>
+    </section>
 
-                </div>
-            </div>
+    <div class="title">
+      <h2 class="tile-title"> More Info</h2>
+      <div class="listview icon-list">
+        <div class="media">
+          <div class="media-body">
+            Catering: {{ restaurant.get_catering_display }}
+          </div>
         </div>
-
-        <div class="row fieldWysiwye">
-            <div class="col-xs-12 col-md-6">
-            <form action="{% url 'venues.views.reviews.add_review' restaurant.pk %}" method="post">
-
-        <div class="tab-container tile">
-            {% if user.is_authenticated %}
-                {% if not reveiw_by_user %}
-                <ul class="nav tab nav-tabs">
-                    <li class="active"><a href="#home">Write a Review</a></li>
-
-                </ul>
-                        <div class="tab-content">
-                            <div class="tab-pane active" id="home">
-                                <p> {% include "reviews/review-form.html" %} </p>
-                            </div>
-                        </div>
-
-                {% else %}
-
-
-                <ul class="nav tab nav-tabs">
-                    <li class="active"><a href="#home">You have already written a review for this restaurant.</a>
-                    </li>
-
-
-                </ul>
-                <div class="tab-content">
-                    <a class="btn btn-alt" style="z-index: 999999999;"
-                        href="{% url "venues.views.reviews.update_review" reveiw_by_user.0.id %}">
-                        <span class="glyphicon glyphicon-edit"></span> Edit your review
-                    </a>
-                </div>
-                {% endif %}
-                {% else %}
-                <ul class="nav tab nav-tabs">
-                    <li class="active"><a href="#home">Write a Review</a></li>
-
-                </ul>
-                        <div class="tab-content">
-                            <div class="tab-pane active" id="home">
-                        <p><a  data-toggle="modal" class="btn btn-alt btn-xs" href="#login_modal">Login</a> to write reviews</p>
-                            </div>
-                        </div>
-            {% endif %}
+        <div class="media">
+          <div class="media-body">
+            Delivery: {{ restaurant.get_delivery_display }}
+          </div>
         </div>
+        {% if restaurant.website %}
+        <div class="media">
+          <div class="media-body">
+            <a href="{{ restaurant.website }}">Website Link</a>
+          </div>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
 
-            </form>
 
-
-
-                <h3 class="block-title profile-block-title">
-                    Reviews
-                </h3>
-
-                {% for review in reviews %}
-                <div class="tile profile-tile">
-                    <!--<div class="list-group-item {{ review.approved|yesno:"list-group-item-success, list-group-item-danger" }}">-->
-                        {% if review.created_by == request.user %}
-                        <a class="btn btn-alt pull-right"
-                           href="{% url "venues.views.reviews.update_review" review.id %}">
-                            <span class="glyphicon glyphicon-edit"></span>
-                        </a>
-                        {% endif %}
-                        <b><a href="{% url 'venues.views.profile.user_profile' review.created_by.pk %}">{{ review.created_by }}</a></b> |
-                        <strong>{{ review.rating }}</strong> of 5
-                           <p>{{ review.text }}</p>
-                           <p>{{ review.created_on }}</p>
-                    <!--</div>-->
-                </div>
-                {% empty %}
-                    <p>
-                        No reviews available
-                    </p>
+  <div class="col-md-6">
+    <div class="card" >
+      <div class="card-block">
+        <h4 class="card-title"> {{ restaurant.name }} </h4>
+        <div class="card-text">
+          <p>Cuisine: {% for cuisine in restaurant.cuisines.all %}{{ cuisine }} {% endfor %}</p>
+          <p>Ratings:
+            {% if restaurant.avg_rating %}
+              {% with ''|center:restaurant.avg_rating as range %}
+                {% for _ in range %}
+                <i class="fa fa-star-o" aria-hidden="true"></i>
                 {% endfor %}
+              {% endwith %}
+            {% else %}
+              No ratings yet
+            {% endif %}
+          </p>
+          <p>Also found on:
+            {% if restaurant.yelp_url %}
+              <a href="{{ restaurant.yelp_url }}"> Yelp</a>
+            {% endif %}
+            {% if restaurant.foursquare_url %}
+              <a href="{{ restaurant.foursquare_url}}"> Foursquare</a>
+            {% endif %}
+            {% if restaurant.google_reviews_url %}
+             <a href="{{ restaurant.google_reviews_url }}"> Google Rating</a>
+            {% endif %}
+          </p>
+        </div>
+      </div>
+    </div>
 
-                {% if reviews %}
-                    <a href="{% url 'restaurant_allreviews' restaurant.pk %}" class="btn btn-alt pull-right">All reviews</a>
-                {% endif %}
+    <div class="note">
+      {% if restaurant.about %}
+      {{ restaurant.about }}
+      {% else %}
+      No about information
+      {% endif %}
+    </div>
 
-            </div>
+
+    {% if user.is_authenticated %}
+      {% if not reveiw_by_user %}
+        <div class="write-review">
+          {% include "reviews/review-form.html" %}
+        </div>
+      {% endif %}
+    {% else %}
+      <div class="write-review">
+        <p>Please login to write a review</p>
+        <a  class="btn hvr-shutter-out-horizontal btn-info m-t-10" href="/accounts/login/">Login</a>
+      </div>
+    {% endif %}
+
+    <div class="user-review">
+      {% for review in reviews %}
+      <div class="media">
+        {% comment %}
+        USERS DONT HAVE AVATARS
+        <a href="#" class="pull-left">
+          <img class="media-object" src="http://www.one2onephotography.ca/image/portrait/men/men-images-1.jpg" alt="...">
+        </a>
+        {% endcomment %}
+
+        <div class="media-body">
+          <div class ="review-date pull-right"> {{ review.created_on }} </div>
+          {% if review.created_by == request.user %}
+          <div class="pull-right">
+            <a href="{% url "venues.views.reviews.update_review" review.id %}">
+              <span class="glyphicon glyphicon-edit" style="margin-right: 6px;"></span>
+            </a>
+          </div>
+          {% endif %}
+          <h4 class="media-heading"> {{ review.created_by }}</h4>
+
+          <div class = "rating">
+            Rating:
+            {% with ''|center:review.rating as range %}
+              {% for _ in range %}
+                <i class="fa fa-star-o" aria-hidden="true"></i>
+              {% endfor %}
+            {% endwith %}
+          </div>
+        </div>
+        <p> {{ review.text }} </p> <hr>
+      </div>
+      {% endfor %}
+      {% comment %}{% if reviews %}
+      <a href="{% url 'restaurant_allreviews' restaurant.pk %}" class="btn btn-alt pull-right">All reviews</a>
+      {% else %}
+      <p>Restaurant hasn't been reviewed</p>
+      {% endif %}
+      {% endcomment %}
+
+      {% if not reviews %}
+      <p>Restaurant hasn't been reviewed</p>
+      {% endif %}
+    </div>
 
 
-    {% addtoblock "js" %}
-        <!-- google-maps scripts -->
-        <script src="https://maps.googleapis.com/maps/api/js"></script>
-        <script>
-            function initialize() {
-                var mapCanvas = document.getElementById('map-canvas');
-                latlng = new google.maps.LatLng({{restaurant.location.y}}, {{restaurant.location.x}});
-                var mapOptions = {
-                    center: latlng,
-                    zoom: 16,
-                    mapTypeId: google.maps.MapTypeId.ROADMAP,
-                    mapTypeControl: false
-                };
-                var map = new google.maps.Map(mapCanvas, mapOptions);
-                var marker = new google.maps.Marker({
-                    position: latlng,
-                    map: map,
-                    title: '{{ restaurant.name }} | {{ restaurant.address }}'
-                });
-            }
-            google.maps.event.addDomListener(window, 'load', initialize);
-        </script>
-        <script>
-            $(function () {
-                console.log($(".note-remove"));
-                $(".note-remove").click(function (event) {
-                    if (!confirm("Are you sure?")) {
-                        return false;
-                    }
-                })
-            });
+    <div class="read-reviewers" >
+      <h4>Read Reviews On </h4>
+      {% if restaurant.yelp_url %}
+        <a class="btn hvr-shutter-out-horizontal btn-info btn-sm" href="{{ restaurant.yelp_url }}"> Yelp</a>
+      {% endif %}
+      {% if restaurant.foursquare_url %}
+      <a class="btn hvr-shutter-out-horizontal btn-info btn-sm" href="{{ restaurant.foursquare_url}}"> Foursquare</a>
+      {% endif %}
+      {% if restaurant.google_reviews_url %}
+      <a class="btn hvr-shutter-out-horizontal btn-info btn-sm" href="{{ restaurant.google_reviews_url }}"> Google Rating</a>
+      {% endif %}
+    </div>
 
-            $('#report-login').click(function(){
-                $('#modal-google-login').attr("href", "{% url 'social:begin' 'google-oauth2' %}?next={% url "venues.views.reports.report_restaurant" restaurant.pk %}");
-                $('#modal-facebook-login').attr("href", "{% url 'social:begin' 'google-oauth2' %}?next={% url "venues.views.reports.report_restaurant" restaurant.pk %}");
-                $('#main-login-modal').attr("action", "{% url "django.contrib.auth.views.login" %}?next={% url "venues.views.reports.report_restaurant" restaurant.pk %}");
-            })
-            $('#edit-login').click(function(){
-                $('#modal-google-login').attr("href", "{% url 'social:begin' 'google-oauth2' %}?next={% url "venues.views.venuess.update_restaurant" restaurant.pk %}");
-                $('#modal-facebook-login').attr("href", "{% url 'social:begin' 'google-oauth2' %}?next={% url "venues.views.venuess.update_restaurant" restaurant.pk %}");
-                $('#main-login-modal').attr("action", "{% url "django.contrib.auth.views.login" %}?next={% url "venues.views.venuess.update_restaurant" restaurant.pk %}");
-            })
+  </div>
 
-            $('#login-default-btn').click(function(){
-                $('#modal-google-login').attr("href", "{% url 'social:begin' 'google-oauth2' %}?next={{ request.path }}");
-                $('#modal-facebook-login').attr("href", "{% url 'social:begin' 'google-oauth2' %}?next={{ request.path }}");
-                $('#main-login-modal').attr("action", "{% url "django.contrib.auth.views.login" %}?next={{ request.path }}");
-            })
-        </script>
-    {% endaddtoblock %}
-{% endblock %}
+  <div class="col-md-3">
+    <div class="card" >
+      <div class="card-block">
+        <h4 class="card-title">Loreum Lipsum </h4>
+        <div class="card-text">
+          <p> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris faucibus nibh id accumsan accumsan.
+            Nam ipsum ante, tincidunt posuere vulputate id, efficitur eu justo. Sed et erat est. Duis cursus eget dolor vitae aliquam.
+            Proin elementum libero vitae tellus sagittis dignissim ut vel eros. Sed porta sapien id euismod sodales.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+  {% addtoblock "js" %}
+  <!-- google-maps scripts -->
+  <script src="https://maps.googleapis.com/maps/api/js"></script>
+  <script>
+   function initialize() {
+     var mapCanvas = document.getElementById('map-canvas');
+     latlng = new google.maps.LatLng({{restaurant.location.y}}, {{restaurant.location.x}});
+     var mapOptions = 14;
+     var map = new google.maps.Map(mapCanvas, mapOptions);
+     var marker = new google.maps.Marker({
+       position: latlng,
+       map: map,
+       title: '{{ restaurant.name }} | {{ restaurant.address }}'
+     });
+   }
+   google.maps.event.addDomListener(window, 'load', initialize);
+  </script>
+  <script>
+   $(function () {
+     console.log($(".note-remove"));
+     $(".note-remove").click(function (event) {
+       if (!confirm("Are you sure?")) {
+         return false;
+       }
+     })
+   });
+
+   $('#report-login').click(function(){
+     $('#modal-google-login').attr("href", "{% url 'social:begin' 'google-oauth2' %}?next={% url "venues.views.reports.report_restaurant" restaurant.pk %}");
+     $('#modal-facebook-login').attr("href", "{% url 'social:begin' 'google-oauth2' %}?next={% url "venues.views.reports.report_restaurant" restaurant.pk %}");
+     $('#main-login-modal').attr("action", "{% url "django.contrib.auth.views.login" %}?next={% url "venues.views.reports.report_restaurant" restaurant.pk %}");
+   })
+   $('#edit-login').click(function(){
+     $('#modal-google-login').attr("href", "{% url 'social:begin' 'google-oauth2' %}?next={% url "venues.views.venuess.update_restaurant" restaurant.pk %}");
+     $('#modal-facebook-login').attr("href", "{% url 'social:begin' 'google-oauth2' %}?next={% url "venues.views.venuess.update_restaurant" restaurant.pk %}");
+     $('#main-login-modal').attr("action", "{% url "django.contrib.auth.views.login" %}?next={% url "venues.views.venuess.update_restaurant" restaurant.pk %}");
+   })
+
+   $('#login-default-btn').click(function(){
+     $('#modal-google-login').attr("href", "{% url 'social:begin' 'google-oauth2' %}?next={{ request.path }}");
+     $('#modal-facebook-login').attr("href", "{% url 'social:begin' 'google-oauth2' %}?next={{ request.path }}");
+     $('#main-login-modal').attr("action", "{% url "django.contrib.auth.views.login" %}?next={{ request.path }}");
+   })
+  </script>
+  {% endaddtoblock %}
+  {% endblock %}

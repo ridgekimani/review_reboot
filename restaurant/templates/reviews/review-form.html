@@ -1,33 +1,31 @@
 {% load static %}
-<div class="panel panel-default">
-    <div class="panel-body">
-        <div class="tile-title"><span class="panel-title"></span>
+  <div class="rating">
+    <form autocomplete="off"
+          action="{% url 'venues.views.reviews.add_review' restaurant.pk %}"
+          method="post">{% csrf_token %}
+      <label>Please give your rating: </label>
+      {% for i in 12345|make_list %}
+      <div class="radio-inline">
+        <label>
+          <input type="radio"  name="rating" value="{{ i }}" required {% if rating == i %}
+                 checked {% endif %} >{{ i }}
+        </label>
+      </div>
+      {% endfor %}
 
-        <form autocomplete="off" action="{% url 'venues.views.reviews.add_review' restaurant.pk %}" method="post">{% csrf_token %}
-            <label>Rating : </label>
+      <div class="form-group">
+        <br>
+        <textarea class="form-control auto-size m-b-10" id="reviewArea" name="text"
+                  placeholder="Your review helps others to find a good restaurant and please be genuine about it. " required>{{ text }}</textarea>
+        <br>
+        <button type="submit" class="btn hvr-shutter-out-horizontal btn-info m-t-10">Submit</button>
+        {#{% if is_saved %}#}
+        {#    <span class="label label-success">Saved</span>#}
+        {#{% endif %}#}
+      </div>
+    </form>
+  </div>
 
-            {% for i in 12345|make_list %}
-                <div class="radio-inline">
-                    <label>
-                        <input type="radio"  name="rating" value="{{ i }}" required {% if rating == i %}
-                               checked {% endif %} >{{ i }}
-                    </label>
-                </div>
-            {% endfor %}
-        </div>
-            <div class="form-group">
-            <br>
-                <textarea class="form-control auto-size m-b-10" id="reviewArea" name="text"
-                          placeholder="Write a review" required>{{ text }}</textarea>
-                <br>
-                <button type="submit" class="btn btn-alt">Submit</button>
-{#                {% if is_saved %}#}
-{#                    <span class="label label-success">Saved</span>#}
-{#                {% endif %}#}
-            </div>
-        </form>
-    </div>
-</div>
 <!-- Form validation for safari-->
 <script src="{% static "js/jquery.h5validate.js" %}"></script>
 <script>

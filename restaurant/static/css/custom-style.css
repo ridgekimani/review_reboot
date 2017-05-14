@@ -288,15 +288,17 @@ section.card-container .col-sm-6.col-xs-12:nth-last-child(1) .card, section.cont
     background:rgba(0,0,0,.3);
 }
 .restaurant-profile .read-reviewers {
-    margin-bottom: 1.5rem;
+    margin-top: 15px;
+    margin-bottom: 15px;
 }
 .restaurant-profile .read-reviewers h4{
-    margin:0px 0px 20px 0px;
+    margin:0px px 20px 0px;
 }
 
 .user-review{
     background:rgba(0,0,0,.3);
     margin-top:15px;
+    margin-bottom:15px;
     padding:15px;
 }
 .user-review .media .media-heading{
